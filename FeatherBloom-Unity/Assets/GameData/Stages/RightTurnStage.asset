@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334efece15c334c4ba93e63a3c1cd296, type: 3}
+  m_Name: RightTurnStage
+  m_EditorClassIdentifier: 
+  <StageName>k__BackingField: RightTurn
+  <StagePrefab>k__BackingField: {fileID: 7270638910200890440, guid: f3819c944c77fbe45b609efe28a03f2c, type: 3}

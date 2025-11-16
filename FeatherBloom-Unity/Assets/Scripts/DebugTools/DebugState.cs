@@ -6,5 +6,6 @@ namespace DebugTools
     public class DebugState
     {
         public static bool QuickArduinoConnect;
+        public static bool DoNotLoadMapOnStart { get; set; }
     }
 }
