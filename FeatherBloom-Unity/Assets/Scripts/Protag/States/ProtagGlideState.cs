@@ -1,6 +1,7 @@
 using Protag.Gliding;
 using StateMachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Protag.States
 {
@@ -24,8 +25,28 @@ namespace Protag.States
         [SerializeField]
         private ProtagCamera _camera;
 
+        [Header("Unity Events")]
+
+        [SerializeField]
+        private UnityEvent _onEnterGlide;
+
+        [SerializeField]
+        private UnityEvent _onExitGlide;
+
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            _onEnterGlide?.Invoke();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            _onExitGlide?.Invoke();
+        }
 
         public override void OnFixedUpdate()
         {

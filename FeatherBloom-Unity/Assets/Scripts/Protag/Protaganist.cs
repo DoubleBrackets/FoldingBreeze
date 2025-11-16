@@ -2,6 +2,7 @@ using DebugTools;
 using Input;
 using StateMachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Protag
 {
@@ -15,6 +16,14 @@ namespace Protag
 
         [SerializeField]
         private Rigidbody _protagRigidbody;
+
+        [Header("Events")]
+
+        [SerializeField]
+        private UnityEvent _onFanOpen;
+
+        [SerializeField]
+        private UnityEvent _onFanClose;
 
         public static Protaganist Instance { get; private set; }
 
@@ -59,6 +68,14 @@ namespace Protag
         private void HandleFanStateChange(GameplayInputService.FanState state)
         {
             IsFanOpen = state == GameplayInputService.FanState.Open;
+            if (IsFanOpen)
+            {
+                _onFanOpen?.Invoke();
+            }
+            else
+            {
+                _onFanClose?.Invoke();
+            }
         }
 
         public void SetPositionAndDirection(Vector3 position, Vector3 direction)
