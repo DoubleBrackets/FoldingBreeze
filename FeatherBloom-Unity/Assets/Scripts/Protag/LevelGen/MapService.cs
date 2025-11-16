@@ -1,4 +1,5 @@
 using DebugTools;
+using Services;
 using UnityEngine;
 
 namespace Protag.LevelGen
@@ -29,6 +30,8 @@ namespace Protag.LevelGen
             {
                 Destroy(gameObject);
             }
+
+            ScoreService.Instance.ResetScore();
         }
 
         private void Start()
@@ -51,6 +54,7 @@ namespace Protag.LevelGen
         public void StartMap()
         {
             _currentMapStage = LoadInitialStage(_stageRosterSO.GetStartingStageEntry());
+            _currentMapStage.SetStageEnabled(true);
             _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage);
             _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
         }
@@ -78,15 +82,22 @@ namespace Protag.LevelGen
                 Destroy(_previousMapStage.gameObject);
             }
 
+            _currentMapStage.SetStageEnabled(false);
+
             // Update
             _previousMapStage = _currentMapStage;
             _currentMapStage = _nextMapStage;
             Debug.Log($"Moved to new current stage: {_currentMapStage.name}");
+
+            _currentMapStage.SetStageEnabled(true);
+
             _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage);
             Debug.Log($"Loaded new stage: {_nextMapStage.name}");
 
             // Subscribe
             _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
+
+            ScoreService.Instance.AddScore(1);
         }
 
         private void HandleOnNextStageEntered()

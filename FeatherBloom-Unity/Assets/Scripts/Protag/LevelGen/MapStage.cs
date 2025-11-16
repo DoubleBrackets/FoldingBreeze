@@ -20,6 +20,9 @@ namespace Protag.LevelGen
         [SerializeField]
         private StageTrigger _stageTrigger;
 
+        [SerializeField]
+        private float _killZoneHeight;
+
         [Header("Events")]
 
         [SerializeField]
@@ -27,6 +30,8 @@ namespace Protag.LevelGen
 
         [SerializeField]
         public UnityEvent OnStageSectionExited;
+
+        private bool _stageEnabled;
 
         private void Awake()
         {
@@ -54,6 +59,27 @@ namespace Protag.LevelGen
             Gizmos.DrawSphere(endPos + endDir * 5f, 1f);
             Gizmos.DrawLine(startPos, startPos + Vector3.forward * 5f);
             Gizmos.DrawSphere(startPos - Vector3.forward * 5f, 0.5f);
+
+            // Kill zone
+            Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+            Gizmos.DrawCube(transform.position + Vector3.down * _killZoneHeight, new Vector3(100, 1, 100));
+        }
+
+        private void Update()
+        {
+            if (_stageEnabled)
+            {
+                Vector3 playerPos = Protaganist.Instance.Position;
+                if (playerPos.y < transform.position.y - _killZoneHeight)
+                {
+                    Protaganist.Instance.Kill();
+                }
+            }
+        }
+
+        public void SetStageEnabled(bool enable)
+        {
+            _stageEnabled = enable;
         }
 
         private void HandleStageSectionEntered()

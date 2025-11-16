@@ -446,6 +446,7 @@ MonoBehaviour:
   _glideVisuals: {fileID: 691692595262682336}
   _surfState: {fileID: 5082696597094764826}
   _camera: {fileID: 2328791997766467776}
+  _interactableDetector: {fileID: 2666968306857408712}
   _onEnterGlide:
     m_PersistentCalls:
       m_Calls: []
@@ -781,6 +782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8319963221413359830}
   - component: {fileID: 3402814360252092788}
+  - component: {fileID: 1679666330666811848}
   m_Layer: 0
   m_Name: ProtagManager
   m_TagString: Untagged
@@ -848,6 +850,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1679666330666811848}
+        m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1679666330666811848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062945129070304350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1ce442bc201ab4eb6b41d5f5a169f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: GameOverScene
 --- !u!1 &4358033791458636068
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +975,7 @@ MonoBehaviour:
   _tiltMaxAngularVelocity: 60
   _rollMaxAngularVelocity: 60
   _gravityAccel: 10
+  _drag: 0.6
 --- !u!1 &4650625040535641624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,6 +1270,21 @@ MonoBehaviour:
   OnBoostPickup:
     m_PersistentCalls:
       m_Calls: []
+  OnTouchHazard:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3402814360252092788}
+        m_TargetAssemblyTypeName: Protag.Protaganist, Assembly-CSharp
+        m_MethodName: Kill
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8919891244316893372
 GameObject:
   m_ObjectHideFlags: 0

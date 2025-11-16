@@ -29,6 +29,9 @@ namespace Protag.Gliding
         [SerializeField]
         private float _gravityAccel;
 
+        [SerializeField]
+        private float _drag;
+
         public Vector3 CurrentVelocity => _rb.linearVelocity;
 
         public void Tick(float horizontalAim, float verticalAim, float deltaTime)
@@ -51,10 +54,21 @@ namespace Protag.Gliding
 
             Vector3 targetVelocity = targetAimDirection * currentSpeed;
 
+            // Drag linear deaccel
+            targetVelocity = targetVelocity.normalized * Mathf.Max(0,
+                targetVelocity.magnitude - _drag * deltaTime);
+
             // Apply gravity
             targetVelocity += Vector3.down * _gravityAccel * deltaTime;
 
             _rb.linearVelocity = targetVelocity;
+        }
+
+        public void Boost(float amount)
+        {
+            Vector3 currentVel = _rb.linearVelocity;
+            Vector3 boostedVel = currentVel.normalized * (currentVel.magnitude + amount);
+            _rb.linearVelocity = boostedVel;
         }
     }
 }

@@ -25,6 +25,9 @@ namespace Protag
         [SerializeField]
         private UnityEvent _onFanClose;
 
+        [SerializeField]
+        private UnityEvent _onDeath;
+
         public static Protaganist Instance { get; private set; }
 
         public Vector3 Position => _protagBody.position;
@@ -82,6 +85,11 @@ namespace Protag
         {
             _protagBody.position = position;
             _protagRigidbody.linearVelocity = direction;
+        }
+
+        public void Kill()
+        {
+            _onDeath?.Invoke();
         }
     }
 }

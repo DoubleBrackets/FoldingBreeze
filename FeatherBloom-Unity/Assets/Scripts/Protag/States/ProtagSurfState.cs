@@ -43,12 +43,22 @@ namespace Protag.States
         public override void OnInitialize()
         {
             _impactSaver.OnTerrainImpact.AddListener(HandleTerrainImpact);
-            _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
         }
 
         public override void OnDeinitialize()
         {
             _impactSaver.OnTerrainImpact.RemoveListener(HandleTerrainImpact);
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
         }
 
