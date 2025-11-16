@@ -256,7 +256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eedaa388077f594783efa814e4214f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sensitivity: 2
+  _closeSensitivity: 1.7
+  _openTiltSensitivity: 2
+  _openRollSensitivity: 2
   _deadzone: 0.1
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
   _fanOpenTiltForwardAxis: {x: -1, y: 0, z: 0}
