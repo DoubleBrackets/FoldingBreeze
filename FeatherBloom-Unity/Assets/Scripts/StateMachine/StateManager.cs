@@ -13,9 +13,11 @@ namespace StateMachine
         [SerializeField]
         private AbstractState _initialState;
 
+        public AbstractState CurrentState => _currentState;
+
         private AbstractState _currentState;
 
-        private bool _isInitialized = false;
+        private bool _isInitialized;
 
         private void Update()
         {
@@ -24,10 +26,7 @@ namespace StateMachine
                 return;
             }
 
-            foreach (AbstractState state in _states)
-            {
-                state.OnUpdate();
-            }
+            _currentState.OnUpdate();
         }
 
         private void FixedUpdate()
@@ -37,10 +36,7 @@ namespace StateMachine
                 return;
             }
 
-            foreach (AbstractState state in _states)
-            {
-                state.OnFixedUpdate();
-            }
+            _currentState.OnFixedUpdate();
         }
 
         public void Deinitialize()
@@ -58,6 +54,7 @@ namespace StateMachine
 
         public void Initialize()
         {
+            _isInitialized = true;
             foreach (AbstractState state in _states)
             {
                 state.OnInitialize();

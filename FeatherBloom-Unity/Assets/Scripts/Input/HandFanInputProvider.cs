@@ -127,13 +127,13 @@ namespace Input
             Vector3 dir = fanOrientation * Vector3.forward;
 
             // Closed fan needs to go backwards
-            if (dir.z > 0)
+            /*if (dir.z > 0)
             {
                 return Vector2.zero;
-            }
+            }*/
 
             // Project onto XY plane to get aim direction
-            var projected = new Vector2(-dir.x, dir.y);
+            var projected = new Vector2(dir.x, dir.y);
 
             projected *= _closeSensitivity;
             projected.x = Mathf.Clamp(projected.x, -1f, 1f);

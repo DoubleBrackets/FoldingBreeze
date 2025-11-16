@@ -1,3 +1,4 @@
+using DebugTools;
 using Input;
 using StateMachine;
 using UnityEngine;
@@ -12,10 +13,15 @@ namespace Protag
         [SerializeField]
         private Transform _protagBody;
 
+        [SerializeField]
+        private Rigidbody _protagRigidbody;
+
         public static Protaganist Instance { get; private set; }
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
+
+        public bool IsFanOpen { get; private set; }
 
         private void Awake()
         {
@@ -37,6 +43,14 @@ namespace Protag
             _protagStateMachine.Deinitialize();
         }
 
+        private void OnDrawGizmos()
+        {
+            if (Application.isPlaying)
+            {
+                LabelUtils.Label(_protagBody.position, $"{_protagStateMachine.CurrentState.name}");
+            }
+        }
+
         private void HandleAimInputChange(GameplayInputService.AimInput aimInput)
         {
             AimInput = aimInput.NormalizedAimInput;
@@ -44,11 +58,13 @@ namespace Protag
 
         private void HandleFanStateChange(GameplayInputService.FanState state)
         {
+            IsFanOpen = state == GameplayInputService.FanState.Open;
         }
 
-        public void SetPosition(Vector3 position)
+        public void SetPositionAndDirection(Vector3 position, Vector3 direction)
         {
             _protagBody.position = position;
+            _protagRigidbody.linearVelocity = direction;
         }
     }
 }
