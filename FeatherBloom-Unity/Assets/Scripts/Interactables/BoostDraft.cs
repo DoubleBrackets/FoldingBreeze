@@ -16,5 +16,12 @@ namespace Interactables
                 interactableDetector.PickupBoost(_boostAmount);
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(transform.position, 0.5f);
+            Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5f);
+        }
     }
 }

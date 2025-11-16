@@ -59,7 +59,7 @@ namespace Protag.LevelGen
         {
             MapStage stagePrefab = stageEntry.Prefab;
             MapStage stageInstance = Instantiate(stagePrefab, transform);
-            stageInstance.Initialize(Vector3.zero);
+            stageInstance.Initialize(Vector3.zero, Vector3.forward);
             return stageInstance;
         }
 
@@ -98,7 +98,7 @@ namespace Protag.LevelGen
         {
             MapStage stagePrefab = stageEntry.Prefab;
             MapStage stageInstance = Instantiate(stagePrefab, transform);
-            stageInstance.Initialize(previousStageInstance.GetEndPosition());
+            stageInstance.Initialize(previousStageInstance.GetEndPosition(), previousStageInstance.GetEndForward());
             _lastChosenStage = stageEntry.Stage;
             return stageInstance;
         }

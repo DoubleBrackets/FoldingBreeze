@@ -44,6 +44,16 @@ namespace Protag.LevelGen
         {
             LabelUtils.Label(_startPoint.position, "STAGE START");
             LabelUtils.Label(_endPoint.position, "STAGE END");
+
+            Vector3 endPos = GetEndPosition();
+            Vector3 startPos = GetStartPosition();
+            Vector3 endDir = GetEndForward();
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(startPos, endPos);
+            Gizmos.DrawLine(endPos, endPos + endDir * 5f);
+            Gizmos.DrawSphere(endPos + endDir * 5f, 1f);
+            Gizmos.DrawLine(startPos, startPos + Vector3.forward * 5f);
+            Gizmos.DrawSphere(startPos - Vector3.forward * 5f, 0.5f);
         }
 
         private void HandleStageSectionEntered()
@@ -66,11 +76,22 @@ namespace Protag.LevelGen
             return _endPoint.position;
         }
 
-        public void Initialize(Vector3 startPosition)
+        public Vector3 GetEndForward()
+        {
+            Vector3 forward = _endPoint.forward;
+            forward.y = 0;
+            return forward.normalized;
+        }
+
+        public void Initialize(Vector3 startPosition, Vector3 forward)
         {
             // Reorient the stage to match the start position
             Vector3 offset = startPosition - _startPoint.position;
             transform.position += offset;
+
+            // Rotate to match forward direction
+            Quaternion targetRotation = Quaternion.LookRotation(forward, Vector3.up);
+            transform.rotation = targetRotation;
         }
     }
 }
