@@ -1314,8 +1314,8 @@ MonoBehaviour:
   _maxMoveSpeed: 12
   _moveSpeedCap: 25
   _minMoveSpeed: 5
-  _gravityAccelGround: 15
-  _gravityAccelAir: 10
+  _gravityAccelGround: 16
+  _gravityAccelAir: 12
 --- !u!1 &8951116574525693585
 GameObject:
   m_ObjectHideFlags: 0
