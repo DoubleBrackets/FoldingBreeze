@@ -2,7 +2,6 @@ using Protag.Gliding;
 using SerialComms;
 using StateMachine;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Protag.States
 {
@@ -32,21 +31,12 @@ namespace Protag.States
         [SerializeField]
         private Animator _animator;
 
-        [Header("Unity Events")]
-
-        [SerializeField]
-        private UnityEvent _onEnterGlide;
-
-        [SerializeField]
-        private UnityEvent _onExitGlide;
-
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
 
         public override void OnEnter()
         {
             base.OnEnter();
-            _onEnterGlide?.Invoke();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
             BoxFanArduinoComm.Instance?.WriteFanOn(true);
         }
@@ -54,7 +44,6 @@ namespace Protag.States
         public override void OnExit()
         {
             base.OnExit();
-            _onExitGlide?.Invoke();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
             BoxFanArduinoComm.Instance?.WriteFanOn(false);
         }

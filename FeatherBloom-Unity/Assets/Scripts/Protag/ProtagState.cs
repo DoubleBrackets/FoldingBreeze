@@ -1,5 +1,6 @@
 using StateMachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Protag
 {
@@ -9,5 +10,25 @@ namespace Protag
 
         [SerializeField]
         protected Protaganist Protaganist;
+
+        [Header("Protag State Events")]
+
+        [SerializeField]
+        private UnityEvent _onEnterState;
+
+        [SerializeField]
+        private UnityEvent _onExitState;
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            _onEnterState?.Invoke();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            _onExitState?.Invoke();
+        }
     }
 }

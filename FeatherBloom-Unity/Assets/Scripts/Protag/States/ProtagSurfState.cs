@@ -1,3 +1,4 @@
+using Events;
 using Protag.Surfing;
 using StateMachine;
 using UnityEngine;
@@ -38,10 +39,19 @@ namespace Protag.States
         [SerializeField]
         private Vector2 _verticalImpactBoostRange;
 
+        [Header("Event Out")]
+
+        [SerializeField]
+        private VoidEvent _onStartSurf;
+
+        [SerializeField]
+        private VoidEvent _onStopSurf;
+
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
 
         private float _boost;
+        private bool _surfing;
 
         public override void OnInitialize()
         {
@@ -57,6 +67,7 @@ namespace Protag.States
         {
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
+            _surfing = false;
         }
 
         public override void OnExit()
@@ -107,6 +118,19 @@ namespace Protag.States
 
             _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
             _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
+
+            bool isSurfing = groundInfo.IsGrounded;
+
+            if (!_surfing && isSurfing)
+            {
+                _onStartSurf.Raise();
+            }
+            else if (_surfing && !isSurfing)
+            {
+                _onStopSurf.Raise();
+            }
+
+            _surfing = isSurfing;
 
             if (!groundInfo.IsGrounded && Protaganist.IsFanOpen)
             {
