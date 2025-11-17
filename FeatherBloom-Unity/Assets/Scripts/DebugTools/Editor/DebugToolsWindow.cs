@@ -36,9 +36,11 @@ namespace DebugTools.Editor
             EditorGUILayout.Space();
             GUILayout.Label("Prefs", EditorStyles.boldLabel);
             string calibrationOrientation = PlayerPrefs.GetString(FanOrientationCalibration.DefaultOrientation);
-            string savedPort = PlayerPrefs.GetString(SerialPortDropdown.LastPortPrefs);
+            string savedFoldingFanPort = PlayerPrefs.GetString(SerialPortDropdown.LastPortPrefs + "FoldingFan");
+            string savedBoxFanPort = PlayerPrefs.GetString(SerialPortDropdown.LastPortPrefs + "BoxFan");
 
-            GUILayout.Label("Default port: " + savedPort);
+            GUILayout.Label("Default input port: " + savedFoldingFanPort);
+            GUILayout.Label("Box fan input port: " + savedBoxFanPort);
             GUILayout.Label("Default orientation: " + calibrationOrientation);
         }
 

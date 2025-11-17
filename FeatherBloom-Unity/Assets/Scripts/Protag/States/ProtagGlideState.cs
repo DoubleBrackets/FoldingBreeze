@@ -1,4 +1,5 @@
 using Protag.Gliding;
+using SerialComms;
 using StateMachine;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,6 +45,7 @@ namespace Protag.States
             base.OnEnter();
             _onEnterGlide?.Invoke();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
+            BoxFanArduinoComm.Instance?.WriteFanOn(true);
         }
 
         public override void OnExit()
@@ -51,6 +53,7 @@ namespace Protag.States
             base.OnExit();
             _onExitGlide?.Invoke();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
+            BoxFanArduinoComm.Instance?.WriteFanOn(false);
         }
 
         private void HandleBoost(float amount)

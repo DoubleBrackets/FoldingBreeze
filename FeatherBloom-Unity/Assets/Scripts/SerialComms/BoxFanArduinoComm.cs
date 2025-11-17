@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -11,21 +10,9 @@ namespace SerialComms
     /// <summary>
     ///     Handles serial IO and parsing from hand-fan controller arduino
     /// </summary>
-    public class HandFanArduinoComm : MonoBehaviour, IArduinoCom
+    public class BoxFanArduinoComm : MonoBehaviour, IArduinoCom
     {
-        public struct SerialReadResult
-        {
-            public bool OpenFanSwitch;
-            public bool CloseFanSwitch;
-            public Quaternion Orientation;
-        }
-
-        /// <summary>
-        ///     1 byte for buttons, 16 bytes for quaternion
-        /// </summary>
-        private const int PacketByteCount = 17;
-
-        public static HandFanArduinoComm Instance;
+        public static BoxFanArduinoComm Instance;
 
         [Header("Debug")]
 
@@ -38,28 +25,9 @@ namespace SerialComms
         [SerializeField]
         private int _baudRate;
 
-        [Header("Rate Counting")]
-
-        [SerializeField]
-        private int _rateCountWindow;
-
-        [Header("Events (Out)")]
-
-        [SerializeField]
-        private UnityEvent<SerialReadResult> OnSerialReadResult;
-
         public UnityEvent<string> OnStatusChange;
 
-        private readonly byte[] _packetBuffer = new byte[PacketByteCount];
-
-        private readonly Queue<float> _intervalQueue = new();
-
         private SerialPort _serialPort;
-        private float _intervalSum;
-        private float _prevPacketTime;
-        private float _currentPacketRate;
-
-        private int _toDiscard;
 
         private void Awake()
         {
@@ -106,11 +74,10 @@ namespace SerialComms
 
             try
             {
-                _toDiscard = 10;
-
                 InitializeSerialPort(_portName);
 
                 _serialPort.WriteTimeout = 1000;
+
                 ReadLoop(this.GetCancellationTokenOnDestroy()).Forget();
             }
             catch (Exception e)
@@ -122,7 +89,6 @@ namespace SerialComms
         private void DrawDebugGUI()
         {
             GUILayout.Label("Connected to arduino: " + (_serialPort == null ? "No" : _serialPort.IsOpen));
-            GUILayout.Label("Serial Packet Rate: " + _currentPacketRate);
         }
 
         private void InitializeSerialPort(string arduinoPort)
@@ -142,6 +108,8 @@ namespace SerialComms
             _serialPort.ErrorReceived += HandleErrorReceived;
 
             Debug.Log($"Connected to {arduinoPort}");
+
+            _serialPort.DiscardInBuffer();
         }
 
         private void CleanUp()
@@ -164,9 +132,6 @@ namespace SerialComms
                 // Discard any junk in the buffer
                 _serialPort.DiscardInBuffer();
 
-                // Starting ack
-                Write(new byte[] { 255 });
-
                 while (true)
                 {
                     await UniTask.Yield();
@@ -186,77 +151,14 @@ namespace SerialComms
 
         private void ProcessAllFromPort()
         {
-            int bytesToRead = _serialPort.BytesToRead;
-            int packetsToRead = bytesToRead / PacketByteCount;
-
-            // Don't read partial packets
-            if (packetsToRead == 0)
+            while (_serialPort.BytesToRead > 0)
             {
-                return;
-            }
-
-            // Read into buffer
-            var byteIndex = 0;
-            while (byteIndex < PacketByteCount)
-            {
-                var readByte = (byte)_serialPort.ReadByte();
-                _packetBuffer[byteIndex] = readByte;
-                byteIndex++;
-            }
-
-            // Calculate the packet rate
-            SamplePacketInterval();
-
-            SerialReadResult serialReadResult = ParsePacket(_packetBuffer);
-
-            if (_toDiscard > 0)
-            {
-                _toDiscard--;
-            }
-            else
-            {
-                OnSerialReadResult?.Invoke(serialReadResult);
-            }
-
-            if (_logPackets)
-            {
-                var packet = string.Empty;
-                foreach (byte b in _packetBuffer)
+                int read = _serialPort.ReadByte();
+                if (_logPackets)
                 {
-                    // log byte as binary
-                    packet += Convert.ToString(b, 2).PadLeft(8, '0') + " ";
+                    Debug.Log(read);
                 }
-
-                Debug.Log(packetsToRead);
-                Debug.Log(JsonUtility.ToJson(serialReadResult));
-                Debug.Log(packet);
             }
-
-            // Only read one packet per frame (because of handshake there should only be one)
-            _serialPort.DiscardInBuffer();
-
-            // Write ack to arduino for next packet
-            Write(new byte[] { 255 });
-        }
-
-        private SerialReadResult ParsePacket(byte[] packetBuffer)
-        {
-            var quatOffset = 1;
-            var i = BitConverter.ToSingle(packetBuffer, quatOffset);
-            var j = BitConverter.ToSingle(packetBuffer, quatOffset + 4);
-            var k = BitConverter.ToSingle(packetBuffer, quatOffset + 8);
-            var w = BitConverter.ToSingle(packetBuffer, quatOffset + 12);
-
-            var orientation = new Quaternion(i, j, k, w);
-
-            var serialReadResult = new SerialReadResult
-            {
-                OpenFanSwitch = (packetBuffer[0] & 1) == 1,
-                CloseFanSwitch = (packetBuffer[0] & 2) == 2,
-                Orientation = orientation
-            };
-
-            return serialReadResult;
         }
 
         private void ShowException(Exception e)
@@ -271,10 +173,27 @@ namespace SerialComms
             OnStatusChange?.Invoke($"{e.EventType.ToString()} : {e}");
         }
 
-        private void Write(byte[] data)
+        [ContextMenu("Test")]
+        public void TestWrite()
+        {
+            WriteFanOn(true);
+        }
+
+        public void WriteFanOn(bool fanOn)
+        {
+            if (_serialPort == null || !_serialPort.IsOpen)
+            {
+                return;
+            }
+
+            Write(fanOn ? new byte[] { 255 } : new byte[] { 0 });
+        }
+
+        public void Write(byte[] data)
         {
             try
             {
+                Debug.Log($"Wrote {data.Length} bytes from ${_serialPort.PortName}");
                 _serialPort.Write(data, 0, data.Length);
             }
             catch (Exception e)
@@ -282,23 +201,6 @@ namespace SerialComms
                 Debug.Log(e);
                 throw;
             }
-        }
-
-        private void SamplePacketInterval()
-        {
-            float interval = Time.time - _prevPacketTime;
-
-            _intervalSum += interval;
-            _intervalQueue.Enqueue(interval);
-
-            if (_intervalQueue.Count > _rateCountWindow)
-            {
-                _intervalSum -= _intervalQueue.Dequeue();
-            }
-
-            _currentPacketRate = _rateCountWindow / _intervalSum;
-
-            _prevPacketTime = Time.time;
         }
     }
 }

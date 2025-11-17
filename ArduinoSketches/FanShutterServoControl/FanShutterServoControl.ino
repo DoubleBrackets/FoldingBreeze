@@ -47,11 +47,14 @@ void setOpen(bool setOpen)
   }
 }
 
+char inputBuffer;
+
 void serialControl()
 {
   if (Serial.available()) {
-    int val = Serial.read();
-    setOpen(val == 1);
+    Serial.readBytes(&inputBuffer, 1);
+    Serial.write(inputBuffer);
+    setOpen(inputBuffer);
   }
 }
 
@@ -68,6 +71,7 @@ void debugControl()
 }
 
 void loop() {
-  // serialControl();
-  debugControl();
+  serialControl();
+  delay(10);
+  // debugControl();
 }

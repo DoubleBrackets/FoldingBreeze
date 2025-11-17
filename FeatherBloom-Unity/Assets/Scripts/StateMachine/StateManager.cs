@@ -46,6 +46,8 @@ namespace StateMachine
                 return;
             }
 
+            _currentState.OnExit();
+
             foreach (AbstractState state in _states)
             {
                 state.OnDeinitialize();
