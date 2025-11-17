@@ -5220,7 +5220,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 15
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -9842,7 +9842,7 @@ Transform:
   m_GameObject: {fileID: 626121280515121584}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.502, y: 0, z: 0}
+  m_LocalPosition: {x: -0.75, y: -0.5, z: 0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9872,7 +9872,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8d6ddffcfabf7c045ad80950e2df74ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9893,7 +9893,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -9910,6 +9910,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -14896,7 +14905,6 @@ Transform:
   - {fileID: 4576591696480774958}
   - {fileID: 5201438717615315289}
   - {fileID: 3942203056762862575}
-  - {fileID: 7970212820772323688}
   m_Father: {fileID: 8906171326932484220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1241923751068750161
@@ -14932,7 +14940,7 @@ Transform:
   m_Children:
   - {fileID: 4054046406562834853}
   - {fileID: 2778618681268343675}
-  m_Father: {fileID: 4136416872121264284}
+  m_Father: {fileID: 5578217389142848509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4181826545641480630
 MonoBehaviour:
@@ -20646,7 +20654,7 @@ Transform:
   m_GameObject: {fileID: 4776803582065025262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.75, y: -0.5, z: 0.305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20676,7 +20684,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8d6ddffcfabf7c045ad80950e2df74ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20697,7 +20705,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -20714,6 +20722,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -26264,7 +26281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2807939755594012279, guid: c7d0bdb5b49e8b644802d9aa5c9351cd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2596603264541382972, guid: c7d0bdb5b49e8b644802d9aa5c9351cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -26652,6 +26669,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8830198247464052945, guid: c7d0bdb5b49e8b644802d9aa5c9351cd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9175386347058171451}
+    - targetCorrespondingSourceObject: {fileID: -8830198247464052945, guid: c7d0bdb5b49e8b644802d9aa5c9351cd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7970212820772323688}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c7d0bdb5b49e8b644802d9aa5c9351cd, type: 3}
       insertIndex: -1
