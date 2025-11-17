@@ -83,6 +83,8 @@ MonoBehaviour:
   _endPoint: {fileID: 5698307410295684361}
   _stageTrigger: {fileID: 2563969995852640285}
   _killZoneHeight: 35
+  _riseLerpFactor: 0.5
+  _riseLinearSpeed: 5
   OnStageSectionEntered:
     m_PersistentCalls:
       m_Calls: []

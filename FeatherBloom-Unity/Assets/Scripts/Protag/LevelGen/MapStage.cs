@@ -23,6 +23,14 @@ namespace Protag.LevelGen
         [SerializeField]
         private float _killZoneHeight;
 
+        [Header("Config")]
+
+        [SerializeField]
+        private float _riseLerpFactor;
+
+        [SerializeField]
+        private float _riseLinearSpeed;
+
         [Header("Events")]
 
         [SerializeField]
@@ -32,6 +40,9 @@ namespace Protag.LevelGen
         public UnityEvent OnStageSectionExited;
 
         private bool _stageEnabled;
+
+        // Used to animate the stage rising from the ground
+        private Vector3 _targetPos;
 
         private void Awake()
         {
@@ -75,6 +86,10 @@ namespace Protag.LevelGen
                     Protaganist.Instance.Kill();
                 }
             }
+
+            float t = 1 - Mathf.Pow(0.01f, Time.deltaTime * _riseLerpFactor);
+            transform.position = Vector3.Lerp(transform.position, _targetPos, t);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPos, _riseLinearSpeed * Time.deltaTime);
         }
 
         public void SetStageEnabled(bool enable)
@@ -109,11 +124,17 @@ namespace Protag.LevelGen
             return forward.normalized;
         }
 
-        public void Initialize(Vector3 startPosition, Vector3 forward)
+        public void Initialize(Vector3 startPosition, Vector3 forward, bool riseAnimation = false)
         {
             // Reorient the stage to match the start position
             Vector3 offset = startPosition - _startPoint.position;
             transform.position += offset;
+            _targetPos = transform.position;
+
+            if (riseAnimation)
+            {
+                transform.position += Vector3.down * 100f;
+            }
 
             // Rotate to match forward direction
             Quaternion targetRotation = Quaternion.LookRotation(forward, Vector3.up);

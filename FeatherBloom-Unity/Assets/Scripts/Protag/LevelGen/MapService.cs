@@ -55,7 +55,7 @@ namespace Protag.LevelGen
         {
             _currentMapStage = LoadInitialStage(_stageRosterSO.GetStartingStageEntry());
             _currentMapStage.SetStageEnabled(true);
-            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage);
+            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage, false);
             _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
         }
 
@@ -91,7 +91,7 @@ namespace Protag.LevelGen
 
             _currentMapStage.SetStageEnabled(true);
 
-            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage);
+            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage, true);
             Debug.Log($"Loaded new stage: {_nextMapStage.name}");
 
             // Subscribe
@@ -105,11 +105,12 @@ namespace Protag.LevelGen
             MoveToNextStage();
         }
 
-        private MapStage LoadStage(StageRosterSO.RosterEntry stageEntry, MapStage previousStageInstance)
+        private MapStage LoadStage(StageRosterSO.RosterEntry stageEntry, MapStage previousStageInstance, bool riseAnim)
         {
             MapStage stagePrefab = stageEntry.Prefab;
             MapStage stageInstance = Instantiate(stagePrefab, transform);
-            stageInstance.Initialize(previousStageInstance.GetEndPosition(), previousStageInstance.GetEndForward());
+            stageInstance.Initialize(previousStageInstance.GetEndPosition(), previousStageInstance.GetEndForward(),
+                riseAnim);
             _lastChosenStage = stageEntry.Stage;
             return stageInstance;
         }
