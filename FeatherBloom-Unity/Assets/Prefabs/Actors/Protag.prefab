@@ -972,9 +972,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _tiltMaxAngularVelocity: 60
+  _tiltMaxAngularVelocity: 70
   _rollMaxAngularVelocity: 60
-  _gravityAccel: 10
+  _gravityAccel: 6
+  _fixedGravityAccel: 4
   _drag: 0.6
 --- !u!1 &4650625040535641624
 GameObject:

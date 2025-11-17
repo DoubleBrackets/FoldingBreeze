@@ -30,6 +30,9 @@ namespace Protag.Gliding
         private float _gravityAccel;
 
         [SerializeField]
+        private float _fixedGravityAccel;
+
+        [SerializeField]
         private float _drag;
 
         public Vector3 CurrentVelocity => _rb.linearVelocity;
@@ -59,7 +62,11 @@ namespace Protag.Gliding
                 targetVelocity.magnitude - _drag * deltaTime);
 
             // Apply gravity
-            targetVelocity += Vector3.down * _gravityAccel * deltaTime;
+            float gravityRatio = Vector3.Dot(targetVelocity.normalized, Vector3.down);
+            targetVelocity = targetVelocity.normalized *
+                             (targetVelocity.magnitude + gravityRatio * _gravityAccel * deltaTime);
+
+            targetVelocity += Vector3.down * _fixedGravityAccel * deltaTime;
 
             _rb.linearVelocity = targetVelocity;
         }
