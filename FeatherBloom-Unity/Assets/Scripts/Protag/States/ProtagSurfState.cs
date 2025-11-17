@@ -27,6 +27,9 @@ namespace Protag.States
         [SerializeField]
         private InteractableDetector _interactableDetector;
 
+        [SerializeField]
+        private Animator _animator;
+
         [Header("Config")]
 
         [SerializeField]
@@ -101,6 +104,9 @@ namespace Protag.States
                 horizontalInput,
                 deltaTime,
                 _surfMovement.CurrentVelocity);
+
+            _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
+            _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
 
             if (!groundInfo.IsGrounded && Protaganist.IsFanOpen)
             {

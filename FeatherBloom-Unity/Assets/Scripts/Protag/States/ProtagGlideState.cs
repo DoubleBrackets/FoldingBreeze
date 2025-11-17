@@ -29,6 +29,9 @@ namespace Protag.States
         [SerializeField]
         private InteractableDetector _interactableDetector;
 
+        [SerializeField]
+        private Animator _animator;
+
         [Header("Unity Events")]
 
         [SerializeField]
@@ -75,6 +78,9 @@ namespace Protag.States
             _glideVisuals.UpdateVisuals(horizontalInput, verticalInput, _glideMovement.CurrentVelocity, deltaTime);
 
             _camera.UpdateProtagCamera(horizontalInput, deltaTime, _glideMovement.CurrentVelocity);
+
+            _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
+            _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
 
             if (groundInfo.IsGrounded || !Protaganist.Instance.IsFanOpen)
             {

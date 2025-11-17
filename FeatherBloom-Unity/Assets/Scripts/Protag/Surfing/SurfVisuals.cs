@@ -12,6 +12,9 @@ namespace Protag.Surfing
         [SerializeField]
         private Transform _leanPivotTransform;
 
+        [SerializeField]
+        private Animator _animator;
+
         [Header("Config")]
 
         [SerializeField]
@@ -24,6 +27,7 @@ namespace Protag.Surfing
         private float _maxTiltAngle;
 
         private float _currentLeanRotation;
+        private float _currentBlend = 0.5f;
 
         public void UpdateSurfVisuals(GroundChecker.GroundedInfo info, Vector3 currentVelocity, float horizontalInput,
             float deltaTime)
@@ -40,6 +44,11 @@ namespace Protag.Surfing
             float t2 = 1 - Mathf.Pow(0.01f, deltaTime * _tiltSmoothSpeed);
             _currentLeanRotation = Mathf.Lerp(_currentLeanRotation, -horizontalInput * _maxTiltAngle, t2);
             _leanPivotTransform.localRotation = Quaternion.Euler(0, 0, _currentLeanRotation);
+
+            float targetBlend = horizontalInput * 0.5f + 0.5f;
+            float blendT = 1 - Mathf.Pow(0.01f, deltaTime * _tiltSmoothSpeed);
+            _currentBlend = Mathf.Lerp(_currentBlend, targetBlend, blendT);
+            _animator.SetFloat("SurfBlend", _currentBlend);
         }
     }
 }
