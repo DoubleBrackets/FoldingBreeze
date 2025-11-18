@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace UI
 {
-    public class BoxFanUI : MonoBehaviour
+    public class HandFanDropdownAdapter : MonoBehaviour
     {
         [SerializeField]
         private SerialPortDropdown _serialPortDropdown;
 
         private void Start()
         {
-            _serialPortDropdown.Initialize(BoxFanArduinoComm.Instance);
+            _serialPortDropdown.Initialize(HandFanArduinoComm.Instance);
         }
     }
 }

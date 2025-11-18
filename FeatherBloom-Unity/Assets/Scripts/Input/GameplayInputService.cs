@@ -23,7 +23,7 @@ namespace Input
 
         public struct AimInput
         {
-            public Vector2 NormalizedAimInput;
+            public Vector2 FinalAimInput;
             public Quaternion ProcessedFanOrientation;
             public Quaternion RawFanOrientation;
         }

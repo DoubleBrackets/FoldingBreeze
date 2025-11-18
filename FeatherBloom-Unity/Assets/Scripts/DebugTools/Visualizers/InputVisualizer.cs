@@ -83,7 +83,7 @@ namespace DebugTools.Visualizers
 
         private void OnAimInputChanged(GameplayInputService.AimInput aimInput)
         {
-            Vector2 normalizedAimInput = aimInput.NormalizedAimInput;
+            Vector2 normalizedAimInput = aimInput.FinalAimInput;
             aimCursor.rectTransform.anchoredPosition =
                 new Vector2(normalizedAimInput.x, normalizedAimInput.y) * aimAreaSize;
 

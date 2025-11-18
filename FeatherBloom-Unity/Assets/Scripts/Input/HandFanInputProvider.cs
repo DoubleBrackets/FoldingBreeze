@@ -78,7 +78,7 @@ namespace Input
 
             AimInputChanged?.Invoke(new GameplayInputService.AimInput
             {
-                NormalizedAimInput = aimInput,
+                FinalAimInput = aimInput,
                 ProcessedFanOrientation = transformedOrientation,
                 RawFanOrientation = rawOrientation
             });
@@ -135,7 +135,7 @@ namespace Input
             // Project onto XY plane to get horizontal aim direction
             var projected = new Vector2(dir.x, dir.y);
             projected.Normalize();
-            
+
             // Closed mode doesn't use vertical input
             projected.y = 0;
 

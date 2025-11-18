@@ -65,7 +65,7 @@ namespace Protag
 
         private void HandleAimInputChange(GameplayInputService.AimInput aimInput)
         {
-            AimInput = aimInput.NormalizedAimInput;
+            AimInput = aimInput.FinalAimInput;
         }
 
         private void HandleFanStateChange(GameplayInputService.FanState state)

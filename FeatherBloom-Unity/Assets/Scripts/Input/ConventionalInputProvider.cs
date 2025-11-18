@@ -9,7 +9,7 @@ namespace Input
         {
             AimInputChanged?.Invoke(new GameplayInputService.AimInput
             {
-                NormalizedAimInput = context.ReadValue<Vector2>()
+                FinalAimInput = context.ReadValue<Vector2>()
             });
         }
 
@@ -31,7 +31,7 @@ namespace Input
 
                 AimInputChanged?.Invoke(new GameplayInputService.AimInput
                 {
-                    NormalizedAimInput = new Vector2(normalizedX, normalizedY)
+                    FinalAimInput = new Vector2(normalizedX, normalizedY)
                 });
             }
         }
