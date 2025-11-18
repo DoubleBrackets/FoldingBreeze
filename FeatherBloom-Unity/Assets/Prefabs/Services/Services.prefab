@@ -355,7 +355,7 @@ MonoBehaviour:
   _closeSensitivity: 1.7
   _openTiltSensitivity: 2
   _openRollSensitivity: 2
-  _deadzone: 0.1
+  _deadzone: 0.05
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
   _fanOpenTiltForwardAxis: {x: -1, y: 0, z: 0}
 --- !u!1 &6575675604107960252
