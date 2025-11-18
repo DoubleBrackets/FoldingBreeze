@@ -1,4 +1,4 @@
-using Input;
+using Input.FanInput;
 using UnityEngine;
 
 namespace UI

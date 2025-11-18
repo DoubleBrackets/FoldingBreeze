@@ -99,6 +99,15 @@ MonoBehaviour:
   OnAimInputChange:
     m_PersistentCalls:
       m_Calls: []
+  OnUpdraftInput:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGustInput:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSliceInput:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1656958293927409027
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +368,10 @@ MonoBehaviour:
   _deadzone: 0.05
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
   _fanOpenTiltForwardAxis: {x: -1, y: 0, z: 0}
+  _gestureConfig:
+    ThresholdAngularVelocity: 360
+    BufferTime: 0.2
+    DebounceInterval: 0.5
 --- !u!1 &6575675604107960252
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +562,54 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: df8b22d3-81db-4887-8e1e-20a2fad1087d
     m_ActionName: 'Player/Mouse[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7564319989620342248}
+        m_TargetAssemblyTypeName: Input.ConventionalInputProvider, Assembly-CSharp
+        m_MethodName: HandleUpdraftInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 863217a0-6479-4c2d-a966-0fc37c4ca8a9
+    m_ActionName: 'Player/Updraft[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7564319989620342248}
+        m_TargetAssemblyTypeName: Input.ConventionalInputProvider, Assembly-CSharp
+        m_MethodName: HandleSliceInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1ae68b07-f0fc-43c5-95cc-f269c08d05c1
+    m_ActionName: 'Player/Slice[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7564319989620342248}
+        m_TargetAssemblyTypeName: Input.ConventionalInputProvider, Assembly-CSharp
+        m_MethodName: HandleGustInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3ddc01a7-3dd4-4ffd-8e10-179004c98f6f
+    m_ActionName: 'Player/Gust[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

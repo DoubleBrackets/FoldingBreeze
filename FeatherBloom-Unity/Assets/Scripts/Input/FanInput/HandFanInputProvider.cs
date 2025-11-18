@@ -1,7 +1,7 @@
 using SerialComms;
 using UnityEngine;
 
-namespace Input
+namespace Input.FanInput
 {
     /// <summary>
     ///     Input provider for hand fan arduino. Handles translating raw input data to gameplay input
@@ -29,6 +29,9 @@ namespace Input
         [SerializeField]
         private Vector3 _fanOpenTiltForwardAxis;
 
+        [SerializeField]
+        private FanGestureRecognizer.GestureRecognizeConfig _gestureConfig;
+
         public static HandFanInputProvider Instance { get; private set; }
 
         public Quaternion ZeroedRawOrientation { get; set; }
@@ -37,15 +40,55 @@ namespace Input
 
         private GameplayInputService.FanState _currentFanState = GameplayInputService.FanState.Closed;
         private Vector2 _lastAimInput;
+        private bool _fanOpenSwitchState;
+
+        private FanGestureRecognizer _gestureRecognizer;
 
         private void Awake()
         {
+            _gestureRecognizer = new FanGestureRecognizer(_gestureConfig);
             Instance = this;
             ZeroedRawOrientation = Quaternion.identity;
+            _gestureRecognizer.OnGestureTriggered += HandleGestureRecognized;
+        }
+
+        private void OnDestroy()
+        {
+            _gestureRecognizer.OnGestureTriggered -= HandleGestureRecognized;
+        }
+
+        private void HandleGestureRecognized(FanGestureRecognizer.GestureTypes type)
+        {
+            Debug.Log($"{type.ToString()} Gestured");
+
+            // Prevent accidently slicing when flicking the wrist to close
+            if (!_fanOpenSwitchState)
+            {
+                return;
+            }
+
+            if (_currentFanState == GameplayInputService.FanState.Closed)
+            {
+                return;
+            }
+
+            switch (type)
+            {
+                case FanGestureRecognizer.GestureTypes.Gust:
+                    GustInput?.Invoke();
+                    break;
+                case FanGestureRecognizer.GestureTypes.Slice:
+                    SliceInput?.Invoke();
+                    break;
+                case FanGestureRecognizer.GestureTypes.Updraft:
+                    UpdraftInput?.Invoke();
+                    break;
+            }
         }
 
         public void HandleSerialReadResult(HandFanArduinoComm.SerialReadResult result)
         {
+            _fanOpenSwitchState = result.OpenFanSwitch;
             if (result.OpenFanSwitch)
             {
                 _currentFanState = GameplayInputService.FanState.Open;
@@ -82,6 +125,9 @@ namespace Input
                 ProcessedFanOrientation = transformedOrientation,
                 RawFanOrientation = rawOrientation
             });
+
+            _gestureRecognizer.AddGesturePoint(transformedOrientation, Time.realtimeSinceStartup);
+            _gestureRecognizer.ProcessGestures();
         }
 
         private Quaternion ConvertRawToDefaulted(Quaternion rawFanOrientation)

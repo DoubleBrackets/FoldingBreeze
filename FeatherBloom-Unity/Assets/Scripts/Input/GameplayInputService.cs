@@ -42,6 +42,10 @@ namespace Input
 
         public UnityEvent<AimInput> OnAimInputChange;
 
+        public UnityEvent OnUpdraftInput;
+        public UnityEvent OnGustInput;
+        public UnityEvent OnSliceInput;
+
         public static GameplayInputService Instance { get; private set; }
 
         private FanState _currentFanState = FanState.Closed;
@@ -60,6 +64,14 @@ namespace Input
             }
 
             SwitchInputType(GameplayInputType.Conventional);
+        }
+
+        private void OnDestroy()
+        {
+            if (_currentInputProvider)
+            {
+                UnsubscribeInputProvider(_currentInputProvider);
+            }
         }
 
         public void SwitchInputType(GameplayInputType newGameplayInputType)
@@ -87,16 +99,47 @@ namespace Input
         {
             if (_currentInputProvider != null)
             {
-                _currentInputProvider.AimInputChanged -= HandleAimInputChanged;
-                _currentInputProvider.DesiredFanStateChanged -= HandleDesiredFanStateChanged;
-                newInputProvider.ToggleFanState -= HandleToggleFanState;
+                UnsubscribeInputProvider(_currentInputProvider);
             }
 
             _currentInputProvider = newInputProvider;
 
-            newInputProvider.AimInputChanged += HandleAimInputChanged;
-            newInputProvider.DesiredFanStateChanged += HandleDesiredFanStateChanged;
-            newInputProvider.ToggleFanState += HandleToggleFanState;
+            SubscribeInputProvider(newInputProvider);
+        }
+
+        private void SubscribeInputProvider(InputProvider inputProvider)
+        {
+            inputProvider.AimInputChanged += HandleAimInputChanged;
+            inputProvider.DesiredFanStateChanged += HandleDesiredFanStateChanged;
+            inputProvider.ToggleFanState += HandleToggleFanState;
+            inputProvider.UpdraftInput += HandleUpdraftInput;
+            inputProvider.SliceInput += HandleSliceInput;
+            inputProvider.GustInput += HandleGustInput;
+        }
+
+        private void UnsubscribeInputProvider(InputProvider inputProvider)
+        {
+            inputProvider.AimInputChanged -= HandleAimInputChanged;
+            inputProvider.DesiredFanStateChanged -= HandleDesiredFanStateChanged;
+            inputProvider.ToggleFanState -= HandleToggleFanState;
+            inputProvider.UpdraftInput -= HandleUpdraftInput;
+            inputProvider.SliceInput -= HandleSliceInput;
+            inputProvider.GustInput -= HandleGustInput;
+        }
+
+        private void HandleGustInput()
+        {
+            OnGustInput?.Invoke();
+        }
+
+        private void HandleSliceInput()
+        {
+            OnSliceInput?.Invoke();
+        }
+
+        private void HandleUpdraftInput()
+        {
+            OnUpdraftInput?.Invoke();
         }
 
         private void HandleToggleFanState()

@@ -21,6 +21,30 @@ namespace Input
             }
         }
 
+        public void HandleGustInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                GustInput?.Invoke();
+            }
+        }
+
+        public void HandleUpdraftInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                UpdraftInput?.Invoke();
+            }
+        }
+
+        public void HandleSliceInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                SliceInput?.Invoke();
+            }
+        }
+
         public void HandleMouse(InputAction.CallbackContext context)
         {
             if (context.performed)
