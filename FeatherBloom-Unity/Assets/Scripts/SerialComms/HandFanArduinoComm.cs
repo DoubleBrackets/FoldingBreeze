@@ -215,7 +215,14 @@ namespace SerialComms
             }
             else
             {
-                OnSerialReadResult?.Invoke(serialReadResult);
+                try
+                {
+                    OnSerialReadResult?.Invoke(serialReadResult);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e);
+                }
             }
 
             if (_logPackets)
