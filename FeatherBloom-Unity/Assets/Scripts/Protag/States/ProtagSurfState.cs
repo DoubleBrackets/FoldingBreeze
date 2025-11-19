@@ -1,4 +1,5 @@
 using Events;
+using Protag.Abilities;
 using Protag.Surfing;
 using StateMachine;
 using UnityEngine;
@@ -27,6 +28,9 @@ namespace Protag.States
 
         [SerializeField]
         private Animator _animator;
+
+        [SerializeField]
+        private GustAbility _gustAbility;
 
         [Header("States")]
 
@@ -81,7 +85,7 @@ namespace Protag.States
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
             Protaganist.OnTryUpdraft += HandleUpdraft;
-
+            Protaganist.OnTryGust += HandleGust;
             _surfing = false;
         }
 
@@ -90,11 +94,20 @@ namespace Protag.States
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
             Protaganist.OnTryUpdraft -= HandleUpdraft;
+            Protaganist.OnTryGust -= HandleGust;
 
             if (_surfing)
             {
                 _onStopSurf.Raise();
                 _surfing = false;
+            }
+        }
+
+        private void HandleGust()
+        {
+            if (Protaganist.IsFanOpen)
+            {
+                _gustAbility.TryGust();
             }
         }
 

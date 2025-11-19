@@ -37,6 +37,7 @@ namespace Protag
         public bool IsFanOpen { get; private set; }
 
         public event Action OnTryUpdraft;
+        public event Action OnTryGust;
 
         private void Awake()
         {
@@ -49,6 +50,7 @@ namespace Protag
             GameplayInputService.Instance.OnAimInputChange.AddListener(HandleAimInputChange);
             GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
             GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
+            GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
         }
 
         private void OnDestroy()
@@ -56,6 +58,7 @@ namespace Protag
             GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleAimInputChange);
             GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
             GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
+            GameplayInputService.Instance.OnGustInput.RemoveListener(HandleTryGust);
 
             _protagStateMachine.Deinitialize();
         }
@@ -66,6 +69,11 @@ namespace Protag
             {
                 LabelUtils.Label(_protagBody.position, $"{_protagStateMachine.CurrentState.name}");
             }
+        }
+
+        private void HandleTryGust()
+        {
+            OnTryGust?.Invoke();
         }
 
         private void HandleTryUpdraft()
