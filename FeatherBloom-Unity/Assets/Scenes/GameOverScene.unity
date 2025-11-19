@@ -627,6 +627,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnFanOpen:
     m_PersistentCalls:
+      m_Calls: []
+  OnFanClose:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAimInputChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpdraft:
+    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 43309280}
         m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
@@ -640,12 +649,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnFanClose:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAimInputChange:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &713499661
 Transform:
   m_ObjectHideFlags: 0

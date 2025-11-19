@@ -81,7 +81,11 @@ namespace Services
         private void AddTimeScaling(TimeScaleEntry entry)
         {
             _entries.Add(entry);
-            _entries.Sort();
+            if (_entries.Count > 1)
+            {
+                _entries.Sort();
+            }
+
             RecalculateTimeScale();
         }
 

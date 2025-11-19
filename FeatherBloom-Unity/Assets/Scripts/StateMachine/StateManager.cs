@@ -78,6 +78,7 @@ namespace StateMachine
                 if (!state.CanReenter)
                 {
                     Debug.LogWarning($"StateMachine: Cannot re-enter state {state.name}");
+                    return;
                 }
             }
 

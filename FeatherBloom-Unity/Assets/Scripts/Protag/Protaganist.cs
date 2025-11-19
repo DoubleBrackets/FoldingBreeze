@@ -1,8 +1,9 @@
+using System;
 using DebugTools;
+using Events;
 using Input;
 using StateMachine;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Protag
 {
@@ -17,16 +18,16 @@ namespace Protag
         [SerializeField]
         private Rigidbody _protagRigidbody;
 
-        [Header("Events")]
+        [Header("Event Out")]
 
         [SerializeField]
-        private UnityEvent _onFanOpen;
+        private VoidEvent _onFanOpen;
 
         [SerializeField]
-        private UnityEvent _onFanClose;
+        private VoidEvent _onFanClose;
 
         [SerializeField]
-        private UnityEvent _onDeath;
+        private VoidEvent _onDeath;
 
         public static Protaganist Instance { get; private set; }
 
@@ -34,6 +35,8 @@ namespace Protag
         public Vector2 AimInput { get; private set; }
 
         public bool IsFanOpen { get; private set; }
+
+        public event Action OnTryUpdraft;
 
         private void Awake()
         {
@@ -45,12 +48,14 @@ namespace Protag
         {
             GameplayInputService.Instance.OnAimInputChange.AddListener(HandleAimInputChange);
             GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
+            GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
         }
 
         private void OnDestroy()
         {
             GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleAimInputChange);
             GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
+            GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
 
             _protagStateMachine.Deinitialize();
         }
@@ -63,6 +68,11 @@ namespace Protag
             }
         }
 
+        private void HandleTryUpdraft()
+        {
+            OnTryUpdraft?.Invoke();
+        }
+
         private void HandleAimInputChange(GameplayInputService.AimInput aimInput)
         {
             AimInput = aimInput.FinalAimInput;
@@ -73,11 +83,11 @@ namespace Protag
             IsFanOpen = state == GameplayInputService.FanState.Open;
             if (IsFanOpen)
             {
-                _onFanOpen?.Invoke();
+                _onFanOpen?.Raise();
             }
             else
             {
-                _onFanClose?.Invoke();
+                _onFanClose?.Raise();
             }
         }
 
@@ -89,7 +99,7 @@ namespace Protag
 
         public void Kill()
         {
-            _onDeath?.Invoke();
+            _onDeath?.Raise();
         }
     }
 }

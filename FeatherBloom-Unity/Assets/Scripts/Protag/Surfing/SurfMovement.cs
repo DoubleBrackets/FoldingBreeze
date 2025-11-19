@@ -107,5 +107,10 @@ namespace Protag.Surfing
 
             _rb.linearVelocity = transientVel;
         }
+
+        public void SetVelocity(Vector3 velocity)
+        {
+            _rb.linearVelocity = velocity;
+        }
     }
 }

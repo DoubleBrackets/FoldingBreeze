@@ -62,10 +62,11 @@ namespace Input.FanInput
             Debug.Log($"{type.ToString()} Gestured");
 
             // Prevent accidently slicing when flicking the wrist to close
-            if (!_fanOpenSwitchState)
+            /*if (!_fanOpenSwitchState)
             {
                 return;
             }
+            */
 
             if (_currentFanState == GameplayInputService.FanState.Closed)
             {

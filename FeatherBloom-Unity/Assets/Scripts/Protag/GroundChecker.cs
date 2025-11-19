@@ -29,6 +29,8 @@ namespace Protag
         [SerializeField]
         private float _maxGroundAngle;
 
+        private float _forceUngroundTime;
+
         private void OnDrawGizmos()
         {
             Vector3 pos = _rb.position + _groundCheckOffset * Vector3.up;
@@ -37,6 +39,16 @@ namespace Protag
             Gizmos.DrawLine(
                 pos,
                 pos + _groundCheckDistance * down);
+        }
+
+        public void ForceUnground(float duration)
+        {
+            float newForceUngroundTime = Time.time + duration;
+
+            if (newForceUngroundTime > _forceUngroundTime)
+            {
+                _forceUngroundTime = newForceUngroundTime;
+            }
         }
 
         public GroundedInfo CheckGrounded()
@@ -61,6 +73,11 @@ namespace Protag
                 hit.point,
                 hit.point + hit.normal,
                 isGrounded ? Color.green : Color.red, 0.25f);
+
+            if (Time.time < _forceUngroundTime)
+            {
+                isGrounded = false;
+            }
 
             return new GroundedInfo
             {

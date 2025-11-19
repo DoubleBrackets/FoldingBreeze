@@ -20,16 +20,26 @@ namespace Utils
         [SerializeField]
         public UnityEvent<GameplayInputService.AimInput> OnAimInputChange;
 
+        [SerializeField]
+        public UnityEvent OnUpdraft;
+
         private void Start()
         {
             GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
             GameplayInputService.Instance.OnAimInputChange.AddListener(HandleFanAimInputChange);
+            GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleUpdraftInput);
         }
 
         private void OnDestroy()
         {
             GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
             GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleFanAimInputChange);
+            GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleUpdraftInput);
+        }
+
+        private void HandleUpdraftInput()
+        {
+            OnUpdraft?.Invoke();
         }
 
         private void HandleFanStateChange(GameplayInputService.FanState state)

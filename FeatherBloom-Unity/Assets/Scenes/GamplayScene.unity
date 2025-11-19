@@ -993,26 +993,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1230938417466690907, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5266477342426628434, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
       propertyPath: m_Name
       value: Protag
       objectReference: {fileID: 0}
-    - target: {fileID: 6560636765932692324, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 62381b9c0588c9a4bb602feae8f9ea03, type: 2}
-    - target: {fileID: 6560636765932692324, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 31e858232e9addb4781e74236df144c8, type: 2}
-    - target: {fileID: 7510804274584238261, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8d6ddffcfabf7c045ad80950e2df74ad, type: 2}
     - target: {fileID: 8169892510337244661, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -14,9 +14,6 @@ namespace Protag.States
         private SurfVisuals _surfVisuals;
 
         [SerializeField]
-        private AbstractState _glideState;
-
-        [SerializeField]
         private GroundChecker _groundChecker;
 
         [SerializeField]
@@ -30,6 +27,14 @@ namespace Protag.States
 
         [SerializeField]
         private Animator _animator;
+
+        [Header("States")]
+
+        [SerializeField]
+        private UpdraftState _updraftState;
+
+        [SerializeField]
+        private AbstractState _glideState;
 
         [Header("Config")]
 
@@ -63,10 +68,20 @@ namespace Protag.States
             _impactSaver.OnTerrainImpact.RemoveListener(HandleTerrainImpact);
         }
 
+        private void HandleUpdraft()
+        {
+            if (Protaganist.IsFanOpen)
+            {
+                StateManager.SwitchState(_updraftState);
+            }
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
+            Protaganist.OnTryUpdraft += HandleUpdraft;
+
             _surfing = false;
         }
 
@@ -74,6 +89,13 @@ namespace Protag.States
         {
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
+            Protaganist.OnTryUpdraft -= HandleUpdraft;
+
+            if (_surfing)
+            {
+                _onStopSurf.Raise();
+                _surfing = false;
+            }
         }
 
         private void HandleBoostPickup(float boostAmount)
