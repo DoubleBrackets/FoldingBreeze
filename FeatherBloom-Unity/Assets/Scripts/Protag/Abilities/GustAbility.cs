@@ -45,7 +45,7 @@ namespace Protag.Abilities
             foreach (Collider sphere in sphereCast)
             {
                 var corruption = sphere.GetComponentInParent<Corruption>();
-                if (corruption)
+                if (corruption && !corruption.IsAlreadyTargeted)
                 {
                     float dist = (corruption.Position - _emitPoint.position).magnitude;
                     if (dist < minDist)
@@ -60,9 +60,9 @@ namespace Protag.Abilities
             {
                 GustProjectile gustProjectile = Instantiate(_gustPrefab, _emitPoint.position, _emitPoint.rotation);
 
-                _emitPoint.forward = _emitAngle.normalized;
-                gustProjectile.Initialize(targetCorruption, _emitPoint.forward);
+                gustProjectile.Initialize(targetCorruption, _emitPoint.TransformDirection(_emitAngle.normalized));
                 _onGust?.Raise();
+                targetCorruption.MarkAsTargeted();
                 return true;
             }
 

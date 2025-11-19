@@ -26,6 +26,6 @@ MonoBehaviour:
     Weight: 1
     Enabled: 1
   - Stage: {fileID: 11400000, guid: 71f800d6db7e7d94eb6d1401964dd6ab, type: 2}
-    Weight: 1
+    Weight: 250
     Enabled: 1
   _startingStageIndex: 4

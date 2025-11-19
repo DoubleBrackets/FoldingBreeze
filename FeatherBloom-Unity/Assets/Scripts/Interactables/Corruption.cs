@@ -20,6 +20,8 @@ namespace Interactables
 
         public Vector3 Position => transform.position;
 
+        public bool IsAlreadyTargeted { get; private set; }
+
         private bool _blownAway;
 
         public void BlowAway()
@@ -39,6 +41,11 @@ namespace Interactables
         {
             await UniTask.WaitForSeconds(_cleanupDelay);
             _onCleanup?.Invoke();
+        }
+
+        public void MarkAsTargeted()
+        {
+            IsAlreadyTargeted = true;
         }
     }
 }

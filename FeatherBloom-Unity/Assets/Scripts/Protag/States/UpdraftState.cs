@@ -1,5 +1,6 @@
 using Events;
 using Protag.Surfing;
+using SerialComms;
 using Services;
 using UnityEngine;
 
@@ -76,6 +77,8 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
 
             TimeScaleService.Instance.NewTimeScaling(_onEnterTimeScale);
+
+            BoxFanArduinoComm.Instance.WriteFanOn(true);
         }
 
         public override void OnExit()
@@ -84,6 +87,7 @@ namespace Protag.States
             _animator.SetBool("Updraft", false);
 
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
+            BoxFanArduinoComm.Instance.WriteFanOn(false);
         }
 
         private void HandleBoostPickup(float boost)

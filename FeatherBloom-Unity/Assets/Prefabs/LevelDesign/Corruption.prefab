@@ -99,7 +99,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3869675988454048601}
-  - component: {fileID: 4293541489206928247}
   - component: {fileID: 6323740569153733217}
   - component: {fileID: 1362487872375882161}
   m_Layer: 7
@@ -124,21 +123,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3629482057818030391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4293541489206928247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672630299940440930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe871aee57f50449b6a852b14b89a40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startEvent: {fileID: 11400000, guid: 6c8ac703f8370f343a0765236e413698, type: 2}
-  _stopEvent: {fileID: 11400000, guid: 01040cd29d83ccf41903a552f318e9bb, type: 2}
-  _particleSystem: {fileID: 1362487872375882161}
 --- !u!199 &6323740569153733217
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5015,7 +4999,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4595094436850975959}
-  - component: {fileID: 6589064963159985729}
   - component: {fileID: 7223038776759043539}
   - component: {fileID: 6108911769666045884}
   m_Layer: 7
@@ -5040,21 +5023,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3629482057818030391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6589064963159985729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7749063471049778399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe871aee57f50449b6a852b14b89a40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startEvent: {fileID: 11400000, guid: 6c8ac703f8370f343a0765236e413698, type: 2}
-  _stopEvent: {fileID: 11400000, guid: 01040cd29d83ccf41903a552f318e9bb, type: 2}
-  _particleSystem: {fileID: 6108911769666045884}
 --- !u!199 &7223038776759043539
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5148,7 +5116,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
