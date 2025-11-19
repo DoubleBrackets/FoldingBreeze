@@ -1,5 +1,6 @@
 using Events;
 using Protag.Surfing;
+using Services;
 using UnityEngine;
 
 namespace Protag.States
@@ -40,6 +41,9 @@ namespace Protag.States
         [SerializeField]
         private float _horizontalVelocityKeepRatio;
 
+        [SerializeField]
+        private TimeScaleService.TimeScaleEntryConfig _onEnterTimeScale;
+
         [Header("Event Out")]
 
         [SerializeField]
@@ -70,6 +74,8 @@ namespace Protag.States
             UpdateVelocity(_launchNormal);
 
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
+
+            TimeScaleService.Instance.NewTimeScaling(_onEnterTimeScale);
         }
 
         public override void OnExit()
