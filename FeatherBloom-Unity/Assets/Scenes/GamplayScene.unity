@@ -1001,6 +1001,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Protag
       objectReference: {fileID: 0}
+    - target: {fileID: 6560636765932692324, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 62381b9c0588c9a4bb602feae8f9ea03, type: 2}
+    - target: {fileID: 6560636765932692324, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 31e858232e9addb4781e74236df144c8, type: 2}
     - target: {fileID: 7510804274584238261, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
