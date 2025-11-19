@@ -41358,7 +41358,8 @@ MonoBehaviour:
   _rollMaxAngularVelocity: 60
   _gravityAccel: 6
   _fixedGravityAccel: 4
-  _drag: 1
+  _drag: 0.96
+  _minFlightSpeed: 5
 --- !u!1 &4469964232572553996
 GameObject:
   m_ObjectHideFlags: 0

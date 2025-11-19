@@ -13,14 +13,14 @@ namespace Services
             public float ScaleFactor;
         }
 
-        public struct TimeScaleEntry : IComparer<TimeScaleEntry>
+        public struct TimeScaleEntry : IComparable<TimeScaleEntry>
         {
             public float EndTimeRealtime;
             public float ScaleFactor;
 
-            public int Compare(TimeScaleEntry x, TimeScaleEntry y)
+            public int CompareTo(TimeScaleEntry other)
             {
-                return x.EndTimeRealtime.CompareTo(y.EndTimeRealtime);
+                return EndTimeRealtime.CompareTo(other.EndTimeRealtime);
             }
         }
 
@@ -81,10 +81,7 @@ namespace Services
         private void AddTimeScaling(TimeScaleEntry entry)
         {
             _entries.Add(entry);
-            if (_entries.Count > 1)
-            {
-                _entries.Sort();
-            }
+            _entries.Sort();
 
             RecalculateTimeScale();
         }
