@@ -12,7 +12,7 @@ namespace Protag.Menus
         private void Start()
         {
             int score = ScoreService.Instance.GetCurrentScore();
-            _scoreText.text = $"Score: {score}";
+            _scoreText.text = $"{score}";
         }
     }
 }

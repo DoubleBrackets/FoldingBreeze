@@ -142,6 +142,8 @@ namespace SerialComms
             _serialPort.ErrorReceived += HandleErrorReceived;
 
             Debug.Log($"Connected to {arduinoPort}");
+
+            OnStatusChange?.Invoke($"Connected to {arduinoPort}");
         }
 
         private void CleanUp()

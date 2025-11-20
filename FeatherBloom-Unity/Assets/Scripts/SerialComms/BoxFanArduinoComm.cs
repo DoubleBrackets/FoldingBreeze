@@ -109,6 +109,8 @@ namespace SerialComms
 
             Debug.Log($"Connected to {arduinoPort}");
 
+            OnStatusChange?.Invoke($"Connected to {arduinoPort}");
+
             _serialPort.DiscardInBuffer();
         }
 
