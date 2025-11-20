@@ -372,7 +372,7 @@ MonoBehaviour:
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
   _fanOpenTiltForwardAxis: {x: -1, y: 0, z: 0}
   _gestureConfig:
-    ThresholdAngularVelocity: 320
+    ThresholdAngularVelocity: 300
     BufferTime: 0.2
     DebounceInterval: 0.5
 --- !u!1 &6575675604107960252

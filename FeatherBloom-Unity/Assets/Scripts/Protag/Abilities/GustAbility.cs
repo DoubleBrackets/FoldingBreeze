@@ -32,6 +32,8 @@ namespace Protag.Abilities
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(_emitPoint.position, _targetRadius);
+                Gizmos.DrawLine(_emitPoint.position,
+                    _emitPoint.position + _emitPoint.TransformDirection(_emitAngle.normalized) * 3f);
             }
         }
 
@@ -47,8 +49,13 @@ namespace Protag.Abilities
                 var corruption = sphere.GetComponentInParent<Corruption>();
                 if (corruption && !corruption.IsAlreadyTargeted)
                 {
-                    float dist = (corruption.Position - _emitPoint.position).magnitude;
-                    if (dist < minDist)
+                    Vector3 diff = corruption.Position - _emitPoint.position;
+
+                    // Only target in front
+                    float dot = Vector3.Dot(diff.normalized, _emitPoint.forward);
+
+                    float dist = diff.magnitude;
+                    if (dist < minDist && dot > 0)
                     {
                         minDist = dist;
                         targetCorruption = corruption;

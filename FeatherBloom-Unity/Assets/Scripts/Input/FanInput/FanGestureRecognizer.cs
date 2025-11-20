@@ -120,7 +120,7 @@ namespace Input.FanInput
             // Gust is fanning left/right forward
             float dotWithUp = Vector3.Dot(Vector3.up, gestureAxis);
             float upAngle = Mathf.Acos(Mathf.Abs(dotWithUp)) * Mathf.Rad2Deg;
-            if (upAngle < 55)
+            if (upAngle < 60)
             {
                 OnGestureTriggered?.Invoke(GestureTypes.Gust);
                 return true;

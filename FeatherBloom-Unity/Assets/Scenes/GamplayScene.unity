@@ -1066,18 +1066,6 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3229318255345236911, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3229318255345236911, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
-      propertyPath: m_Color.g
-      value: 0.87406504
-      objectReference: {fileID: 0}
-    - target: {fileID: 3229318255345236911, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
-      propertyPath: m_Color.r
-      value: 0.6462264
-      objectReference: {fileID: 0}
     - target: {fileID: 5161644945413316823, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
       propertyPath: m_Name
       value: CursorUI
@@ -1148,7 +1136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6651372082154781396, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6651372082154781396, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
