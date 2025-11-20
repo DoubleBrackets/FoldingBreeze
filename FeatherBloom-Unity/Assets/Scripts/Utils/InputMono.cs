@@ -23,11 +23,15 @@ namespace Utils
         [SerializeField]
         public UnityEvent OnUpdraft;
 
+        [SerializeField]
+        public UnityEvent OnFanSelf;
+
         private void Start()
         {
             GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
             GameplayInputService.Instance.OnAimInputChange.AddListener(HandleFanAimInputChange);
             GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleUpdraftInput);
+            GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelfInput);
         }
 
         private void OnDestroy()
@@ -35,6 +39,12 @@ namespace Utils
             GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
             GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleFanAimInputChange);
             GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleUpdraftInput);
+            GameplayInputService.Instance.OnFanSelfInput.RemoveListener(HandleFanSelfInput);
+        }
+
+        private void HandleFanSelfInput()
+        {
+            OnFanSelf?.Invoke();
         }
 
         private void HandleUpdraftInput()

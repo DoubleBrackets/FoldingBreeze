@@ -68,6 +68,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "FanSelf",
+                    "type": "Button",
+                    "id": "fc5c4954-6de7-4ad8-a0da-8fd78d671c41",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -244,6 +253,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DebugForceKill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30397349-67b0-4544-a71d-6f6d56504267",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FanSelf",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6bdfd043-4b62-44c5-b65e-3039e626f6c0",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FanSelf",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

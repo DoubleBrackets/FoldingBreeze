@@ -48,6 +48,7 @@ namespace Input
         public UnityEvent OnFanSelfInput;
 
         public static GameplayInputService Instance { get; private set; }
+        public FanState CurrentFanState => _currentFanState;
 
         private FanState _currentFanState = FanState.Closed;
         private GameplayInputType currentGameplayInputType = GameplayInputType.None;

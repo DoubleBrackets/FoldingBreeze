@@ -45,6 +45,14 @@ namespace Input
             }
         }
 
+        public void HandleSelfFan(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                FanSelfInput?.Invoke();
+            }
+        }
+
         public void HandleMouse(InputAction.CallbackContext context)
         {
             if (context.performed)

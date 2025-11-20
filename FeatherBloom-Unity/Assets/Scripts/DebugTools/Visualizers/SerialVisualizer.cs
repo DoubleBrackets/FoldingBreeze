@@ -20,7 +20,7 @@ namespace DebugTools.Visualizers
 
         private void HandleAimInput(GameplayInputService.AimInput input)
         {
-            _target.rotation = input.ProcessedFanOrientation;
+            _target.localRotation = input.ProcessedFanOrientation;
         }
     }
 }

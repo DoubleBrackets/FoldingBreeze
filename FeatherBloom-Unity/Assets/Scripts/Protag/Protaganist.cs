@@ -54,6 +54,8 @@ namespace Protag
             GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
             GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
             GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelf);
+            
+            HandleFanStateChange(GameplayInputService.Instance.CurrentFanState);
         }
 
         private void OnDestroy()
