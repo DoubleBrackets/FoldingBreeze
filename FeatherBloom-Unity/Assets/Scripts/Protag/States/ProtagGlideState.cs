@@ -29,6 +29,12 @@ namespace Protag.States
         private InteractableDetector _interactableDetector;
 
         [SerializeField]
+        private FeatherResources _featherResources;
+
+        [SerializeField]
+        private ProtagState _updraftState;
+
+        [SerializeField]
         private Animator _animator;
 
         public override bool CanReenter { get; protected set; } = false;
@@ -39,12 +45,23 @@ namespace Protag.States
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
             BoxFanArduinoComm.Instance?.WriteFanOn(true);
+            Protaganist.OnTryUpdraft += HandleUpdraft;
+        }
+
+        private void HandleUpdraft()
+        {
+            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            {
+                StateManager.SwitchState(_updraftState);
+            }
         }
 
         public override void OnExit()
         {
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
+            Protaganist.OnTryUpdraft -= HandleUpdraft;
+
             BoxFanArduinoComm.Instance?.WriteFanOn(false);
         }
 

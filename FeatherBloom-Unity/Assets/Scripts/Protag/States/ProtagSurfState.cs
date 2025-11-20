@@ -33,6 +33,9 @@ namespace Protag.States
         [SerializeField]
         private GustAbility _gustAbility;
 
+        [SerializeField]
+        private FeatherResources _featherResources;
+
         [Header("States")]
 
         [SerializeField]
@@ -76,14 +79,6 @@ namespace Protag.States
             _impactSaver.OnTerrainImpact.RemoveListener(HandleTerrainImpact);
         }
 
-        private void HandleUpdraft()
-        {
-            if (Protaganist.IsFanOpen)
-            {
-                StateManager.SwitchState(_updraftState);
-            }
-        }
-
         public override void OnEnter()
         {
             base.OnEnter();
@@ -91,6 +86,7 @@ namespace Protag.States
             Protaganist.OnTryUpdraft += HandleUpdraft;
             Protaganist.OnTryGust += HandleGust;
             Protaganist.OnFanOpen += HandleFanOpen;
+            Protaganist.OnTryFanSelf += HandleTryFanSelf;
             _surfing = false;
         }
 
@@ -106,6 +102,7 @@ namespace Protag.States
             Protaganist.OnTryUpdraft -= HandleUpdraft;
             Protaganist.OnTryGust -= HandleGust;
             Protaganist.OnFanOpen -= HandleFanOpen;
+            Protaganist.OnTryFanSelf -= HandleTryFanSelf;
 
             if (_surfing)
             {
@@ -116,11 +113,27 @@ namespace Protag.States
             TimeScaleService.Instance.RemoveTimeScale(_slowdownOnFanOpen.Identifier);
         }
 
-        private void HandleGust()
+        private void HandleTryFanSelf()
         {
             if (Protaganist.IsFanOpen)
             {
+                _featherResources.FanSelf();
+            }
+        }
+
+        private void HandleGust()
+        {
+            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            {
                 _gustAbility.TryGust();
+            }
+        }
+
+        private void HandleUpdraft()
+        {
+            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            {
+                StateManager.SwitchState(_updraftState);
             }
         }
 

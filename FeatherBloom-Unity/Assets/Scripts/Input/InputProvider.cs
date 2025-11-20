@@ -11,5 +11,6 @@ namespace Input
         public Action UpdraftInput;
         public Action GustInput;
         public Action SliceInput;
+        public Action FanSelfInput;
     }
 }

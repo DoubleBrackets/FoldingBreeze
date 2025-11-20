@@ -45,6 +45,7 @@ namespace Input
         public UnityEvent OnUpdraftInput;
         public UnityEvent OnGustInput;
         public UnityEvent OnSliceInput;
+        public UnityEvent OnFanSelfInput;
 
         public static GameplayInputService Instance { get; private set; }
 
@@ -115,6 +116,7 @@ namespace Input
             inputProvider.UpdraftInput += HandleUpdraftInput;
             inputProvider.SliceInput += HandleSliceInput;
             inputProvider.GustInput += HandleGustInput;
+            inputProvider.FanSelfInput += HandleSelfFanInput;
         }
 
         private void UnsubscribeInputProvider(InputProvider inputProvider)
@@ -125,6 +127,12 @@ namespace Input
             inputProvider.UpdraftInput -= HandleUpdraftInput;
             inputProvider.SliceInput -= HandleSliceInput;
             inputProvider.GustInput -= HandleGustInput;
+            inputProvider.FanSelfInput -= HandleSelfFanInput;
+        }
+
+        private void HandleSelfFanInput()
+        {
+            OnFanSelfInput?.Invoke();
         }
 
         private void HandleGustInput()

@@ -84,6 +84,9 @@ namespace Input.FanInput
                 case FanGestureRecognizer.GestureTypes.Updraft:
                     UpdraftInput?.Invoke();
                     break;
+                case FanGestureRecognizer.GestureTypes.FanSelf:
+                    FanSelfInput?.Invoke();
+                    break;
             }
         }
 

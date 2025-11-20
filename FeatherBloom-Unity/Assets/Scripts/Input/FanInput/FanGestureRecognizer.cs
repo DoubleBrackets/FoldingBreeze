@@ -13,7 +13,8 @@ namespace Input.FanInput
         {
             Slice,
             Updraft,
-            Gust
+            Gust,
+            FanSelf
         }
 
         private float _debounceTime;
@@ -108,16 +109,24 @@ namespace Input.FanInput
                 return true;
             }
 
-            // Blowing is fanning left/right
+            // Fanning self is any fanning motion facing backwards
+            Vector3 leftAxis = averageOrientation * Vector3.left;
+            if (leftAxis.z < 0)
+            {
+                OnGestureTriggered?.Invoke(GestureTypes.FanSelf);
+                return true;
+            }
+
+            // Gust is fanning left/right forward
             float dotWithUp = Vector3.Dot(Vector3.up, gestureAxis);
             float upAngle = Mathf.Acos(Mathf.Abs(dotWithUp)) * Mathf.Rad2Deg;
-            if (upAngle < 60)
+            if (upAngle < 55)
             {
                 OnGestureTriggered?.Invoke(GestureTypes.Gust);
                 return true;
             }
 
-            // Updraft is fanning up->down
+            // Updraft is fanning up->down facing forward
             // cross prod sign indicates direction
             if (gestureAxis.x > 0)
             {

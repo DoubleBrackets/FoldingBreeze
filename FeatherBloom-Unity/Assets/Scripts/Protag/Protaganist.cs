@@ -39,6 +39,7 @@ namespace Protag
 
         public event Action OnTryUpdraft;
         public event Action OnTryGust;
+        public event Action OnTryFanSelf;
 
         private void Awake()
         {
@@ -52,6 +53,7 @@ namespace Protag
             GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
             GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
             GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
+            GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelf);
         }
 
         private void OnDestroy()
@@ -60,6 +62,7 @@ namespace Protag
             GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
             GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
             GameplayInputService.Instance.OnGustInput.RemoveListener(HandleTryGust);
+            GameplayInputService.Instance.OnFanSelfInput.RemoveListener(HandleFanSelf);
 
             _protagStateMachine.Deinitialize();
         }
@@ -70,6 +73,11 @@ namespace Protag
             {
                 LabelUtils.Label(_protagBody.position, $"{_protagStateMachine.CurrentState.name}");
             }
+        }
+
+        private void HandleFanSelf()
+        {
+            OnTryFanSelf?.Invoke();
         }
 
         private void HandleTryGust()
