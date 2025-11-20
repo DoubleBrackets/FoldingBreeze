@@ -1,6 +1,7 @@
 using Events;
 using Protag.Abilities;
 using Protag.Surfing;
+using Services;
 using StateMachine;
 using UnityEngine;
 
@@ -48,6 +49,9 @@ namespace Protag.States
         [SerializeField]
         private Vector2 _verticalImpactBoostRange;
 
+        [SerializeField]
+        private TimeScaleService.TimeScaleEntryConfig _slowdownOnFanOpen;
+
         [Header("Event Out")]
 
         [SerializeField]
@@ -86,7 +90,13 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
             Protaganist.OnTryUpdraft += HandleUpdraft;
             Protaganist.OnTryGust += HandleGust;
+            Protaganist.OnFanOpen += HandleFanOpen;
             _surfing = false;
+        }
+
+        private void HandleFanOpen()
+        {
+            TimeScaleService.Instance.NewTimeScaling(_slowdownOnFanOpen);
         }
 
         public override void OnExit()
@@ -95,12 +105,15 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
             Protaganist.OnTryUpdraft -= HandleUpdraft;
             Protaganist.OnTryGust -= HandleGust;
+            Protaganist.OnFanOpen -= HandleFanOpen;
 
             if (_surfing)
             {
                 _onStopSurf.Raise();
                 _surfing = false;
             }
+
+            TimeScaleService.Instance.RemoveTimeScale(_slowdownOnFanOpen.Identifier);
         }
 
         private void HandleGust()

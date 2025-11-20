@@ -20145,6 +20145,7 @@ MonoBehaviour:
   _timeScaleEntryConfig:
     Duration: 0.4
     ScaleFactor: 0.8
+    Identifier: 
 --- !u!1 &1114768412212011350
 GameObject:
   m_ObjectHideFlags: 0
@@ -30731,6 +30732,10 @@ MonoBehaviour:
   _glideState: {fileID: 4375414651475397221}
   _verticalImpactBoostRatio: 0.5
   _verticalImpactBoostRange: {x: 2, y: 7}
+  _slowdownOnFanOpen:
+    Duration: 0.55
+    ScaleFactor: 0.25
+    Identifier: FanOpenSurf
   _onStartSurf: {fileID: 11400000, guid: 6c8ac703f8370f343a0765236e413698, type: 2}
   _onStopSurf: {fileID: 11400000, guid: 01040cd29d83ccf41903a552f318e9bb, type: 2}
 --- !u!1 &2962010631464319757
@@ -46105,6 +46110,7 @@ MonoBehaviour:
   _timeScaleEntryConfig:
     Duration: 0.4
     ScaleFactor: 0.8
+    Identifier: 
 --- !u!1 &4114244076705876770
 GameObject:
   m_ObjectHideFlags: 0
@@ -52307,6 +52313,7 @@ MonoBehaviour:
   _onEnterTimeScale:
     Duration: 0.75
     ScaleFactor: 0.9
+    Identifier: 
   _onUpdraft: {fileID: 11400000, guid: 731700ada91f95e48ab28d9b53b905d7, type: 2}
 --- !u!1 &7191467701826360395
 GameObject:

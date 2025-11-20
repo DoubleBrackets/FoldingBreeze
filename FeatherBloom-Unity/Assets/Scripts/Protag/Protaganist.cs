@@ -35,6 +35,7 @@ namespace Protag
         public Vector2 AimInput { get; private set; }
 
         public bool IsFanOpen { get; private set; }
+        public event Action OnFanOpen;
 
         public event Action OnTryUpdraft;
         public event Action OnTryGust;
@@ -91,6 +92,7 @@ namespace Protag
             IsFanOpen = state == GameplayInputService.FanState.Open;
             if (IsFanOpen)
             {
+                OnFanOpen?.Invoke();
                 _onFanOpen?.Raise();
             }
             else

@@ -11,12 +11,14 @@ namespace Services
         {
             public float Duration;
             public float ScaleFactor;
+            public string Identifier;
         }
 
         public struct TimeScaleEntry : IComparable<TimeScaleEntry>
         {
             public float EndTimeRealtime;
             public float ScaleFactor;
+            public string Identifier;
 
             public int CompareTo(TimeScaleEntry other)
             {
@@ -26,9 +28,15 @@ namespace Services
 
         public static TimeScaleService Instance;
 
+        [SerializeField]
+        private float _lerpFactor;
+
         private List<TimeScaleEntry> _entries = new();
 
         private float _defaultFixedDeltaTime;
+
+        private float _desiredTimeScale = 1;
+        private float _currentTimeScale = 1;
 
         private void Awake()
         {
@@ -58,6 +66,11 @@ namespace Services
             {
                 RecalculateTimeScale();
             }
+
+            float t = 1 - Mathf.Pow(0.01f, Time.unscaledDeltaTime * _lerpFactor);
+            _currentTimeScale = Mathf.Lerp(_currentTimeScale, _desiredTimeScale, t);
+            Time.timeScale = _currentTimeScale;
+            Time.fixedDeltaTime = _defaultFixedDeltaTime * _currentTimeScale;
         }
 
         public void NewTimeScaling(float factor, float duration)
@@ -74,7 +87,8 @@ namespace Services
             AddTimeScaling(new TimeScaleEntry
             {
                 EndTimeRealtime = Time.realtimeSinceStartup + entryConfig.Duration,
-                ScaleFactor = entryConfig.ScaleFactor
+                ScaleFactor = entryConfig.ScaleFactor,
+                Identifier = entryConfig.Identifier ?? string.Empty
             });
         }
 
@@ -94,8 +108,19 @@ namespace Services
                 ratio *= factor.ScaleFactor;
             }
 
-            Time.timeScale = ratio;
-            Time.fixedDeltaTime = _defaultFixedDeltaTime * ratio;
+            _desiredTimeScale = ratio;
+        }
+
+        public void RemoveTimeScale(string identifier)
+        {
+            int foundIndex = _entries.FindIndex(a => a.Identifier == identifier);
+
+            if (foundIndex != -1)
+            {
+                _entries.RemoveAt(foundIndex);
+            }
+
+            RecalculateTimeScale();
         }
     }
 }
