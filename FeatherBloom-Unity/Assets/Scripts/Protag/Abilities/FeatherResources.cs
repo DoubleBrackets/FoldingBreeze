@@ -4,7 +4,7 @@ using Events.Core;
 using Services;
 using UnityEngine;
 
-namespace Protag
+namespace Protag.Abilities
 {
     public class FeatherResources : MonoBehaviour
     {

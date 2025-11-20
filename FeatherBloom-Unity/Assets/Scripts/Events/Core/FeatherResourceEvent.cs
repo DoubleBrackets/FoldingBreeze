@@ -1,4 +1,4 @@
-using Protag;
+using Protag.Abilities;
 using UnityEngine;
 
 namespace Events.Core

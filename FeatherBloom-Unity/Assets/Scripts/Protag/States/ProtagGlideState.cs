@@ -1,3 +1,4 @@
+using Protag.Abilities;
 using Protag.Gliding;
 using SerialComms;
 using StateMachine;
