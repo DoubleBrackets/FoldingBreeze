@@ -24788,8 +24788,8 @@ MonoBehaviour:
   _surfState: {fileID: 5082696597094764826}
   _camera: {fileID: 2328791997766467776}
   _interactableDetector: {fileID: 2666968306857408712}
-  _featherResources: {fileID: 0}
-  _updraftState: {fileID: 0}
+  _featherResources: {fileID: 7919265020599881539}
+  _updraftState: {fileID: 4953540539600997159}
   _animator: {fileID: 6131714454897771}
 --- !u!1 &1815626560114747217
 GameObject:
