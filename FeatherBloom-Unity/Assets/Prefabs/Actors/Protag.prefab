@@ -40144,7 +40144,7 @@ MonoBehaviour:
     m_Bits: 128
   _targetRadius: 150
   _emitPoint: {fileID: 3796700426334954144}
-  _emitAngle: {x: 1, y: 0.5, z: 1}
+  _emitAngle: {x: 0.5, y: 0.5, z: 1}
   _onGust: {fileID: 11400000, guid: d02daa7d663d49d4491eb918e4da40af, type: 2}
 --- !u!1 &4096621540861071535
 GameObject:

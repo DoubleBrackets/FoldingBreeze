@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 334efece15c334c4ba93e63a3c1cd296, type: 3}
-  m_Name: Test Stage 2
+  m_Name: HopJump
   m_EditorClassIdentifier: 
-  <StageName>k__BackingField: BasicStage1
+  <StageName>k__BackingField: HopJump
   <StagePrefab>k__BackingField: {fileID: 8360918926148686286, guid: 4a45d27d9a326e34aafebab346f8c75e, type: 3}

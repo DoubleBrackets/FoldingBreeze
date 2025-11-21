@@ -684,6 +684,54 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2427319677285698577, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427319677285698577, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427319677285698577, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427319677285698577, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986051371671073949, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986051371671073949, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986051371671073949, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2986051371671073949, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934861821895303763, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934861821895303763, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934861821895303763, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934861821895303763, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5161644945413316823, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
       propertyPath: m_Name
       value: CursorUI

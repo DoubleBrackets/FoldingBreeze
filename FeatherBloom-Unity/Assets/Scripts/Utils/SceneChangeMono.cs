@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,12 @@ namespace Utils
             }
 
             // Use Unity's SceneManager to load the scene
+            ChangeSceneDelay().Forget();
+        }
+
+        private async UniTaskVoid ChangeSceneDelay()
+        {
+            await UniTask.Yield();
             SceneManager.LoadScene(sceneName);
         }
     }
