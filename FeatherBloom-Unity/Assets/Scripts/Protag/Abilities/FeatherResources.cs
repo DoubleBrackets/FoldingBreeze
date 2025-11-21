@@ -77,5 +77,10 @@ namespace Protag.Abilities
 
             return false;
         }
+
+        public bool HasFeathers()
+        {
+            return _currentState.CurrentFeathers > 0;
+        }
     }
 }

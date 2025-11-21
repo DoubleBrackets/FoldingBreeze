@@ -123,9 +123,13 @@ namespace Protag.States
 
         private void HandleGust()
         {
-            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            if (Protaganist.IsFanOpen && _featherResources.HasFeathers())
             {
-                _gustAbility.TryGust();
+                bool didGust = _gustAbility.TryGust();
+                if (didGust)
+                {
+                    _featherResources.TryConsumeFeathers(1);
+                }
             }
         }
 
