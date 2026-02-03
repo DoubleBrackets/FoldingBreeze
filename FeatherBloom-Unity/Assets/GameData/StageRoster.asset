@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42049d1150726c8409950b4c446da10b, type: 3}
+  m_Name: StageRoster
+  m_EditorClassIdentifier: 
+  <RosterEntries>k__BackingField:
+  - Stage: {fileID: 11400000, guid: 61628b2a032f0ad4297a5b5e28364d2b, type: 2}
+    Weight: 1
+    Enabled: 0
+  - Stage: {fileID: 11400000, guid: 8776ee4a869db1d4a94393c91d08622e, type: 2}
+    Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 0fa8cbb0ff722924cbda15ed9f2a68d6, type: 2}
+    Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: f35b4ae9a269f9f4083af6392cf0b6ec, type: 2}
+    Weight: 25
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 71f800d6db7e7d94eb6d1401964dd6ab, type: 2}
+    Weight: 1
+    Enabled: 1
+  _startingStageIndex: 0
