@@ -43,9 +43,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Slice",
+                    "name": "FanSelf",
                     "type": "Button",
-                    "id": "1ae68b07-f0fc-43c5-95cc-f269c08d05c1",
+                    "id": "fc5c4954-6de7-4ad8-a0da-8fd78d671c41",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -70,9 +70,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FanSelf",
+                    "name": "Slice",
                     "type": "Button",
-                    "id": "fc5c4954-6de7-4ad8-a0da-8fd78d671c41",
+                    "id": "1ae68b07-f0fc-43c5-95cc-f269c08d05c1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -147,6 +147,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "2D Vector",
+                    "id": "4ae9732c-8323-4119-91e4-e0a53c1dc9d7",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "2c1a4a92-85d8-400c-917f-07241d9d5ca2",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "57d7afa9-7fd3-42be-95b1-3d1a634c5f9d",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "8d72e14b-9f6b-46c5-9e25-fa5de29a447c",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "284a6c3c-7226-417f-8506-07a4a59362bf",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "c54fc5d9-e416-4562-9a4f-76f4a2e02969",
                     "path": "<Gamepad>/buttonSouth",
@@ -161,6 +216,17 @@
                     "name": "",
                     "id": "1371e8b1-147b-4690-8774-7d5a9866b357",
                     "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleFanState",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74efa040-0577-4212-b323-76a0ed871e4c",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -192,6 +258,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f5d83103-dd33-4504-861e-c4f304c1fb3f",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Updraft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c15b06ed-d207-4f07-9797-b4ea403fcc18",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -204,7 +281,7 @@
                 {
                     "name": "",
                     "id": "e3257d03-beb5-4d94-84f0-b8e596fe7f5f",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -226,7 +303,18 @@
                 {
                     "name": "",
                     "id": "7682f53f-475f-4770-a5c1-4deaa8d3d8a9",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gust",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f49ae1c-dfed-4e56-8b56-b9a7de291e38",
+                    "path": "<Keyboard>/quote",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -259,7 +347,18 @@
                 {
                     "name": "",
                     "id": "30397349-67b0-4544-a71d-6f6d56504267",
-                    "path": "",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FanSelf",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a84ee27d-dda6-4747-ad8b-87b3d72a320a",
+                    "path": "<Keyboard>/slash",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
