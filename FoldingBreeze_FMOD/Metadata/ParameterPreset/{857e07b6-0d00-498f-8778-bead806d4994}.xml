@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{857e07b6-0d00-498f-8778-bead806d4994}">
+		<property name="name">
+			<value>IsGrounded</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a5caa6bb-0f13-46f8-b257-549fb455bac2}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{ff6ce8dd-5ac9-48bd-9ae0-31472586e097}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{ff6ce8dd-5ac9-48bd-9ae0-31472586e097}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

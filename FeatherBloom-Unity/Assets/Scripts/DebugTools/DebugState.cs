@@ -7,5 +7,6 @@ namespace DebugTools
     {
         public static bool QuickArduinoConnect;
         public static bool DoNotLoadMapOnStart { get; set; }
+        public static bool AutoRestartOnDeath { get; set; }
     }
 }
