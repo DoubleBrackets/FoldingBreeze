@@ -29,6 +29,9 @@ namespace Protag
         [SerializeField]
         private VoidEvent _onDeath;
 
+        [SerializeField]
+        private VoidEvent _onReset;
+
         public static Protaganist Instance { get; private set; }
 
         public Vector3 Position => _protagBody.position;
@@ -54,7 +57,7 @@ namespace Protag
             GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
             GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
             GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelf);
-            
+
             HandleFanStateChange(GameplayInputService.Instance.CurrentFanState);
         }
 
@@ -119,7 +122,14 @@ namespace Protag
 
         public void Kill()
         {
-            _onDeath?.Raise();
+            if (DebugState.AutoRestartOnDeath)
+            {
+                _onReset?.Raise();
+            }
+            else
+            {
+                _onDeath?.Raise();
+            }
         }
     }
 }

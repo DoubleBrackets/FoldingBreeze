@@ -10,8 +10,9 @@ namespace DebugTools.Editor
     /// </summary>
     public class DebugToolsWindow : EditorWindow
     {
-        private const string quickConnectPrefs = "QuickConnectDebugPrefs";
-        private const string blockLoadMapOnStart = "BlockLoadMapOnStart";
+        private const string QuickConnectPrefs = "QuickConnectDebugPrefs";
+        private const string BlockLoadMapOnStart = "BlockLoadMapOnStart";
+        private const string AutoRestartOnDeath = "AutoRestartOnDeath";
 
         private void OnGUI()
         {
@@ -22,15 +23,23 @@ namespace DebugTools.Editor
             DebugState.QuickArduinoConnect = newQuickConnect;
             if (newQuickConnect != quickConnect)
             {
-                PlayerPrefs.SetInt(quickConnectPrefs, DebugState.QuickArduinoConnect ? 1 : 0);
+                PlayerPrefs.SetInt(QuickConnectPrefs, DebugState.QuickArduinoConnect ? 1 : 0);
             }
 
-            bool blockLoadMap = PlayerPrefs.GetInt(blockLoadMapOnStart, 0) == 1;
+            bool blockLoadMap = DebugState.DoNotLoadMapOnStart;
             bool newBlockLoadMap = GUILayout.Toggle(blockLoadMap, "Block Load Map On Start");
             DebugState.DoNotLoadMapOnStart = newBlockLoadMap;
             if (newBlockLoadMap != blockLoadMap)
             {
-                PlayerPrefs.SetInt(blockLoadMapOnStart, newBlockLoadMap ? 1 : 0);
+                PlayerPrefs.SetInt(BlockLoadMapOnStart, newBlockLoadMap ? 1 : 0);
+            }
+
+            bool autoRestart = DebugState.AutoRestartOnDeath;
+            bool newAutoReset = GUILayout.Toggle(autoRestart, "AutoReset on Death");
+            DebugState.AutoRestartOnDeath = newAutoReset;
+            if (autoRestart != newAutoReset)
+            {
+                PlayerPrefs.SetInt(AutoRestartOnDeath, newAutoReset ? 1 : 0);
             }
 
             EditorGUILayout.Space();
@@ -46,8 +55,9 @@ namespace DebugTools.Editor
 
         private void OnFocus()
         {
-            DebugState.QuickArduinoConnect = PlayerPrefs.GetInt(quickConnectPrefs, 0) == 1;
-            DebugState.DoNotLoadMapOnStart = PlayerPrefs.GetInt(blockLoadMapOnStart, 0) == 1;
+            DebugState.QuickArduinoConnect = PlayerPrefs.GetInt(QuickConnectPrefs, 0) == 1;
+            DebugState.DoNotLoadMapOnStart = PlayerPrefs.GetInt(BlockLoadMapOnStart, 0) == 1;
+            DebugState.AutoRestartOnDeath = PlayerPrefs.GetInt(AutoRestartOnDeath, 0) == 1;
         }
 
         // Basic debug window
