@@ -41,6 +41,12 @@ namespace Protag.Abilities
                 return;
             }
 
+            if (_target == null)
+            {
+                CleanupTimer().Forget();
+                return;
+            }
+
             Vector3 vectorToTarget = _target.Position - transform.position;
 
             if (vectorToTarget.magnitude <= _impactDistance)
