@@ -183,7 +183,7 @@ namespace Input.FanInput
         private Vector2 ConvertOrientationToAimClosed(Quaternion fanOrientation)
         {
             // Roll uses up axis
-            Vector3 dir = fanOrientation * Vector3.up;
+            Vector3 dir = fanOrientation * Vector3.forward;
 
             // Closed fan needs to go backwards
             /*if (dir.z > 0)
@@ -191,8 +191,8 @@ namespace Input.FanInput
                 return Vector2.zero;
             }*/
 
-            // Project onto XY plane to get horizontal aim direction
-            var projected = new Vector2(dir.x, dir.y);
+            // Project onto XZ plane to get horizontal aim direction
+            var projected = new Vector2(dir.x, dir.z);
             projected.Normalize();
 
             // Closed mode doesn't use vertical input

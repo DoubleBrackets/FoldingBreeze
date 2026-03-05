@@ -965,10 +965,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Protag
       objectReference: {fileID: 0}
-    - target: {fileID: 6542097491895686323, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
-      propertyPath: _untrackedInputTimeScale.ScaleFactor
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 8169892510337244661, guid: 53adb6343e645f645a5df0eef06d083b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1033,6 +1029,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 773030652}
     m_Modifications:
+    - target: {fileID: 626505752793083166, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 626505752793083166, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 626505752793083166, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2427319677285698577, guid: 0930dc9ce2993ff498ed97bbd2dba8f5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

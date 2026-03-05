@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultOrientation: {fileID: 11400000, guid: 07043364282de5c4285ef051d58e466d, type: 2}
-  _closeSensitivity: 1.7
+  _closeSensitivity: 2
   _openTiltSensitivity: 2
   _openRollSensitivity: 2
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
