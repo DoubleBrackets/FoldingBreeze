@@ -1,14 +1,15 @@
 using Events;
 using Framework;
-using Framework.GlobalServices;
+using Framework.Timescaling;
 using Protag.Abilities;
+using Protag.GestureHandlers;
 using Protag.Surfing;
 using StateMachine;
 using UnityEngine;
 
 namespace Protag.States
 {
-    public class ProtagSurfState : ProtagState
+    public class ProtagSurfState : ProtagState, IUpdraftHandler, IGustHandler, IBreezeHandler
     {
         [SerializeField]
         private SurfMovement _surfMovement;
@@ -53,9 +54,6 @@ namespace Protag.States
         [SerializeField]
         private Vector2 _verticalImpactBoostRange;
 
-        [SerializeField]
-        private TimeScaleService.TimeScaleEntryConfig _slowdownOnFanOpen;
-
         [Header("Event Out")]
 
         [SerializeField]
@@ -87,45 +85,40 @@ namespace Protag.States
         {
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
-            Protaganist.OnTryUpdraft += HandleUpdraft;
-            Protaganist.OnTryGust += HandleGust;
-            Protaganist.OnFanOpen += HandleFanOpen;
-            Protaganist.OnTryFanSelf += HandleTryFanSelf;
-            _surfing = false;
-        }
+            Protaganist.RegisterUpdraftHandler(this);
+            Protaganist.RegisterGustHandler(this);
+            Protaganist.RegisterFanSelfHandler(this);
 
-        private void HandleFanOpen()
-        {
-            _timeScaleService.NewTimeScaling(_slowdownOnFanOpen);
+            _surfing = false;
         }
 
         public override void OnExit()
         {
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
-            Protaganist.OnTryUpdraft -= HandleUpdraft;
-            Protaganist.OnTryGust -= HandleGust;
-            Protaganist.OnFanOpen -= HandleFanOpen;
-            Protaganist.OnTryFanSelf -= HandleTryFanSelf;
 
             if (_surfing)
             {
                 _onStopSurf.Raise();
                 _surfing = false;
             }
-
-            _timeScaleService.RemoveTimeScale(_slowdownOnFanOpen.Identifier);
         }
 
-        private void HandleTryFanSelf()
+        public GestureHandleResult HandleBreeze()
         {
             if (Protaganist.IsFanOpen)
             {
-                _featherResources.FanSelf();
+                bool didFanSelf = _featherResources.FanSelf();
+                return new GestureHandleResult
+                {
+                    DidSucceed = didFanSelf, TimeslowdownBlockDuration = _featherResources.TimeSlowdownBlockDuration
+                };
             }
+
+            return new GestureHandleResult { DidSucceed = false, TimeslowdownBlockDuration = 0f };
         }
 
-        private void HandleGust()
+        public GestureHandleResult HandleGust()
         {
             if (Protaganist.IsFanOpen && _featherResources.HasFeathers())
             {
@@ -133,16 +126,24 @@ namespace Protag.States
                 if (didGust)
                 {
                     _featherResources.TryConsumeFeathers(1);
+                    return new GestureHandleResult
+                        { DidSucceed = true, TimeslowdownBlockDuration = _gustAbility.TimeSlowdownBlockDuration };
                 }
             }
+
+            return new GestureHandleResult { DidSucceed = false };
         }
 
-        private void HandleUpdraft()
+        public GestureHandleResult HandleUpdraft()
         {
             if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
             {
                 StateManager.SwitchState(_updraftState);
+                return new GestureHandleResult
+                    { DidSucceed = true, TimeslowdownBlockDuration = _updraftState.TimeSlowdownBlockDuration };
             }
+
+            return new GestureHandleResult { DidSucceed = false };
         }
 
         private void HandleBoostPickup(float boostAmount)

@@ -3,21 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using ValueSO.Core;
 
-namespace Framework.GlobalServices
+namespace Framework.Timescaling
 {
     /// <summary>
     ///     Manages time scaling for gameplay purposes
     /// </summary>
     public class TimeScaleService
     {
-        [Serializable]
-        public struct TimeScaleEntryConfig
-        {
-            public float Duration;
-            public float ScaleFactor;
-            public string Identifier;
-        }
-
         public struct TimeScaleEntry : IComparable<TimeScaleEntry>
         {
             public float EndTimeRealtime;
@@ -84,6 +76,13 @@ namespace Framework.GlobalServices
 
         public void NewTimeScaling(TimeScaleEntryConfig entryConfig)
         {
+            // Check if entry already exists
+            int foundIndex = _entries.FindIndex(a => a.Identifier == entryConfig.Identifier);
+            if (foundIndex != -1)
+            {
+                return;
+            }
+
             AddTimeScaling(new TimeScaleEntry
             {
                 EndTimeRealtime = Time.realtimeSinceStartup + entryConfig.Duration,

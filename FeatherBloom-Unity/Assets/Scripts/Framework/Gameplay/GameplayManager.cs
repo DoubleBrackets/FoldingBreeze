@@ -2,6 +2,8 @@ using Cysharp.Threading.Tasks;
 using DevTools;
 using Framework.GlobalServices;
 using Framework.LevelLoading;
+using Framework.Timescaling;
+using Input;
 using Protag;
 using Protag.LevelGen;
 using UnityEngine;
@@ -35,6 +37,9 @@ namespace Framework.Gameplay
             _levelLoader = ServiceLocator.GetService<LevelLoader>();
 
             _mapService = new MapService(transform, _stageRosterSO, _protagInScene);
+            _protagInScene.Initialize(
+                ServiceLocator.GetService<TimeScaleService>(),
+                ServiceLocator.GetService<GameplayInputService>());
 
             _mapService.OnStageProgressed += HandleStageProgressed;
             _protagInScene.OnDeath += HandleProtagDeath;

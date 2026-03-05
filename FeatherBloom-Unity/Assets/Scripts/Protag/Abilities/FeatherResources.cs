@@ -2,7 +2,7 @@ using System;
 using Events;
 using Events.Core;
 using Framework;
-using Framework.GlobalServices;
+using Framework.Timescaling;
 using UnityEngine;
 
 namespace Protag.Abilities
@@ -19,6 +19,9 @@ namespace Protag.Abilities
         [SerializeField]
         private float _featherReplenishedOnFan;
 
+        [SerializeField]
+        private float _timeSlowdownBlockDuration;
+
         [Header("Event Out")]
 
         [SerializeField]
@@ -33,11 +36,13 @@ namespace Protag.Abilities
         private FeatherResourceState _initialState;
 
         [SerializeField]
-        private TimeScaleService.TimeScaleEntryConfig _timeScaleOnHeal;
+        private TimeScaleEntryConfig _timeScaleOnHeal;
 
         private FeatherResourceState _currentState;
 
         private TimeScaleService _timeScaleService;
+
+        public float TimeSlowdownBlockDuration => _timeSlowdownBlockDuration;
 
         public void Awake()
         {
@@ -50,11 +55,11 @@ namespace Protag.Abilities
             _featherStateChangeEvent?.Raise(_currentState);
         }
 
-        public void FanSelf()
+        public bool FanSelf()
         {
             if (_currentState.CurrentFeathers == _currentState.MaxFeathers)
             {
-                return;
+                return false;
             }
 
             _currentState.CurrentFeathers = (int)Mathf.Min(_currentState.CurrentFeathers + _featherReplenishedOnFan,
@@ -64,6 +69,7 @@ namespace Protag.Abilities
             _onFanSelfEvent?.Raise();
 
             _timeScaleService.NewTimeScaling(_timeScaleOnHeal);
+            return true;
         }
 
         public bool TryConsumeFeathers(int amount)

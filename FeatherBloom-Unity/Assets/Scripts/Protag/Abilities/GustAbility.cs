@@ -21,10 +21,15 @@ namespace Protag.Abilities
         [SerializeField]
         private Vector3 _emitAngle;
 
+        [SerializeField]
+        private float _timeSlowdownBlockDuration;
+
         [Header("Event Out")]
 
         [SerializeField]
         private VoidEvent _onGust;
+
+        public float TimeSlowdownBlockDuration => _timeSlowdownBlockDuration;
 
         private void OnDrawGizmos()
         {

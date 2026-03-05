@@ -1,4 +1,5 @@
 using DevTools;
+using Framework.LevelLoading;
 using UnityEditor;
 using UnityEngine;
 
@@ -49,6 +50,10 @@ namespace DebugTools.Editor
             {
                 EditorPrefs.SetInt(GoIntoGameplayPrefs, newGoIntoGameplay ? 1 : 0);
             }
+
+            GameLevelSO overrideLevel = DevToolState.OverrideStartupLevel;
+            DevToolState.OverrideStartupLevel = (GameLevelSO)EditorGUILayout.ObjectField("Override Startup Level",
+                overrideLevel, typeof(GameLevelSO), false);
 
             EditorGUILayout.Space();
 

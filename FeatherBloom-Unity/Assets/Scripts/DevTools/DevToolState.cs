@@ -1,3 +1,5 @@
+using Framework.LevelLoading;
+
 namespace DevTools
 {
     /// <summary>
@@ -14,5 +16,7 @@ namespace DevTools
         public static bool DoNotLoadMapOnStart { get; set; }
 
         public static bool AutoRestartOnDeath { get; set; }
+
+        public static GameLevelSO OverrideStartupLevel { get; set; }
     }
 }

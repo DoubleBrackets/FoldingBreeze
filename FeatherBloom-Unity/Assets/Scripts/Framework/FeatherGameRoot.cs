@@ -3,6 +3,7 @@ using DevTools;
 using Framework.GlobalServices;
 using Framework.LevelLoading;
 using Framework.LevelLoading.LevelTransition;
+using Framework.Timescaling;
 using Input;
 using Input.DataTypes;
 using Input.SerialComms;
@@ -59,6 +60,11 @@ namespace Framework
             GameLevelSO startupLevel = DevToolState.GoIntoGameplayImmediately
                 ? _startupConfig.GameplayLevel
                 : _startupConfig.StartupGameLevel;
+
+            if (DevToolState.OverrideStartupLevel != null)
+            {
+                startupLevel = DevToolState.OverrideStartupLevel;
+            }
 
             _levelLoader.LoadLevel(startupLevel).Forget();
         }

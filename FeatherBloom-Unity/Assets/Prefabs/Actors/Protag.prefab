@@ -14874,97 +14874,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &635395152661132048
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6209796373343251713}
-  - component: {fileID: 1437979530749070366}
-  - component: {fileID: 1082377914698075710}
-  m_Layer: 0
-  m_Name: TimeScale
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6209796373343251713
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635395152661132048}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1016238615516096289}
-  - {fileID: 1256817963486472701}
-  m_Father: {fileID: 8169892510337244661}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1437979530749070366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635395152661132048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19636bf5e982d7c45aa8670e748b08a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _eventSO: {fileID: 11400000, guid: f419e71f236659f46930a6323a6c32d5, type: 2}
-  _onRaiseEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2022591787849523718}
-        m_TargetAssemblyTypeName: Utils.TimeScalerMono, Assembly-CSharp
-        m_MethodName: Apply
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1082377914698075710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635395152661132048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19636bf5e982d7c45aa8670e748b08a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _eventSO: {fileID: 11400000, guid: f52afcf43aac85346be2c4383d32376f, type: 2}
-  _onRaiseEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2220887783928330276}
-        m_TargetAssemblyTypeName: Utils.TimeScalerMono, Assembly-CSharp
-        m_MethodName: Apply
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &970896470689937154
 GameObject:
   m_ObjectHideFlags: 0
@@ -14997,54 +14906,6 @@ Transform:
   - {fileID: 5735232069162337081}
   m_Father: {fileID: 8906171326932484220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &981477813296373858
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1256817963486472701}
-  - component: {fileID: 2220887783928330276}
-  m_Layer: 0
-  m_Name: FanClose
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1256817963486472701
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981477813296373858}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6209796373343251713}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2220887783928330276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981477813296373858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b1981ac6753cea43bf63045f264e9de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _timeScaleEntryConfig:
-    Duration: 0.4
-    ScaleFactor: 0.8
-    Identifier: 
 --- !u!1 &1127076911446204188
 GameObject:
   m_ObjectHideFlags: 0
@@ -25428,10 +25289,6 @@ MonoBehaviour:
   _glideState: {fileID: 4375414651475397221}
   _verticalImpactBoostRatio: 0.5
   _verticalImpactBoostRange: {x: 2, y: 7}
-  _slowdownOnFanOpen:
-    Duration: 0.45
-    ScaleFactor: 0.3
-    Identifier: FanOpenSurf
   _onStartSurf: {fileID: 11400000, guid: 6c8ac703f8370f343a0765236e413698, type: 2}
   _onStopSurf: {fileID: 11400000, guid: 01040cd29d83ccf41903a552f318e9bb, type: 2}
 --- !u!1 &2962010631464319757
@@ -40496,55 +40353,8 @@ MonoBehaviour:
   _targetRadius: 150
   _emitPoint: {fileID: 3796700426334954144}
   _emitAngle: {x: 0.5, y: 0.5, z: 1}
+  _timeSlowdownBlockDuration: 0.7
   _onGust: {fileID: 11400000, guid: d02daa7d663d49d4491eb918e4da40af, type: 2}
---- !u!1 &4096621540861071535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1016238615516096289}
-  - component: {fileID: 2022591787849523718}
-  m_Layer: 0
-  m_Name: FanOpen
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1016238615516096289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4096621540861071535}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6209796373343251713}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2022591787849523718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4096621540861071535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b1981ac6753cea43bf63045f264e9de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _timeScaleEntryConfig:
-    Duration: 0.4
-    ScaleFactor: 0.8
-    Identifier: 
 --- !u!1 &4198437267285568993
 GameObject:
   m_ObjectHideFlags: 0
@@ -45634,7 +45444,6 @@ Transform:
   - {fileID: 1066510997037533731}
   - {fileID: 3922694674134965175}
   - {fileID: 9177556400363695686}
-  - {fileID: 6209796373343251713}
   - {fileID: 7326240851067418800}
   - {fileID: 1640917518313358666}
   - {fileID: 1585645709389769684}
@@ -45655,10 +45464,14 @@ MonoBehaviour:
   _protagStateMachine: {fileID: 8717534845422125016}
   _protagBody: {fileID: 1640917518313358666}
   _protagRigidbody: {fileID: 4614245837032767955}
+  _fanInputConfig: {fileID: 11400000, guid: 486dd85386a54ea4e8952913c1632786, type: 2}
+  _untrackedInputTimeScale:
+    Duration: 999999
+    ScaleFactor: 0.4
+    Identifier: ProtagUntrackedInput
   _onFanOpen: {fileID: 11400000, guid: f419e71f236659f46930a6323a6c32d5, type: 2}
   _onFanClose: {fileID: 11400000, guid: f52afcf43aac85346be2c4383d32376f, type: 2}
   _onDeath: {fileID: 11400000, guid: fe0424784a627624ebbc99b62385ec63, type: 2}
-  _onReset: {fileID: 11400000, guid: de65a4f86f0d8c84b8058b98ef37e2ee, type: 2}
 --- !u!1 &5883185993911265910
 GameObject:
   m_ObjectHideFlags: 0
@@ -46048,10 +45861,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _duration: 0.75
   _horizontalVelocityKeepRatio: 1
-  _onEnterTimeScale:
-    Duration: 0.75
-    ScaleFactor: 0.9
-    Identifier: 
+  _timeSlowdownBlockDuration: 0.8
   _onUpdraft: {fileID: 11400000, guid: 731700ada91f95e48ab28d9b53b905d7, type: 2}
 --- !u!1 &7191467701826360395
 GameObject:
@@ -46216,6 +46026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _featherReplenishedOnFan: 1
+  _timeSlowdownBlockDuration: 0.4
   _featherStateChangeEvent: {fileID: 11400000, guid: 858b1754f7769d44c9f258180195ebf7, type: 2}
   _onFanSelfEvent: {fileID: 11400000, guid: f0b6b6727b879514ca33a5d6f9d81046, type: 2}
   _initialState:

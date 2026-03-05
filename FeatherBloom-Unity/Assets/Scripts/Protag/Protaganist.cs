@@ -1,10 +1,13 @@
 using System;
 using DevTools;
 using Events;
-using Framework;
+using Framework.Timescaling;
 using Input;
 using Input.DataTypes;
+using Input.Processor;
+using Protag.GestureHandlers;
 using StateMachine;
+using UI;
 using UnityEngine;
 
 namespace Protag
@@ -19,6 +22,14 @@ namespace Protag
 
         [SerializeField]
         private Rigidbody _protagRigidbody;
+
+        [SerializeField]
+        private CustomFanInputConfigSO _fanInputConfig;
+
+        [Header("Effects")]
+
+        [SerializeField]
+        private TimeScaleEntryConfig _untrackedInputTimeScale;
 
         [Header("Event Out")]
 
@@ -37,22 +48,52 @@ namespace Protag
         public bool IsFanOpen { get; private set; }
         public event Action OnFanOpen;
 
-        public event Action OnTryUpdraft;
-        public event Action OnTryGust;
-        public event Action OnTryFanSelf;
-
         public event Action OnDeath;
 
         private GameplayInputService _inputService;
+        private TimeScaleService _timeScaleService;
+
+        private CustomControllerInputProcessor _inputProcessor;
+
+        private IUpdraftHandler _updraftHandler;
+        private IGustHandler _gustHandler;
+        private IBreezeHandler _fanSelfHandler;
+
+        /// <summary>
+        ///     After making a gesture, prevent time slowdown from untracked input for a short time
+        /// </summary>
+        /// <returns></returns>
+        private float _postGestureBlockTimescaleTimer;
+
+        public void RegisterUpdraftHandler(IUpdraftHandler handler)
+        {
+            _updraftHandler = handler;
+        }
+
+        public void RegisterGustHandler(IGustHandler handler)
+        {
+            _gustHandler = handler;
+        }
+
+        public void RegisterFanSelfHandler(IBreezeHandler handler)
+        {
+            _fanSelfHandler = handler;
+        }
 
         private void Awake()
         {
             _protagStateMachine.Initialize();
+            _inputProcessor = new CustomControllerInputProcessor(_fanInputConfig);
+        }
+
+        public void Initialize(TimeScaleService timeScaleService, GameplayInputService inputService)
+        {
+            _inputService = inputService;
+            _timeScaleService = timeScaleService;
         }
 
         private void Start()
         {
-            _inputService = ServiceLocator.GetService<GameplayInputService>();
             _inputService.OnAimInputChange.AddListener(HandleAimInputChange);
             _inputService.OnFanStateChange.AddListener(HandleFanStateChange);
             _inputService.OnUpdraftInput.AddListener(HandleTryUpdraft);
@@ -60,6 +101,11 @@ namespace Protag
             _inputService.OnFanSelfInput.AddListener(HandleFanSelf);
 
             HandleFanStateChange(_inputService.CurrentFanState);
+        }
+
+        private void Update()
+        {
+            _postGestureBlockTimescaleTimer -= Time.unscaledDeltaTime;
         }
 
         private void OnDestroy()
@@ -83,22 +129,47 @@ namespace Protag
 
         private void HandleFanSelf()
         {
-            OnTryFanSelf?.Invoke();
+            GestureHandleResult result = _fanSelfHandler.HandleBreeze();
+            if (result.DidSucceed)
+            {
+                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
+            }
         }
 
         private void HandleTryGust()
         {
-            OnTryGust?.Invoke();
+            GestureHandleResult result = _gustHandler.HandleGust();
+            if (result.DidSucceed)
+            {
+                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
+            }
         }
 
         private void HandleTryUpdraft()
         {
-            OnTryUpdraft?.Invoke();
+            GestureHandleResult result = _updraftHandler.HandleUpdraft();
+            if (result.DidSucceed)
+            {
+                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
+            }
         }
 
         private void HandleAimInputChange(AimInput aimInput)
         {
-            AimInput = aimInput.FinalAimInput;
+            ProcessResult processResult = _inputProcessor.ProcessInput(aimInput);
+            AimInput = processResult.ProcessedAimInput;
+
+            // If untracked, slow down to give the player time to move between gestures and aiming
+            if (processResult.CurrentState == InputProcessorState.Untracked)
+            {
+                _timeScaleService.NewTimeScaling(_untrackedInputTimeScale);
+            }
+
+            // Except for right after a gesture, since we want gestures to play at normal speed
+            if (_postGestureBlockTimescaleTimer > 0f || processResult.CurrentState == InputProcessorState.Tracking)
+            {
+                _timeScaleService.RemoveTimeScale(_untrackedInputTimeScale.Identifier);
+            }
         }
 
         private void HandleFanStateChange(FanState state)

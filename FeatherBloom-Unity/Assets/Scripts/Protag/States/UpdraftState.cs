@@ -1,6 +1,6 @@
 using Events;
 using Framework;
-using Framework.GlobalServices;
+using Framework.Timescaling;
 using Input.SerialComms;
 using Protag.Surfing;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace Protag.States
         private float _horizontalVelocityKeepRatio;
 
         [SerializeField]
-        private TimeScaleService.TimeScaleEntryConfig _onEnterTimeScale;
+        private float _timeSlowdownBlockDuration;
 
         [Header("Event Out")]
 
@@ -53,6 +53,8 @@ namespace Protag.States
 
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
+
+        public float TimeSlowdownBlockDuration => _timeSlowdownBlockDuration;
 
         private float _stateTimer;
 
@@ -86,8 +88,6 @@ namespace Protag.States
             UpdateVelocity(_launchNormal);
 
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
-
-            _timeScaleService.NewTimeScaling(_onEnterTimeScale);
 
             _boxFanArduinoComm?.WriteFanOn(true);
         }

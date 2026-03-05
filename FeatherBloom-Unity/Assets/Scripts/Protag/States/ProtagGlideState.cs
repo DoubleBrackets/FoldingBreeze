@@ -1,6 +1,7 @@
 using Framework;
 using Input.SerialComms;
 using Protag.Abilities;
+using Protag.GestureHandlers;
 using Protag.Gliding;
 using StateMachine;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Protag.States
     /// <summary>
     ///     State if protag is both airborn and fan is open
     /// </summary>
-    public class ProtagGlideState : ProtagState
+    public class ProtagGlideState : ProtagState, IUpdraftHandler
     {
         [SerializeField]
         private GroundChecker _groundChecker;
@@ -34,7 +35,7 @@ namespace Protag.States
         private FeatherResources _featherResources;
 
         [SerializeField]
-        private ProtagState _updraftState;
+        private UpdraftState _updraftState;
 
         [SerializeField]
         private Animator _animator;
@@ -55,22 +56,25 @@ namespace Protag.States
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
             _boxFanArduinoComm?.WriteFanOn(true);
-            Protaganist.OnTryUpdraft += HandleUpdraft;
+            Protaganist.RegisterUpdraftHandler(this);
         }
 
-        private void HandleUpdraft()
+        public GestureHandleResult HandleUpdraft()
         {
             if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
             {
                 StateManager.SwitchState(_updraftState);
+                return new GestureHandleResult
+                    { DidSucceed = true, TimeslowdownBlockDuration = _updraftState.TimeSlowdownBlockDuration };
             }
+
+            return new GestureHandleResult { DidSucceed = false };
         }
 
         public override void OnExit()
         {
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
-            Protaganist.OnTryUpdraft -= HandleUpdraft;
 
             _boxFanArduinoComm?.WriteFanOn(false);
         }

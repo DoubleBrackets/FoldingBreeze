@@ -1,5 +1,6 @@
 using Input.DataTypes;
 using Input.SerialComms;
+using NaughtyAttributes;
 using UnityEngine;
 using ValueSO.Core;
 
@@ -26,12 +27,12 @@ namespace Input.FanInput
         [SerializeField]
         private float _openRollSensitivity;
 
-        [Tooltip("Deadzone, applied after sensitivity")]
-        [SerializeField]
-        private float _deadzone;
-
         [SerializeField]
         private Vector3 _fanOpenRollForwardAxis;
+
+        [InfoBox("The axis of the fan that is pointing towards the screen when open")]
+        [SerializeField]
+        private Vector3 _fanOpenPhysicalForwardAxis;
 
         [SerializeField]
         private Vector3 _fanOpenTiltForwardAxis;
@@ -126,12 +127,12 @@ namespace Input.FanInput
 
             _lastAimInput = aimInput;
 
-            AimInputChanged?.Invoke(new AimInput
-            {
-                FinalAimInput = aimInput,
-                ProcessedFanOrientation = transformedOrientation,
-                RawFanOrientation = rawOrientation
-            });
+            AimInputChanged?.Invoke(new AimInput(
+                aimInput,
+                transformedOrientation,
+                rawOrientation,
+                _currentFanState == FanState.Open ? _fanOpenPhysicalForwardAxis : Vector3.forward
+            ));
 
             _gestureRecognizer.AddGesturePoint(transformedOrientation, Time.realtimeSinceStartup);
             _gestureRecognizer.ProcessGestures();
@@ -149,6 +150,11 @@ namespace Input.FanInput
             return rawFanOrientation;
         }
 
+        /// <summary>
+        ///     Converts the raw fan orientation to an aim input for open fan state
+        /// </summary>
+        /// <param name="fanOrientation"></param>
+        /// <returns></returns>
         private Vector2 ConvertOrientationToAimOpen(Quaternion fanOrientation)
         {
             Vector3 rollDir = fanOrientation * _fanOpenRollForwardAxis;
@@ -166,14 +172,14 @@ namespace Input.FanInput
             projected.x = Mathf.Clamp(projected.x, -1f, 1f);
             projected.y = Mathf.Clamp(projected.y, -1f, 1f);
 
-            if (projected.magnitude < _deadzone)
-            {
-                projected = Vector2.zero;
-            }
-
             return projected;
         }
 
+        /// <summary>
+        ///     Converts the raw fan orientation to an aim input for closed fan state
+        /// </summary>
+        /// <param name="fanOrientation"></param>
+        /// <returns></returns>
         private Vector2 ConvertOrientationToAimClosed(Quaternion fanOrientation)
         {
             // Roll uses up axis
@@ -195,11 +201,6 @@ namespace Input.FanInput
             projected *= _closeSensitivity;
             projected.x = Mathf.Clamp(projected.x, -1f, 1f);
             projected.y = Mathf.Clamp(projected.y, -1f, 1f);
-
-            if (projected.magnitude < _deadzone)
-            {
-                projected = Vector2.zero;
-            }
 
             return projected;
         }
