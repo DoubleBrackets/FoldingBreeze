@@ -1,7 +1,8 @@
 using Events;
+using Framework;
+using Framework.GlobalServices;
 using Protag.Abilities;
 using Protag.Surfing;
-using Services;
 using StateMachine;
 using UnityEngine;
 
@@ -69,8 +70,11 @@ namespace Protag.States
         private float _boost;
         private bool _surfing;
 
+        private TimeScaleService _timeScaleService;
+
         public override void OnInitialize()
         {
+            _timeScaleService = ServiceLocator.GetService<TimeScaleService>();
             _impactSaver.OnTerrainImpact.AddListener(HandleTerrainImpact);
         }
 
@@ -92,7 +96,7 @@ namespace Protag.States
 
         private void HandleFanOpen()
         {
-            TimeScaleService.Instance.NewTimeScaling(_slowdownOnFanOpen);
+            _timeScaleService.NewTimeScaling(_slowdownOnFanOpen);
         }
 
         public override void OnExit()
@@ -110,7 +114,7 @@ namespace Protag.States
                 _surfing = false;
             }
 
-            TimeScaleService.Instance.RemoveTimeScale(_slowdownOnFanOpen.Identifier);
+            _timeScaleService.RemoveTimeScale(_slowdownOnFanOpen.Identifier);
         }
 
         private void HandleTryFanSelf()

@@ -1,6 +1,7 @@
+using Framework;
+using Input.SerialComms;
 using Protag.Abilities;
 using Protag.Gliding;
-using SerialComms;
 using StateMachine;
 using UnityEngine;
 
@@ -38,14 +39,22 @@ namespace Protag.States
         [SerializeField]
         private Animator _animator;
 
+        private BoxFanArduinoComm _boxFanArduinoComm;
+
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+        }
 
         public override void OnEnter()
         {
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
-            BoxFanArduinoComm.Instance?.WriteFanOn(true);
+            _boxFanArduinoComm?.WriteFanOn(true);
             Protaganist.OnTryUpdraft += HandleUpdraft;
         }
 
@@ -63,7 +72,7 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
             Protaganist.OnTryUpdraft -= HandleUpdraft;
 
-            BoxFanArduinoComm.Instance?.WriteFanOn(false);
+            _boxFanArduinoComm?.WriteFanOn(false);
         }
 
         private void HandleBoost(float amount)
@@ -77,8 +86,8 @@ namespace Protag.States
 
             GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
 
-            float horizontalInput = Protaganist.Instance.AimInput.x;
-            float verticalInput = Protaganist.Instance.AimInput.y;
+            float horizontalInput = Protaganist.AimInput.x;
+            float verticalInput = Protaganist.AimInput.y;
             float deltaTime = Time.fixedDeltaTime;
 
             _glideMovement.Tick(horizontalInput, verticalInput, deltaTime);
@@ -89,7 +98,7 @@ namespace Protag.States
             _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
             _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
 
-            if (groundInfo.IsGrounded || !Protaganist.Instance.IsFanOpen)
+            if (groundInfo.IsGrounded || !Protaganist.IsFanOpen)
             {
                 StateManager.SwitchState(_surfState);
             }

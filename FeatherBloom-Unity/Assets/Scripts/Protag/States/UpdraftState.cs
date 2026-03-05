@@ -1,7 +1,8 @@
 using Events;
+using Framework;
+using Framework.GlobalServices;
+using Input.SerialComms;
 using Protag.Surfing;
-using SerialComms;
-using Services;
 using UnityEngine;
 
 namespace Protag.States
@@ -58,6 +59,16 @@ namespace Protag.States
         private Vector3 _horizontalVelocity;
         private Vector3 _launchNormal;
 
+        private TimeScaleService _timeScaleService;
+        private BoxFanArduinoComm _boxFanArduinoComm;
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            _timeScaleService = ServiceLocator.GetService<TimeScaleService>();
+            _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+        }
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -76,9 +87,9 @@ namespace Protag.States
 
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
 
-            TimeScaleService.Instance.NewTimeScaling(_onEnterTimeScale);
+            _timeScaleService.NewTimeScaling(_onEnterTimeScale);
 
-            BoxFanArduinoComm.Instance.WriteFanOn(true);
+            _boxFanArduinoComm?.WriteFanOn(true);
         }
 
         public override void OnExit()
@@ -87,7 +98,7 @@ namespace Protag.States
             _animator.SetBool("Updraft", false);
 
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
-            BoxFanArduinoComm.Instance.WriteFanOn(false);
+            _boxFanArduinoComm?.WriteFanOn(false);
         }
 
         private void HandleBoostPickup(float boost)

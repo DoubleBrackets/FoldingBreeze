@@ -1,5 +1,4 @@
-using DebugTools;
-using Services;
+using System;
 using UnityEngine;
 
 namespace Protag.LevelGen
@@ -7,51 +6,38 @@ namespace Protag.LevelGen
     /// <summary>
     ///     Handles simple map generation by connecting stages
     /// </summary>
-    public class MapService : MonoBehaviour
+    public class MapService
     {
-        [SerializeField]
-        private StageRosterSO _stageRosterSO;
-
-        public static MapService Instance { get; private set; }
-
         private MapStage _currentMapStage;
         private MapStage _nextMapStage;
         private MapStage _previousMapStage;
 
         private StageSO _lastChosenStage;
 
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+        private StageRosterSO _stageRosterSO;
+        private Transform _stageParent;
+        private Protaganist _protag;
 
-            ScoreService.Instance.ResetScore();
+        public event Action OnStageProgressed;
+
+        public MapService(Transform stageParent, StageRosterSO stageRosterSO, Protaganist protag)
+        {
+            _stageParent = stageParent;
+            _stageRosterSO = stageRosterSO;
+            _protag = protag;
         }
 
-        private void Start()
+        public void StartPlayingMap()
         {
-            if (DebugState.DoNotLoadMapOnStart)
-            {
-                return;
-            }
-
-            Protaganist.Instance.SetPositionAndDirection(Vector3.zero, Vector3.forward);
-
-            StartMap();
+            InitializeMap();
         }
 
-        public StageRosterSO.RosterEntry GetRandomStageEntry()
+        private StageRosterSO.RosterEntry GetRandomStageEntry()
         {
             return _stageRosterSO.GetRandomStageEntry(_lastChosenStage);
         }
 
-        public void StartMap()
+        private void InitializeMap()
         {
             _currentMapStage = LoadInitialStage(_stageRosterSO.GetStartingStageEntry());
             _currentMapStage.SetStageEnabled(true);
@@ -62,8 +48,8 @@ namespace Protag.LevelGen
         private MapStage LoadInitialStage(StageRosterSO.RosterEntry stageEntry)
         {
             MapStage stagePrefab = stageEntry.Prefab;
-            MapStage stageInstance = Instantiate(stagePrefab, transform);
-            stageInstance.Initialize(Vector3.zero, Vector3.forward);
+            MapStage stageInstance = GameObject.Instantiate(stagePrefab, _stageParent);
+            stageInstance.Initialize(Vector3.zero, Vector3.forward, _protag);
             return stageInstance;
         }
 
@@ -79,7 +65,7 @@ namespace Protag.LevelGen
             if (_previousMapStage)
             {
                 Debug.Log($"Destroying previous stage: {_previousMapStage.name}");
-                Destroy(_previousMapStage.gameObject);
+                GameObject.Destroy(_previousMapStage.gameObject);
             }
 
             _currentMapStage.SetStageEnabled(false);
@@ -97,7 +83,7 @@ namespace Protag.LevelGen
             // Subscribe
             _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
 
-            ScoreService.Instance.AddScore(1);
+            OnStageProgressed?.Invoke();
         }
 
         private void HandleOnNextStageEntered()
@@ -108,9 +94,9 @@ namespace Protag.LevelGen
         private MapStage LoadStage(StageRosterSO.RosterEntry stageEntry, MapStage previousStageInstance, bool riseAnim)
         {
             MapStage stagePrefab = stageEntry.Prefab;
-            MapStage stageInstance = Instantiate(stagePrefab, transform);
+            MapStage stageInstance = GameObject.Instantiate(stagePrefab, _stageParent);
             stageInstance.Initialize(previousStageInstance.GetEndPosition(), previousStageInstance.GetEndForward(),
-                riseAnim);
+                _protag, riseAnim);
             _lastChosenStage = stageEntry.Stage;
             return stageInstance;
         }

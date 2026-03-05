@@ -1,32 +1,20 @@
+using Input.DataTypes;
+using Input.ValueSOs;
 using UnityEngine;
 using UnityEngine.Events;
+using ValueSO;
 
 namespace Input
 {
     /// <summary>
     ///     Interface for input
     /// </summary>
-    public class GameplayInputService : MonoBehaviour
+    public class GameplayInputService : MonoBehaviour, IValueSOObserver
     {
-        public enum FanState
-        {
-            Closed,
-            Open
-        }
+        [Header("ValueSO (Read/Write)")]
 
-        public enum GameplayInputType
-        {
-            None,
-            Conventional,
-            CustomHardware
-        }
-
-        public struct AimInput
-        {
-            public Vector2 FinalAimInput;
-            public Quaternion ProcessedFanOrientation;
-            public Quaternion RawFanOrientation;
-        }
+        [SerializeField]
+        private GameplayInputTypeValueSO _gameplayInputTypeValueSO;
 
         [Header("Input Providers")]
 
@@ -47,25 +35,21 @@ namespace Input
         public UnityEvent OnSliceInput;
         public UnityEvent OnFanSelfInput;
 
-        public static GameplayInputService Instance { get; private set; }
         public FanState CurrentFanState => _currentFanState;
 
         private FanState _currentFanState = FanState.Closed;
         private GameplayInputType currentGameplayInputType = GameplayInputType.None;
+
         private InputProvider _currentInputProvider;
 
-        private void Awake()
+        public void Initialize()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            _gameplayInputTypeValueSO.AddListener(this, OnGameplayInputTypeChanged, true);
+        }
 
-            SwitchInputType(GameplayInputType.Conventional);
+        private void OnGameplayInputTypeChanged(GameplayInputType type)
+        {
+            SwitchInputType(type);
         }
 
         private void OnDestroy()
@@ -95,6 +79,8 @@ namespace Input
                 currentGameplayInputType = GameplayInputType.CustomHardware;
                 SwitchInputProvidersHandlers(_customHardwareInputProvider);
             }
+
+            _gameplayInputTypeValueSO.SetValue(newGameplayInputType, this);
         }
 
         private void SwitchInputProvidersHandlers(InputProvider newInputProvider)
@@ -173,6 +159,16 @@ namespace Input
         private void HandleAimInputChanged(AimInput aimInput)
         {
             OnAimInputChange?.Invoke(aimInput);
+        }
+
+        public void SetZeroedOrientationToCurrent()
+        {
+            _conventionalInputProvider.SetDefaultToCurrent();
+            _customHardwareInputProvider.SetDefaultToCurrent();
+        }
+
+        public void WriteFanOn(bool fanOn)
+        {
         }
     }
 }

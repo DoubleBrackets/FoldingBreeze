@@ -1,4 +1,4 @@
-using DebugTools;
+using DevTools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,6 +44,8 @@ namespace Protag.LevelGen
         // Used to animate the stage rising from the ground
         private Vector3 _targetPos;
 
+        private Protaganist _protag;
+
         private void Awake()
         {
             _stageTrigger.OnProtagEnterSection.AddListener(HandleStageSectionEntered);
@@ -80,10 +82,10 @@ namespace Protag.LevelGen
         {
             if (_stageEnabled)
             {
-                Vector3 playerPos = Protaganist.Instance.Position;
+                Vector3 playerPos = _protag.Position;
                 if (playerPos.y < transform.position.y - _killZoneHeight)
                 {
-                    Protaganist.Instance.Kill();
+                    _protag.Kill();
                 }
             }
 
@@ -124,8 +126,9 @@ namespace Protag.LevelGen
             return forward.normalized;
         }
 
-        public void Initialize(Vector3 startPosition, Vector3 forward, bool riseAnimation = false)
+        public void Initialize(Vector3 startPosition, Vector3 forward, Protaganist protag, bool riseAnimation = false)
         {
+            _protag = protag;
             // Reorient the stage to match the start position
             Vector3 offset = startPosition - _startPoint.position;
             transform.position += offset;

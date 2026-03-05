@@ -1,7 +1,9 @@
 using System;
-using DebugTools;
+using DevTools;
 using Events;
+using Framework;
 using Input;
+using Input.DataTypes;
 using StateMachine;
 using UnityEngine;
 
@@ -29,11 +31,6 @@ namespace Protag
         [SerializeField]
         private VoidEvent _onDeath;
 
-        [SerializeField]
-        private VoidEvent _onReset;
-
-        public static Protaganist Instance { get; private set; }
-
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
 
@@ -44,30 +41,34 @@ namespace Protag
         public event Action OnTryGust;
         public event Action OnTryFanSelf;
 
+        public event Action OnDeath;
+
+        private GameplayInputService _inputService;
+
         private void Awake()
         {
-            Instance = this;
             _protagStateMachine.Initialize();
         }
 
         private void Start()
         {
-            GameplayInputService.Instance.OnAimInputChange.AddListener(HandleAimInputChange);
-            GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
-            GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
-            GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelf);
+            _inputService = ServiceLocator.GetService<GameplayInputService>();
+            _inputService.OnAimInputChange.AddListener(HandleAimInputChange);
+            _inputService.OnFanStateChange.AddListener(HandleFanStateChange);
+            _inputService.OnUpdraftInput.AddListener(HandleTryUpdraft);
+            _inputService.OnGustInput.AddListener(HandleTryGust);
+            _inputService.OnFanSelfInput.AddListener(HandleFanSelf);
 
-            HandleFanStateChange(GameplayInputService.Instance.CurrentFanState);
+            HandleFanStateChange(_inputService.CurrentFanState);
         }
 
         private void OnDestroy()
         {
-            GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleAimInputChange);
-            GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
-            GameplayInputService.Instance.OnGustInput.RemoveListener(HandleTryGust);
-            GameplayInputService.Instance.OnFanSelfInput.RemoveListener(HandleFanSelf);
+            _inputService.OnAimInputChange.RemoveListener(HandleAimInputChange);
+            _inputService.OnFanStateChange.RemoveListener(HandleFanStateChange);
+            _inputService.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
+            _inputService.OnGustInput.RemoveListener(HandleTryGust);
+            _inputService.OnFanSelfInput.RemoveListener(HandleFanSelf);
 
             _protagStateMachine.Deinitialize();
         }
@@ -95,14 +96,14 @@ namespace Protag
             OnTryUpdraft?.Invoke();
         }
 
-        private void HandleAimInputChange(GameplayInputService.AimInput aimInput)
+        private void HandleAimInputChange(AimInput aimInput)
         {
             AimInput = aimInput.FinalAimInput;
         }
 
-        private void HandleFanStateChange(GameplayInputService.FanState state)
+        private void HandleFanStateChange(FanState state)
         {
-            IsFanOpen = state == GameplayInputService.FanState.Open;
+            IsFanOpen = state == FanState.Open;
             if (IsFanOpen)
             {
                 OnFanOpen?.Invoke();
@@ -122,14 +123,8 @@ namespace Protag
 
         public void Kill()
         {
-            if (DebugState.AutoRestartOnDeath)
-            {
-                _onReset?.Raise();
-            }
-            else
-            {
-                _onDeath?.Raise();
-            }
+            _onDeath?.Raise();
+            OnDeath?.Invoke();
         }
     }
 }

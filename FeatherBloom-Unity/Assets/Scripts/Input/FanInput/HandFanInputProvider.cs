@@ -1,5 +1,7 @@
-using SerialComms;
+using Input.DataTypes;
+using Input.SerialComms;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Input.FanInput
 {
@@ -8,6 +10,11 @@ namespace Input.FanInput
     /// </summary>
     public class HandFanInputProvider : InputProvider
     {
+        [Header("ValueSO (Read)")]
+
+        [SerializeField]
+        private QuaternionValueSO _defaultOrientation;
+
         [Header("Config")]
 
         [SerializeField]
@@ -32,13 +39,11 @@ namespace Input.FanInput
         [SerializeField]
         private FanGestureRecognizer.GestureRecognizeConfig _gestureConfig;
 
-        public static HandFanInputProvider Instance { get; private set; }
-
-        public Quaternion ZeroedRawOrientation { get; set; }
+        private Quaternion ZeroedRawOrientation => _defaultOrientation.Value;
 
         private Quaternion _lastRawOrientation;
 
-        private GameplayInputService.FanState _currentFanState = GameplayInputService.FanState.Closed;
+        private FanState _currentFanState = FanState.Closed;
         private Vector2 _lastAimInput;
         private bool _fanOpenSwitchState;
 
@@ -47,8 +52,6 @@ namespace Input.FanInput
         private void Awake()
         {
             _gestureRecognizer = new FanGestureRecognizer(_gestureConfig);
-            Instance = this;
-            ZeroedRawOrientation = Quaternion.identity;
             _gestureRecognizer.OnGestureTriggered += HandleGestureRecognized;
         }
 
@@ -68,7 +71,7 @@ namespace Input.FanInput
             }
             */
 
-            if (_currentFanState == GameplayInputService.FanState.Closed)
+            if (_currentFanState == FanState.Closed)
             {
                 return;
             }
@@ -95,13 +98,13 @@ namespace Input.FanInput
             _fanOpenSwitchState = result.OpenFanSwitch;
             if (result.OpenFanSwitch)
             {
-                _currentFanState = GameplayInputService.FanState.Open;
-                DesiredFanStateChanged?.Invoke(GameplayInputService.FanState.Open);
+                _currentFanState = FanState.Open;
+                DesiredFanStateChanged?.Invoke(FanState.Open);
             }
             else if (result.CloseFanSwitch)
             {
-                _currentFanState = GameplayInputService.FanState.Closed;
-                DesiredFanStateChanged?.Invoke(GameplayInputService.FanState.Closed);
+                _currentFanState = FanState.Closed;
+                DesiredFanStateChanged?.Invoke(FanState.Closed);
             }
 
             bool inTransition = !result.OpenFanSwitch && !result.CloseFanSwitch;
@@ -111,7 +114,7 @@ namespace Input.FanInput
 
             Quaternion transformedOrientation = ConvertRawToDefaulted(rawOrientation);
 
-            Vector2 aimInput = _currentFanState == GameplayInputService.FanState.Open
+            Vector2 aimInput = _currentFanState == FanState.Open
                 ? ConvertOrientationToAimOpen(transformedOrientation)
                 : ConvertOrientationToAimClosed(transformedOrientation);
 
@@ -123,7 +126,7 @@ namespace Input.FanInput
 
             _lastAimInput = aimInput;
 
-            AimInputChanged?.Invoke(new GameplayInputService.AimInput
+            AimInputChanged?.Invoke(new AimInput
             {
                 FinalAimInput = aimInput,
                 ProcessedFanOrientation = transformedOrientation,
@@ -201,10 +204,9 @@ namespace Input.FanInput
             return projected;
         }
 
-        public Quaternion SetDefaultToCurrent()
+        public override void SetDefaultToCurrent()
         {
-            ZeroedRawOrientation = _lastRawOrientation;
-            return ZeroedRawOrientation;
+            _defaultOrientation.SetValue(_lastRawOrientation);
         }
     }
 }

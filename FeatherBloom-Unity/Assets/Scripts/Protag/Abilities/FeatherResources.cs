@@ -1,7 +1,8 @@
 using System;
 using Events;
 using Events.Core;
-using Services;
+using Framework;
+using Framework.GlobalServices;
 using UnityEngine;
 
 namespace Protag.Abilities
@@ -36,9 +37,12 @@ namespace Protag.Abilities
 
         private FeatherResourceState _currentState;
 
+        private TimeScaleService _timeScaleService;
+
         public void Awake()
         {
             _currentState = _initialState;
+            _timeScaleService = ServiceLocator.GetService<TimeScaleService>();
         }
 
         private void Start()
@@ -59,7 +63,7 @@ namespace Protag.Abilities
             _featherStateChangeEvent?.Raise(_currentState);
             _onFanSelfEvent?.Raise();
 
-            TimeScaleService.Instance.NewTimeScaling(_timeScaleOnHeal);
+            _timeScaleService.NewTimeScaling(_timeScaleOnHeal);
         }
 
         public bool TryConsumeFeathers(int amount)

@@ -1,32 +1,30 @@
 using Cysharp.Threading.Tasks;
-using NaughtyAttributes;
+using Framework;
+using Framework.LevelLoading;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Utils
 {
     public class SceneChangeMono : MonoBehaviour
     {
-        [Scene]
         [SerializeField]
-        private string sceneName;
+        private GameLevelSO _gameLevel;
 
         public void ChangeScene()
         {
-            if (string.IsNullOrEmpty(sceneName))
+            if (_gameLevel == null)
             {
-                Debug.LogError("Scene name is not set or is empty.");
+                Debug.LogError("Game level is not set.");
                 return;
             }
 
-            // Use Unity's SceneManager to load the scene
             ChangeSceneDelay().Forget();
         }
 
         private async UniTaskVoid ChangeSceneDelay()
         {
             await UniTask.Yield();
-            SceneManager.LoadScene(sceneName);
+            ServiceLocator.GetService<LevelLoader>().LoadLevel(_gameLevel).Forget();
         }
     }
 }

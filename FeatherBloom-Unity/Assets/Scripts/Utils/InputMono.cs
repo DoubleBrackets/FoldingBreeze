@@ -1,4 +1,6 @@
+using Framework;
 using Input;
+using Input.DataTypes;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +20,7 @@ namespace Utils
         public UnityEvent OnFanClose;
 
         [SerializeField]
-        public UnityEvent<GameplayInputService.AimInput> OnAimInputChange;
+        public UnityEvent<AimInput> OnAimInputChange;
 
         [SerializeField]
         public UnityEvent OnUpdraft;
@@ -26,20 +28,23 @@ namespace Utils
         [SerializeField]
         public UnityEvent OnFanSelf;
 
+        private GameplayInputService _inputService;
+
         private void Start()
         {
-            GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnAimInputChange.AddListener(HandleFanAimInputChange);
-            GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleUpdraftInput);
-            GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelfInput);
+            _inputService = ServiceLocator.GetService<GameplayInputService>();
+            _inputService.OnFanStateChange.AddListener(HandleFanStateChange);
+            _inputService.OnAimInputChange.AddListener(HandleFanAimInputChange);
+            _inputService.OnUpdraftInput.AddListener(HandleUpdraftInput);
+            _inputService.OnFanSelfInput.AddListener(HandleFanSelfInput);
         }
 
         private void OnDestroy()
         {
-            GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleFanAimInputChange);
-            GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleUpdraftInput);
-            GameplayInputService.Instance.OnFanSelfInput.RemoveListener(HandleFanSelfInput);
+            _inputService.OnFanStateChange.RemoveListener(HandleFanStateChange);
+            _inputService.OnAimInputChange.RemoveListener(HandleFanAimInputChange);
+            _inputService.OnUpdraftInput.RemoveListener(HandleUpdraftInput);
+            _inputService.OnFanSelfInput.RemoveListener(HandleFanSelfInput);
         }
 
         private void HandleFanSelfInput()
@@ -52,19 +57,19 @@ namespace Utils
             OnUpdraft?.Invoke();
         }
 
-        private void HandleFanStateChange(GameplayInputService.FanState state)
+        private void HandleFanStateChange(FanState state)
         {
-            if (state == GameplayInputService.FanState.Open)
+            if (state == FanState.Open)
             {
                 OnFanOpen?.Invoke();
             }
-            else if (state == GameplayInputService.FanState.Closed)
+            else if (state == FanState.Closed)
             {
                 OnFanClose?.Invoke();
             }
         }
 
-        private void HandleFanAimInputChange(GameplayInputService.AimInput aimInput)
+        private void HandleFanAimInputChange(AimInput aimInput)
         {
             OnAimInputChange?.Invoke(aimInput);
         }

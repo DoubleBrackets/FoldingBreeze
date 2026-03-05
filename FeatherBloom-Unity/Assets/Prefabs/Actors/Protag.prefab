@@ -24914,7 +24914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337b856ecd78084f9af4a09a3c1f216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Protaganist: {fileID: 3402814360252092788}
+  Protaganist: {fileID: 6542097491895686323}
   _onEnterState:
     m_PersistentCalls:
       m_Calls:
@@ -25408,7 +25408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6966f39c70e84467ba8386064dab40a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Protaganist: {fileID: 3402814360252092788}
+  Protaganist: {fileID: 6542097491895686323}
   _onEnterState:
     m_PersistentCalls:
       m_Calls: []
@@ -40445,101 +40445,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _event: {fileID: 11400000, guid: 6c8ac703f8370f343a0765236e413698, type: 2}
   _particleSystem: {fileID: 8497171788487233314}
---- !u!1 &4062945129070304350
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8319963221413359830}
-  - component: {fileID: 3402814360252092788}
-  - component: {fileID: 1679666330666811848}
-  - component: {fileID: 3882865454116693383}
-  m_Layer: 0
-  m_Name: ProtagManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8319963221413359830
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4062945129070304350}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5890716397941209808}
-  m_Father: {fileID: 8169892510337244661}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3402814360252092788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4062945129070304350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bdf413a2cfab834f900e608c077a487, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _protagStateMachine: {fileID: 8717534845422125016}
-  _protagBody: {fileID: 1640917518313358666}
-  _protagRigidbody: {fileID: 4614245837032767955}
-  _onFanOpen: {fileID: 11400000, guid: f419e71f236659f46930a6323a6c32d5, type: 2}
-  _onFanClose: {fileID: 11400000, guid: f52afcf43aac85346be2c4383d32376f, type: 2}
-  _onDeath: {fileID: 11400000, guid: fe0424784a627624ebbc99b62385ec63, type: 2}
-  _onReset: {fileID: 11400000, guid: de65a4f86f0d8c84b8058b98ef37e2ee, type: 2}
---- !u!114 &1679666330666811848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4062945129070304350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1ce442bc201ab4eb6b41d5f5a169f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: GameOverScene
---- !u!114 &3882865454116693383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4062945129070304350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19636bf5e982d7c45aa8670e748b08a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _eventSO: {fileID: 11400000, guid: fe0424784a627624ebbc99b62385ec63, type: 2}
-  _onRaiseEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1679666330666811848}
-        m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
-        m_MethodName: ChangeScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &4094476869787471126
 GameObject:
   m_ObjectHideFlags: 0
@@ -45705,6 +45610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8169892510337244661}
+  - component: {fileID: 6542097491895686323}
   m_Layer: 0
   m_Name: Protag
   m_TagString: Untagged
@@ -45725,90 +45631,34 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8319963221413359830}
   - {fileID: 1066510997037533731}
   - {fileID: 3922694674134965175}
   - {fileID: 9177556400363695686}
   - {fileID: 6209796373343251713}
-  - {fileID: 1585645709389769684}
   - {fileID: 7326240851067418800}
   - {fileID: 1640917518313358666}
+  - {fileID: 1585645709389769684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5709808586570400884
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5890716397941209808}
-  - component: {fileID: 2794204376392499227}
-  - component: {fileID: 2710220300255396185}
-  m_Layer: 0
-  m_Name: Reset
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5890716397941209808
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5709808586570400884}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8319963221413359830}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2794204376392499227
+--- !u!114 &6542097491895686323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5709808586570400884}
+  m_GameObject: {fileID: 5266477342426628434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19636bf5e982d7c45aa8670e748b08a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4bdf413a2cfab834f900e608c077a487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eventSO: {fileID: 11400000, guid: de65a4f86f0d8c84b8058b98ef37e2ee, type: 2}
-  _onRaiseEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2710220300255396185}
-        m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
-        m_MethodName: ChangeScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2710220300255396185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5709808586570400884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1ce442bc201ab4eb6b41d5f5a169f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Utils.SceneChangeMono
-  sceneName: GamplayScene
+  _protagStateMachine: {fileID: 8717534845422125016}
+  _protagBody: {fileID: 1640917518313358666}
+  _protagRigidbody: {fileID: 4614245837032767955}
+  _onFanOpen: {fileID: 11400000, guid: f419e71f236659f46930a6323a6c32d5, type: 2}
+  _onFanClose: {fileID: 11400000, guid: f52afcf43aac85346be2c4383d32376f, type: 2}
+  _onDeath: {fileID: 11400000, guid: fe0424784a627624ebbc99b62385ec63, type: 2}
+  _onReset: {fileID: 11400000, guid: de65a4f86f0d8c84b8058b98ef37e2ee, type: 2}
 --- !u!1 &5883185993911265910
 GameObject:
   m_ObjectHideFlags: 0
@@ -46146,7 +45996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47ef2a5250f00f84084cf8187ce9f29a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Protaganist: {fileID: 3402814360252092788}
+  Protaganist: {fileID: 6542097491895686323}
   _onEnterState:
     m_PersistentCalls:
       m_Calls:
@@ -46449,7 +46299,7 @@ MonoBehaviour:
   OnTouchHazard:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3402814360252092788}
+      - m_Target: {fileID: 6542097491895686323}
         m_TargetAssemblyTypeName: Protag.Protaganist, Assembly-CSharp
         m_MethodName: Kill
         m_Mode: 1

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d44c1f67c584da0abfc90f061650592, type: 3}
+  m_Name: StartupConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Framework.StartupConfigSO
+  <TimeScaleLerpFactor>k__BackingField: {fileID: 11400000, guid: 4aadc4f4f5d380441abcc75929c40587, type: 2}
+  <StartupGameLevel>k__BackingField: {fileID: 11400000, guid: 036ae1ad70c56d945bb8c17eb7e5a73e, type: 2}
+  <GameplayLevel>k__BackingField: {fileID: 11400000, guid: b3c3d2405d9fd61429c75405bb8bebaf, type: 2}
+  <SaveDataValueSOLoader>k__BackingField: {fileID: 11400000, guid: a48b8ee13cdf97840a9c68489a51dfa4, type: 2}

@@ -1,4 +1,5 @@
-using Services;
+using Framework;
+using Framework.GlobalServices;
 using UnityEngine;
 
 namespace Utils
@@ -10,7 +11,7 @@ namespace Utils
 
         public void Apply()
         {
-            TimeScaleService.Instance.NewTimeScaling(_timeScaleEntryConfig);
+            ServiceLocator.GetService<TimeScaleService>().NewTimeScaling(_timeScaleEntryConfig);
         }
     }
 }

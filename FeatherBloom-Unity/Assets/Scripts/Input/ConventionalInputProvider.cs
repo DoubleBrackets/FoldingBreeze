@@ -1,3 +1,4 @@
+using Input.DataTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,7 @@ namespace Input
     {
         public void HandleAiming(InputAction.CallbackContext context)
         {
-            AimInputChanged?.Invoke(new GameplayInputService.AimInput
+            AimInputChanged?.Invoke(new AimInput
             {
                 FinalAimInput = context.ReadValue<Vector2>()
             });
@@ -61,11 +62,15 @@ namespace Input
                 float normalizedY = (Screen.height - mousePosition.y) / Screen.height;
                 float normalizedX = (Screen.width - mousePosition.x) / Screen.width;
 
-                AimInputChanged?.Invoke(new GameplayInputService.AimInput
+                AimInputChanged?.Invoke(new AimInput
                 {
                     FinalAimInput = new Vector2(normalizedX, normalizedY)
                 });
             }
+        }
+
+        public override void SetDefaultToCurrent()
+        {
         }
     }
 }
