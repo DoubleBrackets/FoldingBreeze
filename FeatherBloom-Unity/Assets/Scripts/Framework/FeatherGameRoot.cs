@@ -54,6 +54,7 @@ namespace Framework
             SetupServices();
 
             _startupConfig.SaveDataValueSOLoader.InitializeSaveBack(_saveService);
+            _startupConfig.SaveDataValueSOLoader.Load(_saveService.SaveModel);
 
             InputSetup();
 

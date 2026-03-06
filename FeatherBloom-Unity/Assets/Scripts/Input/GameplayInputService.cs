@@ -97,6 +97,7 @@ namespace Input
 
         private void SubscribeInputProvider(InputProvider inputProvider)
         {
+            Debug.Log($"Subscribing to {inputProvider.name}", inputProvider.gameObject);
             inputProvider.AimInputChanged += HandleAimInputChanged;
             inputProvider.DesiredFanStateChanged += HandleDesiredFanStateChanged;
             inputProvider.ToggleFanState += HandleToggleFanState;
@@ -108,6 +109,7 @@ namespace Input
 
         private void UnsubscribeInputProvider(InputProvider inputProvider)
         {
+            Debug.Log($"Unsubscribing from {inputProvider.name}", inputProvider.gameObject);
             inputProvider.AimInputChanged -= HandleAimInputChanged;
             inputProvider.DesiredFanStateChanged -= HandleDesiredFanStateChanged;
             inputProvider.ToggleFanState -= HandleToggleFanState;

@@ -30,6 +30,11 @@ namespace Input.SerialComms
 
         private SerialPort _serialPort;
 
+        private void Awake()
+        {
+            _status.SetValue("Not Connected");
+        }
+
         private void OnDestroy()
         {
             try

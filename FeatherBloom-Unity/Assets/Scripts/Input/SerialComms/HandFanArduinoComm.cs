@@ -63,6 +63,11 @@ namespace Input.SerialComms
 
         private int _toDiscard;
 
+        private void Awake()
+        {
+            _status.SetValue("Not Connected");
+        }
+
         private void OnDestroy()
         {
             try
