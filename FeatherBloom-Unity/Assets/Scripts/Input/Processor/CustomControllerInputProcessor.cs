@@ -25,7 +25,7 @@ namespace Input.Processor
             _config = config;
         }
 
-        public ProcessResult ProcessInput(AimInput aim)
+        public ProcessResult ProcessInput(GameplayInputType scheme, AimInput aim)
         {
             InputProcessorState currentState = _state;
             Vector3 forward = aim.ProcessedFanOrientation * aim.PhysicalForwardAxis;
@@ -38,6 +38,12 @@ namespace Input.Processor
                 PreviousState = _state,
                 ProcessedFanOrientation = aim.ProcessedFanOrientation
             };
+            if (scheme == GameplayInputType.Conventional)
+            {
+                result.ProcessedAimInput = aim.FinalAimInput;
+                result.CurrentState = InputProcessorState.Tracking;
+                return result;
+            }
 
             if (_state == InputProcessorState.Untracked)
             {

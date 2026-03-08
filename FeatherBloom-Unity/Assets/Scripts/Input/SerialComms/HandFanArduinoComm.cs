@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DevTools;
 using UnityEngine;
 using UnityEngine.Events;
 using ValueSO.Core;
@@ -121,8 +122,8 @@ namespace Input.SerialComms
 
         private void DrawDebugGUI()
         {
-            GUILayout.Label("Connected to arduino: " + (_serialPort == null ? "No" : _serialPort.IsOpen));
-            GUILayout.Label("Serial Packet Rate: " + _currentPacketRate);
+            OnGUIHook.SetElement("HandFanArduino Status", _status.Value);
+            OnGUIHook.SetElement("Handfan pckt Rate", _currentPacketRate.ToString());
         }
 
         private void InitializeSerialPort(string arduinoPort)

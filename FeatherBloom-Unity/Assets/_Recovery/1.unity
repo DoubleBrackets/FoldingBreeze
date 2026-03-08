@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 131173638}
   - component: {fileID: 131173637}
   m_Layer: 0
-  m_Name: OnGUIHook
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

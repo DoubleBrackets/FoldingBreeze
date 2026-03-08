@@ -36,9 +36,10 @@ namespace Input
         public UnityEvent OnFanSelfInput;
 
         public FanState CurrentFanState => _currentFanState;
+        public GameplayInputType CurrentInputType => _currentGameplayInputType;
 
         private FanState _currentFanState = FanState.Closed;
-        private GameplayInputType currentGameplayInputType = GameplayInputType.None;
+        private GameplayInputType _currentGameplayInputType = GameplayInputType.None;
 
         private InputProvider _currentInputProvider;
 
@@ -62,7 +63,7 @@ namespace Input
 
         public void SwitchInputType(GameplayInputType newGameplayInputType)
         {
-            if (newGameplayInputType == currentGameplayInputType)
+            if (newGameplayInputType == _currentGameplayInputType)
             {
                 return;
             }
@@ -71,12 +72,12 @@ namespace Input
 
             if (newGameplayInputType == GameplayInputType.Conventional)
             {
-                currentGameplayInputType = GameplayInputType.Conventional;
+                _currentGameplayInputType = GameplayInputType.Conventional;
                 SwitchInputProvidersHandlers(_conventionalInputProvider);
             }
             else if (newGameplayInputType == GameplayInputType.CustomHardware)
             {
-                currentGameplayInputType = GameplayInputType.CustomHardware;
+                _currentGameplayInputType = GameplayInputType.CustomHardware;
                 SwitchInputProvidersHandlers(_customHardwareInputProvider);
             }
 
