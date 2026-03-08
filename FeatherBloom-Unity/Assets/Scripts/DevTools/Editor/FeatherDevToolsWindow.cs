@@ -15,6 +15,21 @@ namespace DebugTools.Editor
         private const string AutoRestartOnDeath = "AutoRestartOnDeath";
         private const string GoIntoGameplayPrefs = "GoIntoGameplayPrefs";
 
+        private void OnBecameVisible()
+        {
+            SceneView.duringSceneGui += OnSceneGUI;
+        }
+
+        private void OnBecameInvisible()
+        {
+            SceneView.duringSceneGui -= OnSceneGUI;
+        }
+
+        private void OnSceneGUI(SceneView sceneView)
+        {
+            MeasuringTool();
+        }
+
         private void OnGUI()
         {
             GUILayout.Label("Debug Tools", EditorStyles.boldLabel);
@@ -60,6 +75,19 @@ namespace DebugTools.Editor
             if (GUILayout.Button("Open Persistent Data Path"))
             {
                 EditorUtility.RevealInFinder(Application.persistentDataPath);
+            }
+        }
+
+        private void MeasuringTool()
+        {
+            GameObject[] selectedObjects = Selection.gameObjects;
+            if (selectedObjects.Length == 2)
+            {
+                GameObject obj1 = selectedObjects[0];
+                GameObject obj2 = selectedObjects[1];
+                float distance = Vector3.Distance(obj1.transform.position, obj2.transform.position);
+                Handles.Label((obj1.transform.position + obj2.transform.position) / 2f, $"Distance: {distance:F2}");
+                Handles.DrawLine(obj1.transform.position, obj2.transform.position);
             }
         }
 

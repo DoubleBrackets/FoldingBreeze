@@ -36,6 +36,9 @@ namespace Framework.Gameplay
         [SerializeField]
         private Transform _stageParent;
 
+        [SerializeField]
+        private bool _blockMapStart;
+
         [Header("ValueSO (Write)")]
 
         [SerializeField]
@@ -57,7 +60,7 @@ namespace Framework.Gameplay
 
             _protagInScene.OnDeath += HandleProtagDeath;
 
-            if (!DevToolState.DoNotLoadMapOnStart)
+            if (!DevToolState.DoNotLoadMapOnStart && !_blockMapStart)
             {
                 _mapService.StartPlayingMap(FindAnyObjectByType<MapStage>());
             }
@@ -73,18 +76,21 @@ namespace Framework.Gameplay
 
         private void Update()
         {
-            MapUpdateResult updateResult = _mapService.UpdateInfo(_protagInScene.Position);
-
-            _killHeight.SetValue(updateResult.KillHeight);
-
-            if (updateResult.DidMoveToNextStage)
+            if (!DevToolState.DoNotLoadMapOnStart && !_blockMapStart)
             {
-                _scoreService.AddScore(1);
-            }
+                MapUpdateResult updateResult = _mapService.UpdateInfo(_protagInScene.Position);
 
-            if (updateResult.ShouldKillPlayer)
-            {
-                _protagInScene.Kill();
+                _killHeight.SetValue(updateResult.KillHeight);
+
+                if (updateResult.DidMoveToNextStage)
+                {
+                    _scoreService.AddScore(1);
+                }
+
+                if (updateResult.ShouldKillPlayer)
+                {
+                    _protagInScene.Kill();
+                }
             }
         }
 

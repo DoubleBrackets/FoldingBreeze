@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f773227c8b44bb9d03b28e47007720, type: 3}
   m_Name: DebugLevel
   m_EditorClassIdentifier: Assembly-CSharp::Framework.LevelLoading.GameLevelSO
-  <SceneName>k__BackingField: DebugScene
+  <SceneName>k__BackingField: BaseScene
   <LevelType>k__BackingField: 0
   <LevelText>k__BackingField: 

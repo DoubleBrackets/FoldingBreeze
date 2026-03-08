@@ -59,6 +59,8 @@ namespace Input
             {
                 UnsubscribeInputProvider(_currentInputProvider);
             }
+
+            _gameplayInputTypeValueSO.RemoveListener(this);
         }
 
         public void SwitchInputType(GameplayInputType newGameplayInputType)
@@ -68,7 +70,7 @@ namespace Input
                 return;
             }
 
-            Debug.Log($"Switching input type to {newGameplayInputType}");
+            Debug.Log($"Switching input type to {newGameplayInputType}", gameObject);
 
             if (newGameplayInputType == GameplayInputType.Conventional)
             {
@@ -98,7 +100,7 @@ namespace Input
 
         private void SubscribeInputProvider(InputProvider inputProvider)
         {
-            Debug.Log($"Subscribing to {inputProvider.name}", inputProvider.gameObject);
+            Debug.Log($"Subscribing to {inputProvider.name}", inputProvider);
             inputProvider.AimInputChanged += HandleAimInputChanged;
             inputProvider.DesiredFanStateChanged += HandleDesiredFanStateChanged;
             inputProvider.ToggleFanState += HandleToggleFanState;
@@ -168,10 +170,6 @@ namespace Input
         {
             _conventionalInputProvider.SetDefaultToCurrent();
             _customHardwareInputProvider.SetDefaultToCurrent();
-        }
-
-        public void WriteFanOn(bool fanOn)
-        {
         }
     }
 }

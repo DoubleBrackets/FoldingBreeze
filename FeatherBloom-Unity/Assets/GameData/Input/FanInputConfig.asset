@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e1907073b64bd49b3aa019a1ba2543, type: 3}
   m_Name: FanInputConfig
   m_EditorClassIdentifier: Assembly-CSharp::UI.CustomFanInputConfigSO
-  <FanLoseTrackingAngle>k__BackingField: 45
-  <FanRestartTrackingAngle>k__BackingField: 20
+  <FanLoseTrackingAngle>k__BackingField: 60
+  <FanRestartTrackingAngle>k__BackingField: 25
   <FanDeadZoneAngle>k__BackingField: 2
