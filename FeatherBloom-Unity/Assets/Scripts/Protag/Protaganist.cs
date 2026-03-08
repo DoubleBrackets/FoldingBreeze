@@ -156,7 +156,7 @@ namespace Protag
 
         private void HandleAimInputChange(AimInput aimInput)
         {
-            ProcessResult processResult = _inputProcessor.ProcessInput(aimInput);
+            ProcessResult processResult = _inputProcessor.ProcessInput(_inputService.CurrentInputType, aimInput);
             AimInput = processResult.ProcessedAimInput;
 
             // If untracked, slow down to give the player time to move between gestures and aiming

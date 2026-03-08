@@ -24928,10 +24928,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 1, y: 2.5, z: 0}
+  ShoulderOffset: {x: 1, y: 3, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 0.5
-  CameraDistance: 5.5
+  CameraDistance: 6
   AvoidObstacles:
     Enabled: 0
     CollisionFilter:
@@ -45467,7 +45467,7 @@ MonoBehaviour:
   _fanInputConfig: {fileID: 11400000, guid: 486dd85386a54ea4e8952913c1632786, type: 2}
   _untrackedInputTimeScale:
     Duration: 999999
-    ScaleFactor: 0.4
+    ScaleFactor: 0.25
     Identifier: ProtagUntrackedInput
   _onFanOpen: {fileID: 11400000, guid: f419e71f236659f46930a6323a6c32d5, type: 2}
   _onFanClose: {fileID: 11400000, guid: f52afcf43aac85346be2c4383d32376f, type: 2}

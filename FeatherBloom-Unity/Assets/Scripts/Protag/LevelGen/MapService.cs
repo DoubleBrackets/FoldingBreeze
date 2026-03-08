@@ -1,4 +1,5 @@
-using System;
+using DevTools;
+using Protag.LevelGen.StageRoster;
 using UnityEngine;
 
 namespace Protag.LevelGen
@@ -12,55 +13,56 @@ namespace Protag.LevelGen
         private MapStage _nextMapStage;
         private MapStage _previousMapStage;
 
-        private StageSO _lastChosenStage;
-
-        private StageRosterSO _stageRosterSO;
         private Transform _stageParent;
-        private Protaganist _protag;
+        private StageSelector _stageSelector;
 
-        public event Action OnStageProgressed;
+        /// <summary>
+        ///     Angular position used to place the current stage
+        /// </summary>
+        private float _currentStagePlacementAngularPosition;
 
-        public MapService(Transform stageParent, StageRosterSO stageRosterSO, Protaganist protag)
+        /// <summary>
+        ///     Y position used to place the current stage
+        /// </summary>
+        private float _currentStagePlacementPositionY;
+
+        /// <summary>
+        ///     How many times the player has looped around
+        /// </summary>
+        private int _playerLoopCount;
+
+        private float _previousPlayerAngularPos;
+
+        public MapService(Transform stageParent, StageSelector stageSelector)
         {
             _stageParent = stageParent;
-            _stageRosterSO = stageRosterSO;
-            _protag = protag;
+            _stageSelector = stageSelector;
         }
 
-        public void StartPlayingMap()
+        public void StartPlayingMap(MapStage initialStage = null)
         {
-            InitializeMap();
+            InitializeMap(initialStage);
         }
 
-        private StageRosterSO.RosterEntry GetRandomStageEntry()
+        private void InitializeMap(MapStage initialStage)
         {
-            return _stageRosterSO.GetRandomStageEntry(_lastChosenStage);
-        }
+            // Load the first two stages
+            // If a stage is in the scene when loading, use it as the initial stage
+            if (initialStage != null)
+            {
+                initialStage.Initialize(_currentStagePlacementPositionY, _currentStagePlacementAngularPosition);
+                _nextMapStage = initialStage;
+            }
+            else
+            {
+                _nextMapStage = InstantiateStageAtCurrentPosition(_stageSelector.GetNextStage(), false);
+            }
 
-        private void InitializeMap()
-        {
-            _currentMapStage = LoadInitialStage(_stageRosterSO.GetStartingStageEntry());
-            _currentMapStage.SetStageEnabled(true);
-            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage, false);
-            _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
-        }
-
-        private MapStage LoadInitialStage(StageRosterSO.RosterEntry stageEntry)
-        {
-            MapStage stagePrefab = stageEntry.Prefab;
-            MapStage stageInstance = GameObject.Instantiate(stagePrefab, _stageParent);
-            stageInstance.Initialize(Vector3.zero, Vector3.forward, _protag);
-            return stageInstance;
+            MoveToNextStage();
         }
 
         private void MoveToNextStage()
         {
-            // Unsubscribe
-            if (_nextMapStage)
-            {
-                _nextMapStage.OnStageSectionEntered.RemoveListener(HandleOnNextStageEntered);
-            }
-
             // Destroy previous
             if (_previousMapStage)
             {
@@ -68,36 +70,93 @@ namespace Protag.LevelGen
                 GameObject.Destroy(_previousMapStage.gameObject);
             }
 
-            _currentMapStage.SetStageEnabled(false);
-
-            // Update
             _previousMapStage = _currentMapStage;
+
+            if (_currentMapStage)
+            {
+                _currentStagePlacementPositionY += _currentMapStage.Height;
+                _currentStagePlacementAngularPosition += _currentMapStage.StageAngularWidth;
+            }
+
+            OnGUIHook.SetElement("Stage Placement Y", _currentStagePlacementPositionY.ToString());
+
             _currentMapStage = _nextMapStage;
             Debug.Log($"Moved to new current stage: {_currentMapStage.name}");
 
-            _currentMapStage.SetStageEnabled(true);
-
-            _nextMapStage = LoadStage(GetRandomStageEntry(), _currentMapStage, true);
-            Debug.Log($"Loaded new stage: {_nextMapStage.name}");
-
-            // Subscribe
-            _nextMapStage.OnStageSectionEntered.AddListener(HandleOnNextStageEntered);
-
-            OnStageProgressed?.Invoke();
+            _nextMapStage = InstantiateStageAtNextPosition(_stageSelector.GetNextStage(), true);
+            Debug.Log($"Instantiated new stage: {_nextMapStage.name}");
         }
 
-        private void HandleOnNextStageEntered()
+        public MapUpdateResult UpdateInfo(Vector3 protagPos)
         {
-            MoveToNextStage();
+            var shouldKillProtag = false;
+            var didProgressStage = false;
+            float killHeight = _currentStagePlacementPositionY + _currentMapStage.KillZoneVerticalPos;
+            if (protagPos.y < killHeight)
+            {
+                shouldKillProtag = true;
+            }
+
+            float protagAngularPos = Mathf.Atan2(protagPos.z, protagPos.x) * Mathf.Rad2Deg;
+
+            if (protagAngularPos < -90 && _previousPlayerAngularPos > 90)
+            {
+                // Player has looped around
+                _playerLoopCount++;
+            }
+
+            _previousPlayerAngularPos = protagAngularPos;
+
+            float currentStageEndAngle = _currentMapStage.EndingAngularPos;
+            float trueProtagAngularPos = protagAngularPos + _playerLoopCount * 360f;
+
+            OnGUIHook.SetElement("Player Loop Count", _playerLoopCount.ToString());
+            OnGUIHook.SetElement("Protag Angular Pos", protagAngularPos.ToString());
+            OnGUIHook.SetElement("True Protag Angular Pos", trueProtagAngularPos.ToString());
+            OnGUIHook.SetElement("Current Stage End Angle", currentStageEndAngle.ToString());
+            OnGUIHook.SetElement("Kill Height", killHeight.ToString());
+            OnGUIHook.SetElement("Protag Y Pos", protagPos.y.ToString());
+
+            if (trueProtagAngularPos > currentStageEndAngle)
+            {
+                didProgressStage = true;
+                MoveToNextStage();
+            }
+
+            return new MapUpdateResult
+            {
+                ShouldKillPlayer = shouldKillProtag,
+                DidMoveToNextStage = didProgressStage,
+                KillHeight = killHeight
+            };
         }
 
-        private MapStage LoadStage(StageRosterSO.RosterEntry stageEntry, MapStage previousStageInstance, bool riseAnim)
+        private MapStage InstantiateStageAtCurrentPosition(StageSO stage, bool riseAnim)
         {
-            MapStage stagePrefab = stageEntry.Prefab;
+            return InstantiateStage(
+                stage,
+                _currentStagePlacementPositionY,
+                _currentStagePlacementAngularPosition,
+                riseAnim);
+        }
+
+        private MapStage InstantiateStageAtNextPosition(StageSO stage, bool riseAnim)
+        {
+            return InstantiateStage(
+                stage,
+                _currentStagePlacementPositionY + _currentMapStage.Height,
+                _currentStagePlacementAngularPosition + _currentMapStage.StageAngularWidth,
+                riseAnim);
+        }
+
+        private MapStage InstantiateStage(StageSO stage,
+            float stageStartPositionY,
+            float stageAngularStartPosition,
+            bool riseAnim)
+        {
+            MapStage stagePrefab = stage.StagePrefab;
             MapStage stageInstance = GameObject.Instantiate(stagePrefab, _stageParent);
-            stageInstance.Initialize(previousStageInstance.GetEndPosition(), previousStageInstance.GetEndForward(),
-                _protag, riseAnim);
-            _lastChosenStage = stageEntry.Stage;
+            stageInstance.Initialize(stageStartPositionY, stageAngularStartPosition, riseAnim);
             return stageInstance;
         }
     }

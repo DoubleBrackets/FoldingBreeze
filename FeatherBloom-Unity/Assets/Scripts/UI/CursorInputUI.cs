@@ -62,7 +62,7 @@ namespace UI
 
         private void HandleAimInputChange(AimInput aim)
         {
-            ProcessResult processResult = _inputProcessor.ProcessInput(aim);
+            ProcessResult processResult = _inputProcessor.ProcessInput(_inputService.CurrentInputType, aim);
 
             _trackingCanvasGroup.alpha = processResult.CurrentState == InputProcessorState.Tracking ? 1 : 0;
             _untrackedCanvasGroup.alpha = processResult.CurrentState == InputProcessorState.Untracked ? 1 : 0;

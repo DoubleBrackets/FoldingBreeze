@@ -31,6 +31,7 @@ namespace Framework.LevelLoading
         /// <param name="levelToLoad"></param>
         public async UniTask LoadLevel(GameLevelSO levelToLoad)
         {
+            Debug.Log($"Loading level {levelToLoad.name}");
             if (_isLoading)
             {
                 if (_levelLoadQueue.Count < 1)

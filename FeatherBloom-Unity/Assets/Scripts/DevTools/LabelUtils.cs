@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace DevTools
 {
-    public class LabelUtils : MonoBehaviour
+    public static class LabelUtils
     {
         private static GUIStyle labelStyle;
 

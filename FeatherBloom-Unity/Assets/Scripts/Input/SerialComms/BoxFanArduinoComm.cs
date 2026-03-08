@@ -2,6 +2,7 @@ using System;
 using System.IO.Ports;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DevTools;
 using UnityEngine;
 using ValueSO.Core;
 
@@ -87,7 +88,7 @@ namespace Input.SerialComms
 
         private void DrawDebugGUI()
         {
-            GUILayout.Label("Connected to arduino: " + (_serialPort == null ? "No" : _serialPort.IsOpen));
+            OnGUIHook.SetElement("Connected to Box Arduino", _status.Value);
         }
 
         private void InitializeSerialPort(string arduinoPort)
