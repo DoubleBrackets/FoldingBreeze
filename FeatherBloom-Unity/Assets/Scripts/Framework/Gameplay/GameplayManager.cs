@@ -33,6 +33,9 @@ namespace Framework.Gameplay
         [SerializeField]
         private Transform _spawnPoint;
 
+        [SerializeField]
+        private Transform _stageParent;
+
         [Header("ValueSO (Write)")]
 
         [SerializeField]
@@ -47,7 +50,7 @@ namespace Framework.Gameplay
             _scoreService = ServiceLocator.GetService<ScoreService>();
             _levelLoader = ServiceLocator.GetService<LevelLoader>();
 
-            _mapService = new MapService(transform, new StageSelector(_stageRosterSO));
+            _mapService = new MapService(_stageParent, new StageSelector(_stageRosterSO));
             _protagInScene.Initialize(
                 ServiceLocator.GetService<TimeScaleService>(),
                 ServiceLocator.GetService<GameplayInputService>());
