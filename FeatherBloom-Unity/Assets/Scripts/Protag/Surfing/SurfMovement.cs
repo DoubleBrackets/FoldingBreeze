@@ -12,38 +12,15 @@ namespace Protag.Surfing
         [SerializeField]
         private Transform _body;
 
-        [Header("Config")]
-
-        [SerializeField]
-        private AnimationCurve _steeringCurve;
-
-        [SerializeField]
-        private float _steeringMaxAngularVelocity;
-
-        [SerializeField]
-        private float _moveAcceleration;
-
-        [Tooltip("Speed range at which the player will accelerate")]
-        [SerializeField]
-        private float _maxMoveSpeed;
-
-        [SerializeField]
-        private float _moveSpeedCap;
-
-        [SerializeField]
-        private float _minMoveSpeed;
-
-        [SerializeField]
-        private float _gravityAccelGround;
-
-        [SerializeField]
-        private float _gravityAccelAir;
-
         public Vector3 CurrentVelocity => _rb.linearVelocity;
 
-        public void Tick(float horizontalAim, GroundChecker.GroundedInfo info, float boost, float deltaTime)
+        public void Tick(float horizontalAim,
+            GroundChecker.GroundedInfo info,
+            SurfConfigSO config,
+            float boost,
+            float deltaTime)
         {
-            horizontalAim = _steeringCurve.Evaluate(Mathf.Abs(horizontalAim)) * Mathf.Sign(horizontalAim);
+            horizontalAim = config.SteeringCurve.Evaluate(Mathf.Abs(horizontalAim)) * Mathf.Sign(horizontalAim);
             Vector3 normal = info.GroundNormal;
             Vector3 initialVel = _rb.linearVelocity;
             Vector3 transientVel = initialVel;
@@ -57,20 +34,20 @@ namespace Protag.Surfing
             }
 
             // Steering
-            float angularVelocity = _steeringMaxAngularVelocity * horizontalAim;
+            float angularVelocity = config.SteeringMaxAngularVelocity * horizontalAim;
             Vector3 newHInput = Quaternion.AngleAxis(angularVelocity * deltaTime, normal) * currentHInput;
 
             // Calculate desired horizontal velocity w respect to ground plane
             float currentHSpeed = currentHVelocity.magnitude;
 
             Vector3 desiredHVel = Vector3.zero;
-            if (currentHSpeed >= _maxMoveSpeed)
+            if (currentHSpeed >= config.MaxMoveSpeed)
             {
                 desiredHVel = newHInput * currentHSpeed;
             }
             else
             {
-                desiredHVel = newHInput * _maxMoveSpeed;
+                desiredHVel = newHInput * config.MaxMoveSpeed;
             }
 
             Debug.DrawLine(_body.position, _body.position + newHInput.normalized, Color.red, 1f);
@@ -79,7 +56,7 @@ namespace Protag.Surfing
             Vector3 newHVelocity = Vector3.MoveTowards(
                 currentHVelocity,
                 desiredHVel,
-                _moveAcceleration * deltaTime);
+                config.MoveAcceleration * deltaTime);
 
             if (boost > 0f)
             {
@@ -87,21 +64,21 @@ namespace Protag.Surfing
                 newHVelocity += newHVelocity.normalized * boost;
             }
 
-            if (newHVelocity.magnitude < _minMoveSpeed)
+            if (newHVelocity.magnitude < config.MinMoveSpeed)
             {
-                newHVelocity = newHVelocity.normalized * _minMoveSpeed;
+                newHVelocity = newHVelocity.normalized * config.MinMoveSpeed;
             }
 
-            if (newHVelocity.magnitude > _moveSpeedCap)
+            if (newHVelocity.magnitude > config.MoveSpeedCap)
             {
-                newHVelocity = newHVelocity.normalized * _moveSpeedCap;
+                newHVelocity = newHVelocity.normalized * config.MoveSpeedCap;
             }
 
             // Apply
             transientVel += newHVelocity - currentHVelocity;
 
             // Gravity
-            float gravityAccel = info.IsGrounded ? _gravityAccelGround : _gravityAccelAir;
+            float gravityAccel = info.IsGrounded ? config.GravityAccelGround : config.GravityAccelAir;
             Vector3 gravity = Vector3.down * gravityAccel * deltaTime;
             transientVel += gravity;
 

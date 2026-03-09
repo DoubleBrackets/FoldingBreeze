@@ -1,15 +1,15 @@
 using Events;
-using Framework;
-using Framework.Timescaling;
-using Protag.Abilities;
 using Protag.GestureHandlers;
+using Protag.Gust;
+using Protag.Presentation;
 using Protag.Surfing;
+using Protag.Updraft;
 using StateMachine;
 using UnityEngine;
 
 namespace Protag.States
 {
-    public class ProtagSurfState : ProtagState, IUpdraftHandler, IGustHandler, IBreezeHandler
+    public class ProtagSurfState : ProtagState, IUpdraftHandler, IBreezeHandler
     {
         [SerializeField]
         private SurfMovement _surfMovement;
@@ -36,7 +36,7 @@ namespace Protag.States
         private GustAbility _gustAbility;
 
         [SerializeField]
-        private FeatherResources _featherResources;
+        private FeatherSystem.FeatherSystem _featherSystem;
 
         [Header("States")]
 
@@ -49,10 +49,10 @@ namespace Protag.States
         [Header("Config")]
 
         [SerializeField]
-        private float _verticalImpactBoostRatio;
+        private SurfConfigSO _surfConfig;
 
         [SerializeField]
-        private Vector2 _verticalImpactBoostRange;
+        private UpdraftConfigSO _updraftConfig;
 
         [Header("Event Out")]
 
@@ -68,11 +68,8 @@ namespace Protag.States
         private float _boost;
         private bool _surfing;
 
-        private TimeScaleService _timeScaleService;
-
         public override void OnInitialize()
         {
-            _timeScaleService = ServiceLocator.GetService<TimeScaleService>();
             _impactSaver.OnTerrainImpact.AddListener(HandleTerrainImpact);
         }
 
@@ -86,7 +83,6 @@ namespace Protag.States
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
             Protaganist.RegisterUpdraftHandler(this);
-            Protaganist.RegisterGustHandler(this);
             Protaganist.RegisterFanSelfHandler(this);
 
             _surfing = false;
@@ -106,37 +102,21 @@ namespace Protag.States
 
         public GestureHandleResult HandleBreeze()
         {
-            if (Protaganist.IsFanOpen)
-            {
-                bool didFanSelf = _featherResources.FanSelf();
-                return new GestureHandleResult
-                {
-                    DidSucceed = didFanSelf, TimeslowdownBlockDuration = _featherResources.TimeSlowdownBlockDuration
-                };
-            }
+            // if (Protaganist.IsFanOpen)
+            // {
+            //     bool didFanSelf = _featherSystem.FanSelf();
+            //     return new GestureHandleResult
+            //     {
+            //         DidSucceed = didFanSelf, TimeslowdownBlockDuration = _featherSystem.TimeSlowdownBlockDuration
+            //     };
+            // }
 
             return new GestureHandleResult { DidSucceed = false, TimeslowdownBlockDuration = 0f };
         }
 
-        public GestureHandleResult HandleGust()
-        {
-            if (Protaganist.IsFanOpen && _featherResources.HasFeathers())
-            {
-                bool didGust = _gustAbility.TryGust();
-                if (didGust)
-                {
-                    _featherResources.TryConsumeFeathers(1);
-                    return new GestureHandleResult
-                        { DidSucceed = true, TimeslowdownBlockDuration = _gustAbility.TimeSlowdownBlockDuration };
-                }
-            }
-
-            return new GestureHandleResult { DidSucceed = false };
-        }
-
         public GestureHandleResult HandleUpdraft()
         {
-            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            if (Protaganist.IsFanOpen && _featherSystem.TryConsumeFeathers(_updraftConfig.FeathersConsumed))
             {
                 StateManager.SwitchState(_updraftState);
                 return new GestureHandleResult
@@ -153,17 +133,20 @@ namespace Protag.States
 
         private void HandleTerrainImpact(ImpactSaver.ImpactInfo info)
         {
+            float verticalBoostImpactRatio = _surfConfig.VerticalImpactBoostRatio;
+            Vector2 verticalBoostRange = _surfConfig.VerticalImpactBoostRange;
+
             // Save vertical impulse as boost
             Vector3 impulse = info.Impulse;
-            _boost = Mathf.Max(0, impulse.y) * _verticalImpactBoostRatio;
+            _boost = Mathf.Max(0, impulse.y) * verticalBoostImpactRatio;
 
-            if (_boost < _verticalImpactBoostRange.x)
+            if (_boost < verticalBoostRange.x)
             {
                 _boost = 0;
             }
-            else if (_boost > _verticalImpactBoostRange.y)
+            else if (_boost > verticalBoostRange.y)
             {
-                _boost = _verticalImpactBoostRange.y;
+                _boost = verticalBoostRange.y;
             }
         }
 
@@ -177,7 +160,7 @@ namespace Protag.States
             float horizontalInput = Protaganist.IsFanOpen ? 0 : Protaganist.AimInput.x;
 
             GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
-            _surfMovement.Tick(horizontalInput, groundInfo, _boost, deltaTime);
+            _surfMovement.Tick(horizontalInput, groundInfo, _surfConfig, _boost, deltaTime);
             _boost = 0;
             _surfVisuals.UpdateSurfVisuals(groundInfo, _surfMovement.CurrentVelocity, horizontalInput, deltaTime);
 
@@ -190,6 +173,11 @@ namespace Protag.States
             _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
 
             bool isSurfing = groundInfo.IsGrounded;
+
+            if (isSurfing)
+            {
+                _featherSystem.RefillFeathers();
+            }
 
             if (!_surfing && isSurfing)
             {

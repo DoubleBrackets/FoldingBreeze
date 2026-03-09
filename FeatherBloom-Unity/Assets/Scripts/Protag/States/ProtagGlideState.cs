@@ -1,10 +1,12 @@
 using Framework;
 using Input.SerialComms;
-using Protag.Abilities;
 using Protag.GestureHandlers;
 using Protag.Gliding;
+using Protag.Presentation;
+using Protag.Updraft;
 using StateMachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Protag.States
 {
@@ -31,14 +33,23 @@ namespace Protag.States
         [SerializeField]
         private InteractableDetector _interactableDetector;
 
+        [FormerlySerializedAs("_featherResources")]
         [SerializeField]
-        private FeatherResources _featherResources;
+        private FeatherSystem.FeatherSystem _featherSystem;
 
         [SerializeField]
         private UpdraftState _updraftState;
 
         [SerializeField]
         private Animator _animator;
+
+        [Header("Config")]
+
+        [SerializeField]
+        private GlideConfigSO _glideConfig;
+
+        [SerializeField]
+        private UpdraftConfigSO _updraftConfig;
 
         private BoxFanArduinoComm _boxFanArduinoComm;
 
@@ -61,7 +72,7 @@ namespace Protag.States
 
         public GestureHandleResult HandleUpdraft()
         {
-            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
+            if (Protaganist.IsFanOpen && _featherSystem.TryConsumeFeathers(_updraftConfig.FeathersConsumed))
             {
                 StateManager.SwitchState(_updraftState);
                 return new GestureHandleResult
@@ -88,16 +99,26 @@ namespace Protag.States
         {
             base.OnFixedUpdate();
 
+            bool canGlide =
+                _featherSystem.TryConsumeFeathers(_glideConfig.FeatherConsumptionPerSecond * Time.fixedDeltaTime);
+
             GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
 
-            float horizontalInput = Protaganist.AimInput.x;
-            float verticalInput = Protaganist.AimInput.y;
+            Vector2 aim = Protaganist.AimInput;
             float deltaTime = Time.fixedDeltaTime;
 
-            _glideMovement.Tick(horizontalInput, verticalInput, deltaTime);
-            _glideVisuals.UpdateVisuals(horizontalInput, verticalInput, _glideMovement.CurrentVelocity, deltaTime);
+            if (canGlide)
+            {
+                _glideMovement.Tick(aim, _glideConfig, deltaTime);
+            }
+            else
+            {
+                _glideMovement.Tick(Vector2.down, _glideConfig, deltaTime);
+            }
 
-            _camera.UpdateProtagCamera(horizontalInput, deltaTime, _glideMovement.CurrentVelocity);
+            _glideVisuals.UpdateVisuals(aim, _glideMovement.CurrentVelocity, deltaTime);
+
+            _camera.UpdateProtagCamera(aim.x, deltaTime, _glideMovement.CurrentVelocity);
 
             _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
             _animator.SetBool("FanOpen", Protaganist.IsFanOpen);

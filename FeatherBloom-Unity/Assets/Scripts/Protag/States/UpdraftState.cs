@@ -3,12 +3,15 @@ using Framework;
 using Framework.Timescaling;
 using Input.SerialComms;
 using Protag.Surfing;
+using Protag.Updraft;
 using UnityEngine;
 
 namespace Protag.States
 {
     public class UpdraftState : ProtagState
     {
+        [Header("Depends")]
+
         [SerializeField]
         private SurfMovement _surfMovement;
 
@@ -21,6 +24,11 @@ namespace Protag.States
         [SerializeField]
         private InteractableDetector _interactableDetector;
 
+        [Header("Config")]
+
+        [SerializeField]
+        private UpdraftConfigSO _updraftConfig;
+
         [Header("Stateout")]
 
         [SerializeField]
@@ -28,23 +36,6 @@ namespace Protag.States
 
         [SerializeField]
         private ProtagState _groundState;
-
-        [Header("Config")]
-
-        [SerializeField]
-        private float _updraftVelocity;
-
-        [SerializeField]
-        private AnimationCurve _updraftVelocityCurve;
-
-        [SerializeField]
-        private float _duration;
-
-        [SerializeField]
-        private float _horizontalVelocityKeepRatio;
-
-        [SerializeField]
-        private float _timeSlowdownBlockDuration;
 
         [Header("Event Out")]
 
@@ -54,7 +45,7 @@ namespace Protag.States
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
 
-        public float TimeSlowdownBlockDuration => _timeSlowdownBlockDuration;
+        public float TimeSlowdownBlockDuration => _updraftConfig.TimeSlowdownBlockDuration;
 
         private float _stateTimer;
 
@@ -76,14 +67,14 @@ namespace Protag.States
             base.OnEnter();
             _groundChecker.ForceUnground(0.1f);
             _onUpdraft.Raise();
-            _stateTimer = _duration;
+            _stateTimer = _updraftConfig.Duration;
             _animator.SetBool("Updraft", true);
 
             GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
             _launchNormal = groundInfo.GroundNormal;
 
             _horizontalVelocity = Vector3.ProjectOnPlane(_surfMovement.CurrentVelocity, _launchNormal)
-                                  * _horizontalVelocityKeepRatio;
+                                  * _updraftConfig.HorizontalVelocityKeepRatio;
 
             UpdateVelocity(_launchNormal);
 
@@ -131,9 +122,9 @@ namespace Protag.States
 
         private void UpdateVelocity(Vector3 normal)
         {
-            float t = 1 - _stateTimer / _duration;
-            float ratio = Mathf.Clamp01(_updraftVelocityCurve.Evaluate(t));
-            _surfMovement.SetVelocity(normal * _updraftVelocity * ratio + _horizontalVelocity);
+            float t = 1 - _stateTimer / _updraftConfig.Duration;
+            float ratio = Mathf.Clamp01(_updraftConfig.UpdraftVelocityCurve.Evaluate(t));
+            _surfMovement.SetVelocity(normal * _updraftConfig.UpdraftVelocity * ratio + _horizontalVelocity);
         }
     }
 }

@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace Protag
+namespace Protag.Presentation
 {
     public class ProtagCamera : MonoBehaviour
     {

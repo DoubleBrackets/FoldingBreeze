@@ -2,8 +2,11 @@ using Events;
 using Interactables;
 using UnityEngine;
 
-namespace Protag.Abilities
+namespace Protag.Gust
 {
+    /// <summary>
+    ///     UNUSED
+    /// </summary>
     public class GustAbility : MonoBehaviour
     {
         [SerializeField]

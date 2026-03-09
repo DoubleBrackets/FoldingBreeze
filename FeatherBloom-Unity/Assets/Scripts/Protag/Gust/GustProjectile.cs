@@ -3,7 +3,7 @@ using Interactables;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Protag.Abilities
+namespace Protag.Gust
 {
     public class GustProjectile : MonoBehaviour
     {

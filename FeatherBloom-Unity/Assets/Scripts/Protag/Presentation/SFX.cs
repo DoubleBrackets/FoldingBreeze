@@ -1,7 +1,7 @@
 using FMODUnity;
 using UnityEngine;
 
-namespace Protag
+namespace Protag.Presentation
 {
     public class ProtagSFX : MonoBehaviour
     {
