@@ -1,4 +1,5 @@
 using FMODUnity;
+using Protag.Movement;
 using UnityEngine;
 
 namespace Protag.Presentation
@@ -31,7 +32,7 @@ namespace Protag.Presentation
             RuntimeManager.StudioSystem.setParameterByName("SlidingSpeed", slideT);
             RuntimeManager.StudioSystem.setParameterByName("GlidingSpeed", glideT);
 
-            bool isGrounded = _groundChecker.CheckGrounded().IsGrounded;
+            bool isGrounded = _groundChecker.LastGroundedInfo.IsGrounded;
 
             if (wasGrounded && !isGrounded)
             {

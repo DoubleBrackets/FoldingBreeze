@@ -14878,6 +14878,59 @@ MonoBehaviour:
   _particleSystems:
   - {fileID: 2908355477411712215}
   _valueSO: {fileID: 11400000, guid: ec8a857ea618dee42961d346b73c1c4b, type: 2}
+--- !u!1 &892843308096379142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3044124843449617829}
+  - component: {fileID: 408643167723278353}
+  m_Layer: 0
+  m_Name: HealingState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3044124843449617829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892843308096379142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7326240851067418800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &408643167723278353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892843308096379142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0befee9b408d4ed89a37b1f631a14904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.States.HealingState
+  Protaganist: {fileID: 6542097491895686323}
+  _onEnterState:
+    m_PersistentCalls:
+      m_Calls: []
+  _onExitState:
+    m_PersistentCalls:
+      m_Calls: []
+  _healingDuration: 0.5
+  _isHealingValueSO: {fileID: 11400000, guid: fa6033acda9025344977a65d0f176868, type: 2}
 --- !u!1 &970896470689937154
 GameObject:
   m_ObjectHideFlags: 0
@@ -19865,19 +19918,74 @@ MonoBehaviour:
   _onExitState:
     m_PersistentCalls:
       m_Calls: []
-  _groundChecker: {fileID: 1194738970322795602}
   _glideMovement: {fileID: 9178911053336663905}
   _glideVisuals: {fileID: 691692595262682336}
-  _surfState: {fileID: 5082696597094764826}
   _camera: {fileID: 2328791997766467776}
   _interactableDetector: {fileID: 2666968306857408712}
-  _featherSystem: {fileID: 7919265020599881539}
-  _updraftState: {fileID: 4953540539600997159}
-  _animator: {fileID: 6131714454897771}
+  _featherManager: {fileID: 7919265020599881539}
   _isGlidingValueSO: {fileID: 11400000, guid: ec8a857ea618dee42961d346b73c1c4b, type: 2}
-  _isFallingWithWingsValueSO: {fileID: 11400000, guid: 456ef505d05494349aee50504bb88173, type: 2}
   _glideConfig: {fileID: 11400000, guid: 5a405e5ee4573fb479fd35144b18bca7, type: 2}
-  _updraftConfig: {fileID: 11400000, guid: f5de4d34eb0477248b4ea2e37083d132, type: 2}
+--- !u!1 &1685716998108369935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3291185952888397286}
+  - component: {fileID: 8830190563429955322}
+  m_Layer: 0
+  m_Name: DashSurfState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3291185952888397286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685716998108369935}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7326240851067418800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8830190563429955322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685716998108369935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f180354136ff4612a81d321d33a7be7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.States.ProtagSurfDashState
+  Protaganist: {fileID: 6542097491895686323}
+  _onEnterState:
+    m_PersistentCalls:
+      m_Calls: []
+  _onExitState:
+    m_PersistentCalls:
+      m_Calls: []
+  _surfMovement: {fileID: 3492595939223294707}
+  _surfVisuals: {fileID: 5676366852039844623}
+  _groundChecker: {fileID: 1194738970322795602}
+  _protagCamera: {fileID: 2328791997766467776}
+  _impactSaver: {fileID: 8265371946047491385}
+  _interactableDetector: {fileID: 2666968306857408712}
+  _featherManager: {fileID: 7919265020599881539}
+  _surfConfig: {fileID: 11400000, guid: c128c3c04577b1046af9fbc5f35b279d, type: 2}
+  _isSurfDashing: {fileID: 11400000, guid: 3259504a3a02ea546be81c2c8644596b, type: 2}
+  _isSurfing: {fileID: 11400000, guid: 810b7c9d5a28249488cfc31d10d207d3, type: 2}
 --- !u!1 &1815626560114747217
 GameObject:
   m_ObjectHideFlags: 0
@@ -20059,6 +20167,58 @@ MonoBehaviour:
   _sfxEmitter: {fileID: 3133077843817624137}
   _valueSO: {fileID: 11400000, guid: a4228f49837c9be41ac692d5f31e13bd, type: 2}
   _valueToPlayOn: 0
+--- !u!1 &1860543332868485239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7493577144887006595}
+  - component: {fileID: 9181812022110340529}
+  m_Layer: 0
+  m_Name: DeadState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7493577144887006595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860543332868485239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7326240851067418800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9181812022110340529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860543332868485239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cb62d9e8594fe9ac55a39b35fa1f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.States.ProtagDeadState
+  Protaganist: {fileID: 6542097491895686323}
+  _onEnterState:
+    m_PersistentCalls:
+      m_Calls: []
+  _onExitState:
+    m_PersistentCalls:
+      m_Calls: []
+  _isDeadValueSO: {fileID: 11400000, guid: e7b9bf4943c655a408f5229a6aa0f2f3, type: 2}
 --- !u!1 &1998616058881425856
 GameObject:
   m_ObjectHideFlags: 0
@@ -20180,7 +20340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2212677884146913800}
-  - component: {fileID: 4465051673333989468}
+  - component: {fileID: 3034504066753544068}
   m_Layer: 0
   m_Name: FanSelfEffects
   m_TagString: Untagged
@@ -20204,7 +20364,7 @@ Transform:
   - {fileID: 5603957367758486668}
   m_Father: {fileID: 6087157668913140926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4465051673333989468
+--- !u!114 &3034504066753544068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20213,11 +20373,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 2191745372706929598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf7ad7c3789c0cd43a6fa605aeb89e88, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c70f2cc19594459822b802f40b7fce9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _event: {fileID: 11400000, guid: f0b6b6727b879514ca33a5d6f9d81046, type: 2}
-  _particleSystem: {fileID: 6127607481988604847}
+  m_EditorClassIdentifier: Assembly-CSharp::Presentation.Particles.ValueSOParticlePlayer
+  _particleSystems:
+  - {fileID: 6127607481988604847}
+  _valueSO: {fileID: 11400000, guid: fa6033acda9025344977a65d0f176868, type: 2}
+  _valueToPlayOn: 1
+--- !u!1 &2433104952930101226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306094421374128671}
+  - component: {fileID: 5610270229749242474}
+  m_Layer: 0
+  m_Name: Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1306094421374128671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2433104952930101226}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6087157668913140926}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5610270229749242474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2433104952930101226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7398776a894fe785e35dd7d89fba3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.Presentation.ProtagAnimator
+  _animator: {fileID: 6131714454897771}
+  _isGroundedValueSO: {fileID: 11400000, guid: 89e8bcacc54b364478a80f43af7d3752, type: 2}
+  _fanOpenValueSO: {fileID: 11400000, guid: a4228f49837c9be41ac692d5f31e13bd, type: 2}
+  _isUpdraftingValueSO: {fileID: 11400000, guid: 45159dbb827766443bb268f94db350ef, type: 2}
 --- !u!1 &2824551364986521125
 GameObject:
   m_ObjectHideFlags: 0
@@ -20260,7 +20470,7 @@ GameObject:
   - component: {fileID: 4839183837621701837}
   - component: {fileID: 5082696597094764826}
   m_Layer: 0
-  m_Name: SurfState
+  m_Name: WingSurfState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20306,15 +20516,9 @@ MonoBehaviour:
   _protagCamera: {fileID: 2328791997766467776}
   _impactSaver: {fileID: 8265371946047491385}
   _interactableDetector: {fileID: 2666968306857408712}
-  _animator: {fileID: 6131714454897771}
-  _featherSystem: {fileID: 7919265020599881539}
-  _updraftState: {fileID: 4953540539600997159}
-  _glideState: {fileID: 4375414651475397221}
-  _fanClosedSurfConfig: {fileID: 11400000, guid: c84f6c1c14950c748a20d348890a11f7, type: 2}
-  _fanOpenSurfConfig: {fileID: 11400000, guid: c128c3c04577b1046af9fbc5f35b279d, type: 2}
-  _updraftConfig: {fileID: 11400000, guid: f5de4d34eb0477248b4ea2e37083d132, type: 2}
-  _isSurfingWingsClosed: {fileID: 11400000, guid: 3259504a3a02ea546be81c2c8644596b, type: 2}
-  _isSurfingWingsOpened: {fileID: 11400000, guid: 919a75148088362418a76fc0fb4876b4, type: 2}
+  _featherManager: {fileID: 7919265020599881539}
+  _surfConfig: {fileID: 11400000, guid: c128c3c04577b1046af9fbc5f35b279d, type: 2}
+  _isSurfWinging: {fileID: 11400000, guid: 919a75148088362418a76fc0fb4876b4, type: 2}
   _isSurfing: {fileID: 11400000, guid: 810b7c9d5a28249488cfc31d10d207d3, type: 2}
 --- !u!1 &2962010631464319757
 GameObject:
@@ -30196,6 +30400,62 @@ MonoBehaviour:
   OnTerrainImpact:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &3493359608405006282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7150487125395915}
+  - component: {fileID: 7082257858323411899}
+  m_Layer: 0
+  m_Name: DiveState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7150487125395915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493359608405006282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7326240851067418800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7082257858323411899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493359608405006282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880a76abfc6c413fbb6ff53ce27fae29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.States.ProtagDiveState
+  Protaganist: {fileID: 6542097491895686323}
+  _onEnterState:
+    m_PersistentCalls:
+      m_Calls: []
+  _onExitState:
+    m_PersistentCalls:
+      m_Calls: []
+  _glideMovement: {fileID: 9178911053336663905}
+  _glideVisuals: {fileID: 691692595262682336}
+  _camera: {fileID: 2328791997766467776}
+  _isDivingValueSO: {fileID: 11400000, guid: f7eed0a4ec2bef64b96c54244b777efc, type: 2}
+  _diveConfig: {fileID: 11400000, guid: 5a405e5ee4573fb479fd35144b18bca7, type: 2}
 --- !u!1 &3990375152382687530
 GameObject:
   m_ObjectHideFlags: 0
@@ -40091,6 +40351,7 @@ Transform:
   - {fileID: 1559071466954281247}
   - {fileID: 2212677884146913800}
   - {fileID: 9096179903815832486}
+  - {fileID: 1306094421374128671}
   m_Father: {fileID: 1640917518313358666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4650625040535641624
@@ -40103,6 +40364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7326240851067418800}
   - component: {fileID: 8717534845422125016}
+  - component: {fileID: 8207838429382232987}
   m_Layer: 0
   m_Name: StateMachine
   m_TagString: Untagged
@@ -40124,8 +40386,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5154078307052616547}
+  - {fileID: 3044124843449617829}
+  - {fileID: 7493577144887006595}
+  - {fileID: 3291185952888397286}
   - {fileID: 4839183837621701837}
   - {fileID: 177330020379392454}
+  - {fileID: 7150487125395915}
+  - {fileID: 7835094037889640068}
   m_Father: {fileID: 8169892510337244661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8717534845422125016
@@ -40141,10 +40408,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _states:
+  - {fileID: 4953540539600997159}
+  - {fileID: 408643167723278353}
+  - {fileID: 9181812022110340529}
+  - {fileID: 8830190563429955322}
   - {fileID: 5082696597094764826}
   - {fileID: 4375414651475397221}
-  - {fileID: 4953540539600997159}
-  _initialState: {fileID: 5082696597094764826}
+  - {fileID: 7082257858323411899}
+  - {fileID: 6941947643623480610}
+  _initialState: {fileID: 7082257858323411899}
+--- !u!114 &8207838429382232987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4650625040535641624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc19471c302047539103efb44e3f0d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.ProtagStateDecisionTree
+  _updraftState: {fileID: 4953540539600997159}
+  _deadState: {fileID: 9181812022110340529}
+  _healingState: {fileID: 408643167723278353}
+  _dashSurfState: {fileID: 8830190563429955322}
+  _surfWingState: {fileID: 5082696597094764826}
+  _glideState: {fileID: 4375414651475397221}
+  _diveState: {fileID: 7082257858323411899}
+  _tumbleState: {fileID: 6941947643623480610}
 --- !u!1 &5266477342426628434
 GameObject:
   m_ObjectHideFlags: 0
@@ -40194,16 +40486,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bdf413a2cfab834f900e608c077a487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _protagStateDecisionTree: {fileID: 8207838429382232987}
   _protagStateMachine: {fileID: 8717534845422125016}
   _protagBody: {fileID: 1640917518313358666}
   _protagRigidbody: {fileID: 4614245837032767955}
+  _protagGroundChecker: {fileID: 1194738970322795602}
   _fanInputConfig: {fileID: 11400000, guid: 486dd85386a54ea4e8952913c1632786, type: 2}
+  _resetTimeAfterDeath: 4
   _untrackedInputTimeScale:
     Duration: 999999
     ScaleFactor: 0.25
     Identifier: ProtagUntrackedInput
-  _onDeath: {fileID: 11400000, guid: fe0424784a627624ebbc99b62385ec63, type: 2}
   _isFanOpen: {fileID: 11400000, guid: a4228f49837c9be41ac692d5f31e13bd, type: 2}
+  _isGrounded: {fileID: 11400000, guid: 89e8bcacc54b364478a80f43af7d3752, type: 2}
 --- !u!1 &5883185993911265910
 GameObject:
   m_ObjectHideFlags: 0
@@ -40498,7 +40793,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1552996169700616482}
   - component: {fileID: 5012315360545295041}
-  - component: {fileID: 7544948743382625253}
+  - component: {fileID: 6942927589310780454}
   m_Layer: 0
   m_Name: HealingBreeze
   m_TagString: Untagged
@@ -40552,7 +40847,7 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &7544948743382625253
+--- !u!114 &6942927589310780454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40561,25 +40856,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6767235255460134135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19636bf5e982d7c45aa8670e748b08a3, type: 3}
+  m_Script: {fileID: 11500000, guid: e16c92d22841c8b4b81b4774a48b503c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Utils.EventExposeMono
-  _eventSO: {fileID: 11400000, guid: f0b6b6727b879514ca33a5d6f9d81046, type: 2}
-  _onRaiseEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5012315360545295041}
-        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  m_EditorClassIdentifier: Assembly-CSharp::Presentation.SFX.ValueSOSfxPlayer
+  _sfxEmitter: {fileID: 5012315360545295041}
+  _valueSO: {fileID: 11400000, guid: fa6033acda9025344977a65d0f176868, type: 2}
+  _valueToPlayOn: 1
 --- !u!1 &7082101191695171869
 GameObject:
   m_ObjectHideFlags: 0
@@ -40631,14 +40913,12 @@ MonoBehaviour:
   _onExitState:
     m_PersistentCalls:
       m_Calls: []
-  _surfMovement: {fileID: 3492595939223294707}
-  _groundChecker: {fileID: 1194738970322795602}
-  _animator: {fileID: 6131714454897771}
   _interactableDetector: {fileID: 2666968306857408712}
+  _featherManager: {fileID: 7919265020599881539}
+  _groundChecker: {fileID: 1194738970322795602}
+  _rb: {fileID: 4614245837032767955}
   _updraftConfig: {fileID: 11400000, guid: f5de4d34eb0477248b4ea2e37083d132, type: 2}
   _isUpdraftingValueSO: {fileID: 11400000, guid: 45159dbb827766443bb268f94db350ef, type: 2}
-  _airState: {fileID: 4375414651475397221}
-  _groundState: {fileID: 5082696597094764826}
 --- !u!1 &7191467701826360395
 GameObject:
   m_ObjectHideFlags: 0
@@ -40724,6 +41004,62 @@ Transform:
   - {fileID: 3928171459158573851}
   m_Father: {fileID: 1640917518313358666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7421090553905186127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7835094037889640068}
+  - component: {fileID: 6941947643623480610}
+  m_Layer: 0
+  m_Name: TumbleState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7835094037889640068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421090553905186127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7326240851067418800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6941947643623480610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421090553905186127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38df52a689e4a63a5fb954f5726471c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.States.ProtagTumbleState
+  Protaganist: {fileID: 6542097491895686323}
+  _onEnterState:
+    m_PersistentCalls:
+      m_Calls: []
+  _onExitState:
+    m_PersistentCalls:
+      m_Calls: []
+  _glideMovement: {fileID: 9178911053336663905}
+  _glideVisuals: {fileID: 691692595262682336}
+  _camera: {fileID: 2328791997766467776}
+  _isTumblingValueSO: {fileID: 11400000, guid: 456ef505d05494349aee50504bb88173, type: 2}
+  _tumbleConfig: {fileID: 11400000, guid: 5a405e5ee4573fb479fd35144b18bca7, type: 2}
 --- !u!1 &7826008082615268312
 GameObject:
   m_ObjectHideFlags: 0

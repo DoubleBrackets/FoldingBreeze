@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Protag
+namespace Protag.Movement
 {
     public class GroundChecker : MonoBehaviour
     {
@@ -30,6 +30,8 @@ namespace Protag
         private float _maxGroundAngle;
 
         private float _forceUngroundTime;
+
+        public GroundedInfo LastGroundedInfo { get; private set; }
 
         private void OnDrawGizmos()
         {
@@ -79,11 +81,13 @@ namespace Protag
                 isGrounded = false;
             }
 
-            return new GroundedInfo
+            LastGroundedInfo = new GroundedInfo
             {
                 IsGrounded = isGrounded,
                 GroundNormal = isGrounded ? hit.normal : Vector3.up
             };
+
+            return LastGroundedInfo;
         }
     }
 }

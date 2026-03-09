@@ -1,11 +1,10 @@
 using System;
 using DevTools;
-using Events;
 using Framework.Timescaling;
 using Input;
 using Input.DataTypes;
 using Input.Processor;
-using Protag.GestureHandlers;
+using Protag.Movement;
 using StateMachine;
 using UI;
 using UnityEngine;
@@ -16,6 +15,9 @@ namespace Protag
     public class Protaganist : MonoBehaviour
     {
         [SerializeField]
+        private ProtagStateDecisionTree _protagStateDecisionTree;
+
+        [SerializeField]
         private StateManager _protagStateMachine;
 
         [SerializeField]
@@ -24,60 +26,49 @@ namespace Protag
         [SerializeField]
         private Rigidbody _protagRigidbody;
 
+        [Header("Depends")]
+
+        [SerializeField]
+        private GroundChecker _protagGroundChecker;
+
+        [Header("Config")]
+
         [SerializeField]
         private CustomFanInputConfigSO _fanInputConfig;
+
+        [SerializeField]
+        private float _resetTimeAfterDeath;
 
         [Header("Effects")]
 
         [SerializeField]
         private TimeScaleEntryConfig _untrackedInputTimeScale;
 
-        [Header("Event Out")]
-
-        [SerializeField]
-        private VoidEvent _onDeath;
-
         [Header("ValueSO (Write)")]
 
         [SerializeField]
         private BoolValueSO _isFanOpen;
 
+        [SerializeField]
+        private BoolValueSO _isGrounded;
+
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
+        public event Action OnLoadResultScreen;
 
-        public bool IsFanOpen { get; private set; }
-
-        public event Action OnDeath;
+        private bool IsFanOpen
+        {
+            get => _isFanOpen.Value;
+            set => _isFanOpen.SetValue(value);
+        }
 
         private GameplayInputService _inputService;
         private TimeScaleService _timeScaleService;
 
         private CustomControllerInputProcessor _inputProcessor;
+        private ProtagState CurrentState => _protagStateMachine.CurrentState as ProtagState;
 
-        private IUpdraftHandler _updraftHandler;
-        private IGustHandler _gustHandler;
-        private IBreezeHandler _fanSelfHandler;
-
-        /// <summary>
-        ///     After making a gesture, prevent time slowdown from untracked input for a short time
-        /// </summary>
-        /// <returns></returns>
-        private float _postGestureBlockTimescaleTimer;
-
-        public void RegisterUpdraftHandler(IUpdraftHandler handler)
-        {
-            _updraftHandler = handler;
-        }
-
-        public void RegisterGustHandler(IGustHandler handler)
-        {
-            _gustHandler = handler;
-        }
-
-        public void RegisterFanSelfHandler(IBreezeHandler handler)
-        {
-            _fanSelfHandler = handler;
-        }
+        private float _resetTimer;
 
         private void Awake()
         {
@@ -98,15 +89,9 @@ namespace Protag
             _inputService.OnAimInputChange.AddListener(HandleAimInputChange);
             _inputService.OnFanStateChange.AddListener(HandleFanStateChange);
             _inputService.OnUpdraftInput.AddListener(HandleTryUpdraft);
-            _inputService.OnGustInput.AddListener(HandleTryGust);
             _inputService.OnFanSelfInput.AddListener(HandleFanSelf);
 
             HandleFanStateChange(_inputService.CurrentFanState);
-        }
-
-        private void Update()
-        {
-            _postGestureBlockTimescaleTimer -= Time.unscaledDeltaTime;
         }
 
         private void OnDestroy()
@@ -114,10 +99,43 @@ namespace Protag
             _inputService.OnAimInputChange.RemoveListener(HandleAimInputChange);
             _inputService.OnFanStateChange.RemoveListener(HandleFanStateChange);
             _inputService.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
-            _inputService.OnGustInput.RemoveListener(HandleTryGust);
             _inputService.OnFanSelfInput.RemoveListener(HandleFanSelf);
 
             _protagStateMachine.Deinitialize();
+        }
+
+        private void Update()
+        {
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen);
+            _protagStateMachine.SwitchState(newState);
+
+            _protagStateMachine.UpdateStateMachine();
+
+            if (_resetTimer > 0)
+            {
+                _resetTimer -= Time.deltaTime;
+                if (_resetTimer <= 0)
+                {
+                    OnLoadResultScreen?.Invoke();
+                }
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            _protagGroundChecker.CheckGrounded();
+            _isGrounded.SetValue(_protagGroundChecker.LastGroundedInfo.IsGrounded);
+
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen);
+            _protagStateMachine.SwitchState(newState);
+
+            _protagStateMachine.FixedUpdateStateMachine();
         }
 
         private void OnDrawGizmos()
@@ -130,29 +148,22 @@ namespace Protag
 
         private void HandleFanSelf()
         {
-            GestureHandleResult result = _fanSelfHandler.HandleBreeze();
-            if (result.DidSucceed)
-            {
-                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
-            }
-        }
-
-        private void HandleTryGust()
-        {
-            GestureHandleResult result = _gustHandler.HandleGust();
-            if (result.DidSucceed)
-            {
-                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
-            }
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                tryHealing: true);
+            _protagStateMachine.SwitchState(newState);
         }
 
         private void HandleTryUpdraft()
         {
-            GestureHandleResult result = _updraftHandler.HandleUpdraft();
-            if (result.DidSucceed)
-            {
-                _postGestureBlockTimescaleTimer = result.TimeslowdownBlockDuration;
-            }
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                true);
+            _protagStateMachine.SwitchState(newState);
         }
 
         private void HandleAimInputChange(AimInput aimInput)
@@ -167,7 +178,8 @@ namespace Protag
             }
 
             // Except for right after a gesture, since we want gestures to play at normal speed
-            if (_postGestureBlockTimescaleTimer > 0f || processResult.CurrentState == InputProcessorState.Tracking)
+            if (_protagStateDecisionTree.IsInOneshotState(CurrentState) ||
+                processResult.CurrentState == InputProcessorState.Tracking)
             {
                 _timeScaleService.RemoveTimeScale(_untrackedInputTimeScale.Identifier);
             }
@@ -187,8 +199,14 @@ namespace Protag
 
         public void Kill()
         {
-            _onDeath?.Raise();
-            OnDeath?.Invoke();
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                shouldDie: true);
+            _protagStateMachine.SwitchState(newState);
+
+            _resetTimer = _resetTimeAfterDeath;
         }
     }
 }

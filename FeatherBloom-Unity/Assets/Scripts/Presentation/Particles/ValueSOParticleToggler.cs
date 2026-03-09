@@ -16,7 +16,7 @@ namespace Presentation.Particles
         [SerializeField]
         private BoolValueSO _valueSO;
 
-        private void Awake()
+        private void Start()
         {
             _valueSO.AddListener(this, OnValueChange, true);
         }

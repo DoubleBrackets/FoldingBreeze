@@ -7,7 +7,7 @@ namespace Protag.FeatherSystem
     /// <summary>
     ///     Flight resource system
     /// </summary>
-    public class FeatherSystem : MonoBehaviour
+    public class FeatherManager : MonoBehaviour
     {
         [Header("ValueSO (Write)")]
 

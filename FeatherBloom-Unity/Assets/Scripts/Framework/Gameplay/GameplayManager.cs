@@ -58,7 +58,7 @@ namespace Framework.Gameplay
                 ServiceLocator.GetService<TimeScaleService>(),
                 ServiceLocator.GetService<GameplayInputService>());
 
-            _protagInScene.OnDeath += HandleProtagDeath;
+            _protagInScene.OnLoadResultScreen += LoadResultScene;
 
             if (!DevToolState.DoNotLoadMapOnStart && !_blockMapStart)
             {
@@ -71,7 +71,7 @@ namespace Framework.Gameplay
 
         private void OnDestroy()
         {
-            _protagInScene.OnDeath -= HandleProtagDeath;
+            _protagInScene.OnLoadResultScreen -= LoadResultScene;
         }
 
         private void Update()
@@ -94,7 +94,7 @@ namespace Framework.Gameplay
             }
         }
 
-        private void HandleProtagDeath()
+        private void LoadResultScene()
         {
             if (DevToolState.AutoRestartOnDeath)
             {

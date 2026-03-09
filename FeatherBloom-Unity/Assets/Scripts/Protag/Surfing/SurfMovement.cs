@@ -1,3 +1,4 @@
+using Protag.Movement;
 using UnityEngine;
 
 namespace Protag.Surfing

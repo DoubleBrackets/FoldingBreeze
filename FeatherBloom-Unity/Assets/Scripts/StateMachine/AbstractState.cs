@@ -4,8 +4,8 @@ namespace StateMachine
 {
     public abstract class AbstractState : MonoBehaviour
     {
-        public abstract bool CanReenter { get; protected set; }
-        public abstract bool CanEnter { get; protected set; }
+        public abstract bool CanReenter { get; }
+        public abstract bool CanEnter { get; }
 
         public StateManager StateManager { get; set; }
 

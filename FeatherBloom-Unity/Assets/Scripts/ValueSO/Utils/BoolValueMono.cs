@@ -15,7 +15,7 @@ namespace ValueSO.Utils
         [SerializeField]
         private UnityEvent<bool> _onValueChange;
 
-        private void Awake()
+        private void Start()
         {
             _valueSO.AddListener(this, OnValueChange, true);
         }

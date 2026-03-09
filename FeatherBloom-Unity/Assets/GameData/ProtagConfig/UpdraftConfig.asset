@@ -39,5 +39,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   <Duration>k__BackingField: 0.7
-  <HorizontalVelocityKeepRatio>k__BackingField: 0.8
+  <HorizontalVelocityKeepRatio>k__BackingField: 1.2
   <TimeSlowdownBlockDuration>k__BackingField: 0.8

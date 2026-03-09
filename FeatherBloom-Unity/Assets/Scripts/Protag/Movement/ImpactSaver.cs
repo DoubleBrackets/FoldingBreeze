@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Utils;
 
-namespace Protag
+namespace Protag.Movement
 {
     /// <summary>
     ///     Saves data from impacts

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698173052ade4008ada857b7b11a398d, type: 3}
-  m_Name: SurfConfigWingsClosed
+  m_Name: WingSurfConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Surfing.SurfConfigSO
   <SteeringCurve>k__BackingField:
     serializedVersion: 2
@@ -36,11 +36,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <SteeringMaxAngularVelocity>k__BackingField: 110
-  <MoveAcceleration>k__BackingField: 45
-  <MaxMoveSpeed>k__BackingField: 30
+  <SteeringMaxAngularVelocity>k__BackingField: 80
+  <MoveAcceleration>k__BackingField: 25
+  <MaxMoveSpeed>k__BackingField: 15
   <MoveSpeedCap>k__BackingField: 35
-  <MinMoveSpeed>k__BackingField: 20
+  <MinMoveSpeed>k__BackingField: 10
   <GravityAccelGround>k__BackingField: 16
   <GravityAccelAir>k__BackingField: 16
   <VerticalImpactBoostRatio>k__BackingField: 0.5

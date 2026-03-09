@@ -16,7 +16,7 @@ namespace Presentation.SFX
         [SerializeField]
         private bool _valueToPlayOn;
 
-        private void Awake()
+        private void Start()
         {
             _valueSO.AddListener(this, OnValueChange);
         }
