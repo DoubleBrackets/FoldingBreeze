@@ -58,7 +58,8 @@ namespace Protag.States
         {
             base.OnFixedUpdate();
 
-            Vector2 aim = Vector2.down;
+            Vector2 aim = Protaganist.AimInput;
+            aim.y = -1;
             float deltaTime = Time.fixedDeltaTime;
 
             _glideMovement.Tick(aim, _diveConfig, deltaTime);

@@ -122,6 +122,8 @@ namespace Protag
                     OnLoadResultScreen?.Invoke();
                 }
             }
+
+            OnGUIHook.SetElement("Protag State", CurrentState?.name ?? "None");
         }
 
         private void FixedUpdate()
