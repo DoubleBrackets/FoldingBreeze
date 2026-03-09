@@ -1,11 +1,10 @@
-using Events;
 using Protag.GestureHandlers;
-using Protag.Gust;
 using Protag.Presentation;
 using Protag.Surfing;
 using Protag.Updraft;
 using StateMachine;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag.States
 {
@@ -33,9 +32,6 @@ namespace Protag.States
         private Animator _animator;
 
         [SerializeField]
-        private GustAbility _gustAbility;
-
-        [SerializeField]
         private FeatherSystem.FeatherSystem _featherSystem;
 
         [Header("States")]
@@ -49,28 +45,38 @@ namespace Protag.States
         [Header("Config")]
 
         [SerializeField]
-        private SurfConfigSO _surfConfig;
+        private SurfConfigSO _fanClosedSurfConfig;
+
+        [SerializeField]
+        private SurfConfigSO _fanOpenSurfConfig;
 
         [SerializeField]
         private UpdraftConfigSO _updraftConfig;
 
-        [Header("Event Out")]
+        [Header("ValueSO (Write)")]
 
         [SerializeField]
-        private VoidEvent _onStartSurf;
+        private BoolValueSO _isSurfingWingsClosed;
 
         [SerializeField]
-        private VoidEvent _onStopSurf;
+        private BoolValueSO _isSurfingWingsOpened;
+
+        [SerializeField]
+        private BoolValueSO _isSurfing;
 
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
 
         private float _boost;
-        private bool _surfing;
+
+        private SurfConfigSO CurrentConfig => Protaganist.IsFanOpen ? _fanOpenSurfConfig : _fanClosedSurfConfig;
 
         public override void OnInitialize()
         {
             _impactSaver.OnTerrainImpact.AddListener(HandleTerrainImpact);
+            _isSurfingWingsClosed.SetValue(false);
+            _isSurfingWingsOpened.SetValue(false);
+            _isSurfing.SetValue(false);
         }
 
         public override void OnDeinitialize()
@@ -84,8 +90,6 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
             Protaganist.RegisterUpdraftHandler(this);
             Protaganist.RegisterFanSelfHandler(this);
-
-            _surfing = false;
         }
 
         public override void OnExit()
@@ -93,11 +97,9 @@ namespace Protag.States
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
 
-            if (_surfing)
-            {
-                _onStopSurf.Raise();
-                _surfing = false;
-            }
+            _isSurfingWingsClosed.SetValue(false);
+            _isSurfingWingsOpened.SetValue(false);
+            _isSurfing.SetValue(false);
         }
 
         public GestureHandleResult HandleBreeze()
@@ -133,8 +135,8 @@ namespace Protag.States
 
         private void HandleTerrainImpact(ImpactSaver.ImpactInfo info)
         {
-            float verticalBoostImpactRatio = _surfConfig.VerticalImpactBoostRatio;
-            Vector2 verticalBoostRange = _surfConfig.VerticalImpactBoostRange;
+            float verticalBoostImpactRatio = CurrentConfig.VerticalImpactBoostRatio;
+            Vector2 verticalBoostRange = CurrentConfig.VerticalImpactBoostRange;
 
             // Save vertical impulse as boost
             Vector3 impulse = info.Impulse;
@@ -156,11 +158,10 @@ namespace Protag.States
 
             float deltaTime = Time.fixedDeltaTime;
 
-            // No steering when fan is open
-            float horizontalInput = Protaganist.IsFanOpen ? 0 : Protaganist.AimInput.x;
+            float horizontalInput = Protaganist.AimInput.x;
 
             GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
-            _surfMovement.Tick(horizontalInput, groundInfo, _surfConfig, _boost, deltaTime);
+            _surfMovement.Tick(horizontalInput, groundInfo, CurrentConfig, _boost, deltaTime);
             _boost = 0;
             _surfVisuals.UpdateSurfVisuals(groundInfo, _surfMovement.CurrentVelocity, horizontalInput, deltaTime);
 
@@ -179,16 +180,9 @@ namespace Protag.States
                 _featherSystem.RefillFeathers();
             }
 
-            if (!_surfing && isSurfing)
-            {
-                _onStartSurf.Raise();
-            }
-            else if (_surfing && !isSurfing)
-            {
-                _onStopSurf.Raise();
-            }
-
-            _surfing = isSurfing;
+            _isSurfing.SetValue(isSurfing);
+            _isSurfingWingsClosed.SetValue(isSurfing && !Protaganist.IsFanOpen);
+            _isSurfingWingsOpened.SetValue(isSurfing && Protaganist.IsFanOpen);
 
             if (!groundInfo.IsGrounded && Protaganist.IsFanOpen)
             {

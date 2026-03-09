@@ -1,10 +1,10 @@
 using Events;
 using UnityEngine;
 
-namespace Feel
+namespace Presentation.Particles
 {
     /// <summary>
-    ///  Plays or stops a particle system in response to events.
+    ///     Plays or stops a particle system in response to events.
     /// </summary>
     public class EventParticleToggler : MonoBehaviour
     {

@@ -9,6 +9,7 @@ using Protag.GestureHandlers;
 using StateMachine;
 using UI;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag
 {
@@ -34,19 +35,17 @@ namespace Protag
         [Header("Event Out")]
 
         [SerializeField]
-        private VoidEvent _onFanOpen;
-
-        [SerializeField]
-        private VoidEvent _onFanClose;
-
-        [SerializeField]
         private VoidEvent _onDeath;
+
+        [Header("ValueSO (Write)")]
+
+        [SerializeField]
+        private BoolValueSO _isFanOpen;
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
 
         public bool IsFanOpen { get; private set; }
-        public event Action OnFanOpen;
 
         public event Action OnDeath;
 
@@ -84,6 +83,8 @@ namespace Protag
         {
             _protagStateMachine.Initialize();
             _inputProcessor = new CustomControllerInputProcessor(_fanInputConfig);
+
+            _isFanOpen.SetValue(IsFanOpen);
         }
 
         public void Initialize(TimeScaleService timeScaleService, GameplayInputService inputService)
@@ -175,15 +176,7 @@ namespace Protag
         private void HandleFanStateChange(FanState state)
         {
             IsFanOpen = state == FanState.Open;
-            if (IsFanOpen)
-            {
-                OnFanOpen?.Invoke();
-                _onFanOpen?.Raise();
-            }
-            else
-            {
-                _onFanClose?.Raise();
-            }
+            _isFanOpen.SetValue(IsFanOpen);
         }
 
         public void SetPositionAndDirection(Vector3 position, Vector3 direction)

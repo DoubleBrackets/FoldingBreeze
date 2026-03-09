@@ -1,10 +1,10 @@
 using Events;
 using UnityEngine;
 
-namespace Feel
+namespace Presentation.Particles
 {
     /// <summary>
-    ///  Starts and steps a particle system in response to events.
+    ///     Starts and steps a particle system in response to events.
     /// </summary>
     public class EventParticlePlayer : MonoBehaviour
     {

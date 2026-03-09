@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Protag.Presentation
 {
-    public class ProtagSFX : MonoBehaviour
+    public class ProtagSfx : MonoBehaviour
     {
         [SerializeField]
         private GroundChecker _groundChecker;

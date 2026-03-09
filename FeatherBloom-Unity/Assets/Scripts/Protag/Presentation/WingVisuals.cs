@@ -4,7 +4,7 @@ using ValueSO.Core;
 
 namespace Protag.Presentation
 {
-    public class WingResourceIndicator : MonoBehaviour, IValueSOObserver
+    public class WingVisuals : MonoBehaviour, IValueSOObserver
     {
         [SerializeField]
         private Renderer _renderer;
@@ -20,6 +20,9 @@ namespace Protag.Presentation
         [SerializeField]
         private FloatValueSO _featherResourceValue;
 
+        [SerializeField]
+        private BoolValueSO _isFanOpen;
+
         private MaterialPropertyBlock _materialPropertyBlock;
 
         private float _target;
@@ -27,13 +30,20 @@ namespace Protag.Presentation
 
         private void Awake()
         {
-            _featherResourceValue.AddListener(this, HandleFeatherResourceChange);
+            _featherResourceValue.AddListener(this, HandleFeatherResourceChange, true);
+            _isFanOpen.AddListener(this, HandleFanOpenChange, true);
             _materialPropertyBlock = new MaterialPropertyBlock();
+        }
+
+        private void HandleFanOpenChange(bool isOpen)
+        {
+            _renderer.enabled = isOpen;
         }
 
         private void OnDestroy()
         {
             _featherResourceValue.RemoveListener(this);
+            _isFanOpen.RemoveListener(this);
         }
 
         private void Update()

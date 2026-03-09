@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 058cd2ebe33d4d39a1b6fa61a6138c4c, type: 3}
-  m_Name: OnFanOpen
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 11500000, guid: 6fd5a4c87ef44b9a997ead166bbd3944, type: 3}
+  m_Name: IsInUpdraft
+  m_EditorClassIdentifier: Assembly-CSharp::ValueSO.Core.BoolValueSO
   _description: 
-  _debug: 0
+  _value: 0
+  <Log>k__BackingField: 0

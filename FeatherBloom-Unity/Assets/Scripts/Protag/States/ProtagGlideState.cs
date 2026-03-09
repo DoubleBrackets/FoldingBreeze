@@ -7,6 +7,7 @@ using Protag.Updraft;
 using StateMachine;
 using UnityEngine;
 using UnityEngine.Serialization;
+using ValueSO.Core;
 
 namespace Protag.States
 {
@@ -43,6 +44,14 @@ namespace Protag.States
         [SerializeField]
         private Animator _animator;
 
+        [Header("ValueSO (Write)")]
+
+        [SerializeField]
+        private BoolValueSO _isGlidingValueSO;
+
+        [SerializeField]
+        private BoolValueSO _isFallingWithWingsValueSO;
+
         [Header("Config")]
 
         [SerializeField]
@@ -60,6 +69,9 @@ namespace Protag.States
         {
             base.OnInitialize();
             _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+
+            _isGlidingValueSO.SetValue(false);
+            _isFallingWithWingsValueSO.SetValue(false);
         }
 
         public override void OnEnter()
@@ -88,6 +100,9 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
 
             _boxFanArduinoComm?.WriteFanOn(false);
+
+            _isGlidingValueSO.SetValue(false);
+            _isFallingWithWingsValueSO.SetValue(false);
         }
 
         private void HandleBoost(float amount)
@@ -115,6 +130,9 @@ namespace Protag.States
             {
                 _glideMovement.Tick(Vector2.down, _glideConfig, deltaTime);
             }
+
+            _isGlidingValueSO.SetValue(canGlide);
+            _isFallingWithWingsValueSO.SetValue(!canGlide);
 
             _glideVisuals.UpdateVisuals(aim, _glideMovement.CurrentVelocity, deltaTime);
 

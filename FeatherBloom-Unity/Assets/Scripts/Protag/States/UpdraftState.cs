@@ -1,10 +1,10 @@
-using Events;
 using Framework;
 using Framework.Timescaling;
 using Input.SerialComms;
 using Protag.Surfing;
 using Protag.Updraft;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag.States
 {
@@ -29,6 +29,11 @@ namespace Protag.States
         [SerializeField]
         private UpdraftConfigSO _updraftConfig;
 
+        [Header("ValueSO (Write)")]
+
+        [SerializeField]
+        private BoolValueSO _isUpdraftingValueSO;
+
         [Header("Stateout")]
 
         [SerializeField]
@@ -36,11 +41,6 @@ namespace Protag.States
 
         [SerializeField]
         private ProtagState _groundState;
-
-        [Header("Event Out")]
-
-        [SerializeField]
-        private VoidEvent _onUpdraft;
 
         public override bool CanReenter { get; protected set; } = false;
         public override bool CanEnter { get; protected set; } = true;
@@ -60,13 +60,14 @@ namespace Protag.States
             base.OnInitialize();
             _timeScaleService = ServiceLocator.GetService<TimeScaleService>();
             _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+
+            _isUpdraftingValueSO.SetValue(false);
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
             _groundChecker.ForceUnground(0.1f);
-            _onUpdraft.Raise();
             _stateTimer = _updraftConfig.Duration;
             _animator.SetBool("Updraft", true);
 
@@ -81,6 +82,8 @@ namespace Protag.States
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
 
             _boxFanArduinoComm?.WriteFanOn(true);
+
+            _isUpdraftingValueSO.SetValue(true);
         }
 
         public override void OnExit()
@@ -90,6 +93,8 @@ namespace Protag.States
 
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
             _boxFanArduinoComm?.WriteFanOn(false);
+
+            _isUpdraftingValueSO.SetValue(false);
         }
 
         private void HandleBoostPickup(float boost)
