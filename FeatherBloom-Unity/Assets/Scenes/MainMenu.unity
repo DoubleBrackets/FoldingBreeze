@@ -582,9 +582,6 @@ MonoBehaviour:
       m_Calls: []
   OnUpdraft:
     m_PersistentCalls:
-      m_Calls: []
-  OnFanSelf:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1126427205}
         m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
@@ -598,6 +595,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnFanSelf:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &390794649
 GameObject:
   m_ObjectHideFlags: 0

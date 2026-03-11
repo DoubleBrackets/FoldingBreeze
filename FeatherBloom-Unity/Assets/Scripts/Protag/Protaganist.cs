@@ -1,5 +1,6 @@
 using System;
 using DevTools;
+using Events;
 using Framework.Timescaling;
 using Input;
 using Input.DataTypes;
@@ -14,6 +15,8 @@ namespace Protag
 {
     public class Protaganist : MonoBehaviour
     {
+        public const int MaxHealth = 2;
+
         [SerializeField]
         private ProtagStateDecisionTree _protagStateDecisionTree;
 
@@ -44,6 +47,11 @@ namespace Protag
         [SerializeField]
         private TimeScaleEntryConfig _untrackedInputTimeScale;
 
+        [Header("Events (Out)")]
+
+        [SerializeField]
+        private VoidEvent _onHurt;
+
         [Header("ValueSO (Write)")]
 
         [SerializeField]
@@ -51,6 +59,15 @@ namespace Protag
 
         [SerializeField]
         private BoolValueSO _isGrounded;
+
+        [SerializeField]
+        private Vector3Value _protagVelocity;
+
+        [SerializeField]
+        private FloatValueSO _processedHorizontalInput;
+
+        [SerializeField]
+        private IntValueSO _healthValue;
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
@@ -67,21 +84,27 @@ namespace Protag
 
         private CustomControllerInputProcessor _inputProcessor;
         private ProtagState CurrentState => _protagStateMachine.CurrentState as ProtagState;
+        public int Health => _health;
 
         private float _resetTimer;
 
-        private void Awake()
-        {
-            _protagStateMachine.Initialize();
-            _inputProcessor = new CustomControllerInputProcessor(_fanInputConfig);
-
-            _isFanOpen.SetValue(IsFanOpen);
-        }
+        private int _health;
 
         public void Initialize(TimeScaleService timeScaleService, GameplayInputService inputService)
         {
+            _inputProcessor = new CustomControllerInputProcessor(_fanInputConfig);
+
             _inputService = inputService;
             _timeScaleService = timeScaleService;
+
+            _isFanOpen.SetValue(IsFanOpen);
+            _protagVelocity.SetValue(Vector3.zero);
+            _isGrounded.SetValue(false);
+            _processedHorizontalInput.SetValue(0f);
+            _healthValue.SetValue(MaxHealth);
+            _health = MaxHealth;
+
+            _protagStateMachine.Initialize();
         }
 
         private void Start()
@@ -138,6 +161,7 @@ namespace Protag
             _protagStateMachine.SwitchState(newState);
 
             _protagStateMachine.FixedUpdateStateMachine();
+            _protagVelocity.SetValue(_protagRigidbody.linearVelocity);
         }
 
         private void OnDrawGizmos()
@@ -197,6 +221,28 @@ namespace Protag
         {
             _protagBody.position = position;
             _protagRigidbody.linearVelocity = direction;
+        }
+
+        public void Damage()
+        {
+            if (_health <= 0)
+            {
+                return;
+            }
+
+            _health--;
+            _healthValue.SetValue(_health);
+
+            if (_health == 0)
+            {
+                Kill();
+            }
+        }
+
+        public void Heal()
+        {
+            _health = MaxHealth;
+            _healthValue.SetValue(_health);
         }
 
         public void Kill()

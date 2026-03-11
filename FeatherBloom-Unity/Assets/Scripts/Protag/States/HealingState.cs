@@ -30,6 +30,8 @@ namespace Protag.States
             base.OnEnter();
             _isHealingValueSO.SetValue(true);
             _stateTimer = _healingDuration;
+
+            Protaganist.Heal();
         }
 
         public override void OnExit()
@@ -44,6 +46,6 @@ namespace Protag.States
         }
 
         public override bool CanReenter => false;
-        public override bool CanEnter => true;
+        public override bool CanEnter => Protaganist.Health < Protaganist.MaxHealth;
     }
 }

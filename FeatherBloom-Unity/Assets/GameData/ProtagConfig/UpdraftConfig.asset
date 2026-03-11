@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: UpdraftConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Updraft.UpdraftConfigSO
   <FeathersConsumed>k__BackingField: 0.4
-  <UpdraftVelocity>k__BackingField: 50
+  <UpdraftVelocity>k__BackingField: 45
   <UpdraftVelocityCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0.007858546
       value: 0.99999994
-      inSlope: -2.436635
-      outSlope: -2.436635
+      inSlope: 0.03728776
+      outSlope: 0.03728776
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.07208165
+      outWeight: 0.1627385
     - serializedVersion: 3
       time: 0.99609375
       value: 0.0052757263
-      inSlope: -0.11929783
-      outSlope: -0.11929783
+      inSlope: -2.8246982
+      outSlope: -2.8246982
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.14810672
+      inWeight: 0.043771062
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

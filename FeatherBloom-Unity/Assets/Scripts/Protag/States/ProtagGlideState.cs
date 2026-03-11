@@ -2,7 +2,6 @@ using Framework;
 using Input.SerialComms;
 using Protag.FeatherSystem;
 using Protag.Gliding;
-using Protag.Presentation;
 using UnityEngine;
 using ValueSO.Core;
 
@@ -18,9 +17,6 @@ namespace Protag.States
 
         [SerializeField]
         private GlideVisuals _glideVisuals;
-
-        [SerializeField]
-        private ProtagCamera _camera;
 
         [SerializeField]
         private InteractableDetector _interactableDetector;
@@ -72,9 +68,10 @@ namespace Protag.States
             _isGlidingValueSO.SetValue(false);
         }
 
-        private void HandleBoost(float amount)
+        private void HandleBoost(Vector3 boost)
         {
-            _glideMovement.Boost(amount);
+            _glideMovement.Boost(boost);
+            _featherManager.RefillFeathers();
         }
 
         public override void OnFixedUpdate()
@@ -88,7 +85,6 @@ namespace Protag.States
 
             _glideMovement.Tick(aim, _glideConfig, deltaTime);
             _glideVisuals.UpdateVisuals(aim, _glideMovement.CurrentVelocity, deltaTime);
-            _camera.UpdateProtagCamera(aim.x, deltaTime, _glideMovement.CurrentVelocity);
         }
     }
 }

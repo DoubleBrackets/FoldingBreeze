@@ -57,6 +57,8 @@ namespace Protag.States
         public override void OnEnter()
         {
             base.OnEnter();
+            _featherManager.TryConsumeFeathers(_updraftConfig.FeathersConsumed);
+
             _groundChecker.ForceUnground(0.1f);
 
             _launchNormal = Vector3.up;
@@ -81,10 +83,9 @@ namespace Protag.States
             _isUpdraftingValueSO.SetValue(false);
         }
 
-        private void HandleBoostPickup(float boost)
+        private void HandleBoostPickup(Vector3 boost)
         {
-            _entryHorizontalVelocity =
-                _entryHorizontalVelocity.normalized * (_entryHorizontalVelocity.magnitude + boost);
+            _entryHorizontalVelocity += boost;
         }
 
         public override void OnFixedUpdate()

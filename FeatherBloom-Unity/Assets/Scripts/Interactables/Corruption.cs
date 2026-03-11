@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using DevTools;
+using Protag;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -46,6 +48,35 @@ namespace Interactables
         public void MarkAsTargeted()
         {
             IsAlreadyTargeted = true;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (_blownAway)
+            {
+                return;
+            }
+
+            var interactor = other.GetComponentInParent<InteractableDetector>();
+            if (interactor != null)
+            {
+                interactor.TouchHazard();
+                BlowAway();
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            var interactor = other.collider.GetComponentInParent<InteractableDetector>();
+            if (interactor != null)
+            {
+                interactor.TouchHazard();
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            LabelUtils.Label(transform.position, "Hazard");
         }
     }
 }

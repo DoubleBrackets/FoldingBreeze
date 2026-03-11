@@ -1,10 +1,20 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using ValueSO;
+using ValueSO.Core;
 
-namespace Protag.Presentation
+namespace Protag.Camera
 {
-    public class ProtagCamera : MonoBehaviour
+    public class ProtagCamera : MonoBehaviour, IValueSOObserver
     {
+        [Header("ValueSO (Read)")]
+
+        [SerializeField]
+        private Vector3Value _protagVelocity;
+
+        [SerializeField]
+        private FloatValueSO _processedHorizontalInput;
+
         [Header("Depends")]
 
         [SerializeField]
@@ -33,7 +43,37 @@ namespace Protag.Presentation
         [SerializeField]
         private Vector2 _velocityForFovRange;
 
-        public void UpdateProtagCamera(float horizontalInput, float deltaTime, Vector3 currentVelocity)
+        private Vector3 _lastVelocity;
+        private float _horizontalInput;
+
+        private void Awake()
+        {
+            _protagVelocity.AddListener(this, HandleProtagVelocityChange, true);
+            _processedHorizontalInput.AddListener(this, HandleHorizontalInputChange, true);
+        }
+
+        private void OnDestroy()
+        {
+            _protagVelocity.RemoveListener(this);
+            _processedHorizontalInput.RemoveListener(this);
+        }
+
+        private void HandleProtagVelocityChange(Vector3 vel)
+        {
+            _lastVelocity = vel;
+        }
+
+        private void HandleHorizontalInputChange(float horizontalInput)
+        {
+            _horizontalInput = horizontalInput;
+        }
+
+        private void FixedUpdate()
+        {
+            UpdateProtagCamera(_horizontalInput, Time.fixedDeltaTime, _lastVelocity);
+        }
+
+        private void UpdateProtagCamera(float horizontalInput, float deltaTime, Vector3 currentVelocity)
         {
             float t3 = 1 - Mathf.Pow(0.01f, deltaTime * _cameraAimSmoothSpeed);
             Quaternion currentCameraRotation = _cameraTarget.transform.rotation;

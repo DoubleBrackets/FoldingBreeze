@@ -1,6 +1,5 @@
 using Protag.FeatherSystem;
 using Protag.Movement;
-using Protag.Presentation;
 using Protag.Surfing;
 using UnityEngine;
 using ValueSO.Core;
@@ -17,9 +16,6 @@ namespace Protag.States
 
         [SerializeField]
         private GroundChecker _groundChecker;
-
-        [SerializeField]
-        private ProtagCamera _protagCamera;
 
         [SerializeField]
         private ImpactSaver _impactSaver;
@@ -84,9 +80,9 @@ namespace Protag.States
             _isSurfing.SetValue(val);
         }
 
-        private void HandleBoostPickup(float boostAmount)
+        private void HandleBoostPickup(Vector3 boost)
         {
-            _boost += boostAmount;
+            _boost += boost.magnitude;
         }
 
         private void HandleTerrainImpact(ImpactSaver.ImpactInfo info)
@@ -118,11 +114,6 @@ namespace Protag.States
             _surfMovement.Tick(horizontalInput, groundInfo, _surfConfig, _boost, deltaTime);
             _boost = 0;
             _surfVisuals.UpdateSurfVisuals(groundInfo, _surfMovement.CurrentVelocity, horizontalInput, deltaTime);
-
-            _protagCamera.UpdateProtagCamera(
-                horizontalInput,
-                deltaTime,
-                _surfMovement.CurrentVelocity);
 
             bool isSurfing = groundInfo.IsGrounded;
 

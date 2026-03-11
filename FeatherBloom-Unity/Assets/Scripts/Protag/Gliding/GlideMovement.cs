@@ -68,11 +68,10 @@ namespace Protag.Gliding
             _rb.linearVelocity = targetVelocity;
         }
 
-        public void Boost(float amount)
+        public void Boost(Vector3 boost)
         {
             Vector3 currentVel = _rb.linearVelocity;
-            Vector3 boostedVel = currentVel.normalized * (currentVel.magnitude + amount);
-            _rb.linearVelocity = boostedVel;
+            _rb.linearVelocity = currentVel + boost;
         }
     }
 }

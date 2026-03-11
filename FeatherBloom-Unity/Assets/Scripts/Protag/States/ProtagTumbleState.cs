@@ -1,5 +1,4 @@
 using Protag.Gliding;
-using Protag.Presentation;
 using UnityEngine;
 using ValueSO.Core;
 
@@ -15,9 +14,6 @@ namespace Protag.States
 
         [SerializeField]
         private GlideVisuals _glideVisuals;
-
-        [SerializeField]
-        private ProtagCamera _camera;
 
         [Header("ValueSO (Write)")]
 
@@ -63,7 +59,6 @@ namespace Protag.States
 
             _glideMovement.Tick(aim, _tumbleConfig, deltaTime);
             _glideVisuals.UpdateVisuals(aim, _glideMovement.CurrentVelocity, deltaTime);
-            _camera.UpdateProtagCamera(aim.x, deltaTime, _glideMovement.CurrentVelocity);
         }
     }
 }
