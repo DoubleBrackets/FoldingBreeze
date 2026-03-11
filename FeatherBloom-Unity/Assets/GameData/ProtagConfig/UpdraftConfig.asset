@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e042eac2514d238d4e258dfcf455e6, type: 3}
   m_Name: UpdraftConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Updraft.UpdraftConfigSO
-  <FeathersConsumed>k__BackingField: 0.4
+  <FeathersConsumed>k__BackingField: 0
   <UpdraftVelocity>k__BackingField: 45
   <UpdraftVelocityCurve>k__BackingField:
     serializedVersion: 2

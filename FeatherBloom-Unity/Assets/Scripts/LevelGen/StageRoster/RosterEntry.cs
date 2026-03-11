@@ -1,6 +1,7 @@
 using System;
+using LevelGen.Stages;
 
-namespace Protag.LevelGen.StageRoster
+namespace LevelGen.StageRoster
 {
     [Serializable]
     public struct RosterEntry

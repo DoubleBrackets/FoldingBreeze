@@ -1,8 +1,9 @@
 using DevTools;
-using Protag.LevelGen.StageRoster;
+using LevelGen.StageRoster;
+using LevelGen.Stages;
 using UnityEngine;
 
-namespace Protag.LevelGen
+namespace LevelGen
 {
     /// <summary>
     ///     Handles simple map generation by connecting stages
@@ -33,10 +34,13 @@ namespace Protag.LevelGen
 
         private float _previousPlayerAngularPos;
 
-        public MapService(Transform stageParent, StageSelector stageSelector)
+        private float _maxHeight;
+
+        public MapService(Transform stageParent, StageSelector stageSelector, float maxHeight)
         {
             _stageParent = stageParent;
             _stageSelector = stageSelector;
+            _maxHeight = maxHeight;
         }
 
         public void StartPlayingMap(MapStage initialStage = null)
@@ -63,6 +67,11 @@ namespace Protag.LevelGen
 
         private void MoveToNextStage()
         {
+            if (_currentMapStage && _currentStagePlacementPositionY + _currentMapStage.Height > _maxHeight)
+            {
+                return;
+            }
+
             // Destroy previous
             if (_previousMapStage)
             {

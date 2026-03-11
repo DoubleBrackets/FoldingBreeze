@@ -41,6 +41,9 @@ namespace Protag
         [SerializeField]
         private float _resetTimeAfterDeath;
 
+        [SerializeField]
+        private float _resetTimeAfterAscend;
+
         [Header("Effects")]
 
         [SerializeField]
@@ -65,6 +68,9 @@ namespace Protag
 
         [SerializeField]
         private BoolValueSO _isWoundedValueSO;
+
+        [SerializeField]
+        private BoolValueSO _didBeatGameValueSO;
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
@@ -100,6 +106,7 @@ namespace Protag
             _processedHorizontalInput.SetValue(0f);
             _healthValue.SetValue(MaxHealth);
             _isWoundedValueSO.SetValue(false);
+            _didBeatGameValueSO.SetValue(false);
 
             _health = MaxHealth;
 
@@ -261,6 +268,24 @@ namespace Protag
             _protagStateMachine.SwitchState(newState);
 
             _resetTimer = _resetTimeAfterDeath;
+        }
+
+        public void BeatGame()
+        {
+            if (_resetTimer > 0)
+            {
+                return;
+            }
+
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                shouldBeatGame: true);
+            _protagStateMachine.SwitchState(newState);
+
+            _didBeatGameValueSO.SetValue(true);
+            _resetTimer = _resetTimeAfterAscend;
         }
     }
 }

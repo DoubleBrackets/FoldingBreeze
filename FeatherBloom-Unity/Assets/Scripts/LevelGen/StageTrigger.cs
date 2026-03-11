@@ -1,7 +1,8 @@
+using Protag;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Protag.LevelGen
+namespace LevelGen
 {
     /// <summary>
     ///     Handles detecting when the Protag enters a new stage section.

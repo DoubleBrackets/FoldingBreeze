@@ -4,10 +4,11 @@ using Framework.GlobalServices;
 using Framework.LevelLoading;
 using Framework.Timescaling;
 using Input;
+using LevelGen;
+using LevelGen.StageRoster;
+using LevelGen.Stages;
 using NaughtyAttributes;
 using Protag;
-using Protag.LevelGen;
-using Protag.LevelGen.StageRoster;
 using UnityEngine;
 using ValueSO.Core;
 
@@ -39,10 +40,16 @@ namespace Framework.Gameplay
         [SerializeField]
         private bool _blockMapStart;
 
+        [SerializeField]
+        private FixedEnvironmentSpawner _fixedEnvironmentSpawner;
+
         [Header("ValueSO (Write)")]
 
         [SerializeField]
         private FloatValueSO _killHeight;
+
+        [SerializeField]
+        private FloatValueSO _heightReached;
 
         private MapService _mapService;
         private ScoreService _scoreService;
@@ -53,7 +60,7 @@ namespace Framework.Gameplay
             _scoreService = ServiceLocator.GetService<ScoreService>();
             _levelLoader = ServiceLocator.GetService<LevelLoader>();
 
-            _mapService = new MapService(_stageParent, new StageSelector(_stageRosterSO));
+            _mapService = new MapService(_stageParent, new StageSelector(_stageRosterSO), _stageRosterSO.TowerHeight);
             _protagInScene.Initialize(
                 ServiceLocator.GetService<TimeScaleService>(),
                 ServiceLocator.GetService<GameplayInputService>());
@@ -67,6 +74,13 @@ namespace Framework.Gameplay
 
             MoveProtagToSpawnPoint();
             _scoreService.ResetScore();
+
+            if (_fixedEnvironmentSpawner)
+            {
+                _fixedEnvironmentSpawner.SpawnPillar(_stageRosterSO.TowerHeight);
+            }
+
+            _heightReached.SetValue(0f);
         }
 
         private void OnDestroy()
@@ -92,6 +106,8 @@ namespace Framework.Gameplay
                     _protagInScene.Kill();
                 }
             }
+
+            _heightReached.SetValue(_protagInScene.Position.y);
         }
 
         private void LoadResultScene()

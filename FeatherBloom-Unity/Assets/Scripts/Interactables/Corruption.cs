@@ -65,14 +65,6 @@ namespace Interactables
             }
         }
 
-        private void OnCollisionEnter(Collision other)
-        {
-            var interactor = other.collider.GetComponentInParent<InteractableDetector>();
-            if (interactor != null)
-            {
-                interactor.TouchHazard();
-            }
-        }
 
         private void OnDrawGizmos()
         {

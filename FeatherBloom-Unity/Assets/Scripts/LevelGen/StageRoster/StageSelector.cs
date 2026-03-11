@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using LevelGen.Stages;
 using Random = UnityEngine.Random;
 
-namespace Protag.LevelGen.StageRoster
+namespace LevelGen.StageRoster
 {
     public class StageSelector
     {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288f230023cc4050bc00dd2e50da326b, type: 3}
   m_Name: GlideConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Gliding.GlideConfigSO
-  <FeatherConsumptionPerSecond>k__BackingField: 0.15
+  <FeatherConsumptionPerSecond>k__BackingField: 0
   <TiltSteerCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:

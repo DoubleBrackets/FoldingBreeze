@@ -20,6 +20,9 @@ namespace Protag
         [SerializeField]
         private HealingState _healingState;
 
+        [SerializeField]
+        private ProtagAscendState _ascendState;
+
         [Header("Free Movement States")]
 
         [SerializeField]
@@ -42,8 +45,14 @@ namespace Protag
             bool isFanOpen,
             bool tryUpdraft = false,
             bool tryHealing = false,
-            bool shouldDie = false)
+            bool shouldDie = false,
+            bool shouldBeatGame = false)
         {
+            if (shouldBeatGame)
+            {
+                return _ascendState;
+            }
+
             if (shouldDie)
             {
                 return _deadState;
@@ -59,6 +68,11 @@ namespace Protag
             if (currentState == _deadState)
             {
                 return _deadState;
+            }
+
+            if (currentState == _ascendState)
+            {
+                return _ascendState;
             }
 
             bool canEnterHealing = _healingState.CanEnter;

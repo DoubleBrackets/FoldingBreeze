@@ -651,7 +651,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 59.000015, y: -48.000004}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 250.25, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1019552585
 MonoBehaviour:
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 25
+  m_text: 100/250 m
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a9585654e906dff4cb5dacb5d09559e0, type: 2}
   m_sharedMaterial: {fileID: 2953728401432352727, guid: a9585654e906dff4cb5dacb5d09559e0, type: 2}
@@ -700,8 +700,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 75
-  m_fontSizeBase: 75
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -798,6 +798,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 1019552585}
+  _heightValueSO: {fileID: 11400000, guid: 811e283833b599246b9ff712012100ad, type: 2}
+  _didBeatGameValueSO: {fileID: 11400000, guid: 9e80ef616841d264d94963422411fc59, type: 2}
+  _stageRosterSO: {fileID: 11400000, guid: 332a0422c0e0aba478ae95392a62a2f4, type: 2}
 --- !u!1001 &1245849985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -995,7 +998,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Spans Travelled
+  m_text: Height
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a9585654e906dff4cb5dacb5d09559e0, type: 2}
   m_sharedMaterial: {fileID: 2953728401432352727, guid: a9585654e906dff4cb5dacb5d09559e0, type: 2}

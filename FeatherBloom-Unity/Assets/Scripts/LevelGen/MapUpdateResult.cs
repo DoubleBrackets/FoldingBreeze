@@ -1,4 +1,4 @@
-namespace Protag.LevelGen
+namespace LevelGen
 {
     public struct MapUpdateResult
     {

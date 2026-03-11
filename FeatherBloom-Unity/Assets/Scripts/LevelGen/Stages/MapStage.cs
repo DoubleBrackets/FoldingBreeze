@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using ValueSO.Core;
 
-namespace Protag.LevelGen
+namespace LevelGen.Stages
 {
     /// <summary>
     ///     Represents a section of a stage in the level generation system.

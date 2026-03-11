@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42049d1150726c8409950b4c446da10b, type: 3}
   m_Name: StageRoster
   m_EditorClassIdentifier: 
+  <TowerHeight>k__BackingField: 160
   <RandomSelectionPool>k__BackingField:
   - Stage: {fileID: 11400000, guid: f4fcc680642686c4e818d23f9e1f651f, type: 2}
     Weight: 0

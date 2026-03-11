@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using LevelGen.Stages;
 using UnityEngine;
 
-namespace Protag.LevelGen.StageRoster
+namespace LevelGen.StageRoster
 {
     [CreateAssetMenu(fileName = "StageRosterSO", menuName = "Stage Roster SO")]
     public class StageRosterSO : ScriptableObject
     {
+        [field: SerializeField]
+        public float TowerHeight { get; private set; }
+
         [field: SerializeField]
         public List<RosterEntry> RandomSelectionPool { get; private set; }
 

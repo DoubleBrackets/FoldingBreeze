@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Protag.LevelGen
+namespace LevelGen.Stages
 {
     [CreateAssetMenu(fileName = "StageSO", menuName = "StageSO")]
     public class StageSO : ScriptableObject

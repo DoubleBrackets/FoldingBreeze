@@ -7,6 +7,7 @@ namespace Protag
     {
         public UnityEvent<Vector3> OnBoostPickup;
         public UnityEvent OnTouchHazard;
+        public UnityEvent OnTouchEnding;
 
         public void PickupBoost(Vector3 boost)
         {
@@ -17,6 +18,12 @@ namespace Protag
         {
             Debug.Log("Hazard Touched");
             OnTouchHazard?.Invoke();
+        }
+
+        public void TouchEnding()
+        {
+            Debug.Log("Ending Touched");
+            OnTouchEnding?.Invoke();
         }
     }
 }
