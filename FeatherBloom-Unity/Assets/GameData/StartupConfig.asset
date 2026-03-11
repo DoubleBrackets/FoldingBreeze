@@ -15,4 +15,5 @@ MonoBehaviour:
   <TimeScaleLerpFactor>k__BackingField: {fileID: 11400000, guid: 4aadc4f4f5d380441abcc75929c40587, type: 2}
   <StartupGameLevel>k__BackingField: {fileID: 11400000, guid: 036ae1ad70c56d945bb8c17eb7e5a73e, type: 2}
   <GameplayLevel>k__BackingField: {fileID: 11400000, guid: b3c3d2405d9fd61429c75405bb8bebaf, type: 2}
+  <BasicLevelLoadTransitionPrefab>k__BackingField: {fileID: 2717056856016401079, guid: 83ebec45107396e45bbe08dd6153e793, type: 3}
   <SaveDataValueSOLoader>k__BackingField: {fileID: 11400000, guid: a48b8ee13cdf97840a9c68489a51dfa4, type: 2}

@@ -248,6 +248,11 @@ namespace Protag
 
         public void Kill()
         {
+            if (_resetTimer > 0)
+            {
+                return;
+            }
+
             ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
                 CurrentState,
                 _protagGroundChecker.LastGroundedInfo,

@@ -76,7 +76,8 @@ namespace Framework
             _serviceLocator = new ServiceLocator();
             _scoreService = new ScoreService();
             _timeScaleService = new TimeScaleService(_startupConfig.TimeScaleLerpFactor);
-            _levelLoader = new LevelLoader(new NullLevelLoadTransition());
+            BasicLevelLoadTransition levelLoader = Instantiate(_startupConfig.BasicLevelLoadTransitionPrefab);
+            _levelLoader = new LevelLoader(levelLoader);
 
             _gameplayInputService.Initialize();
 

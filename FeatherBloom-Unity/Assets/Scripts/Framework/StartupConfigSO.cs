@@ -1,4 +1,5 @@
 using Framework.LevelLoading;
+using Framework.LevelLoading.LevelTransition;
 using Saving;
 using UnityEngine;
 using ValueSO.Core;
@@ -20,6 +21,9 @@ namespace Framework
 
         [field: SerializeField]
         public GameLevelSO GameplayLevel { get; private set; }
+
+        [field: SerializeField]
+        public BasicLevelLoadTransition BasicLevelLoadTransitionPrefab { get; private set; }
 
         [field: Header("Save")]
 

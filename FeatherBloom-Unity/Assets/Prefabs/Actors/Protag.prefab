@@ -20082,7 +20082,6 @@ GameObject:
   - component: {fileID: 6136715663086586639}
   - component: {fileID: 9220357628535886898}
   - component: {fileID: 4950005178639194769}
-  - component: {fileID: 22980200250847266}
   m_Layer: 0
   m_Name: HealingWind
   m_TagString: Untagged
@@ -24976,21 +24975,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &22980200250847266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555255439539911697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec400534d59a426caaf9078596bf9b94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Presentation.Particles.ValueSOParticleToggler
-  _particleSystems:
-  - {fileID: 4950005178639194769}
-  _valueSO: {fileID: 11400000, guid: ec8a857ea618dee42961d346b73c1c4b, type: 2}
 --- !u!1 &1618690561364453237
 GameObject:
   m_ObjectHideFlags: 0
