@@ -23,11 +23,20 @@ namespace Protag.Presentation
         [SerializeField]
         private BoolValueSO _isUpdraftingValueSO;
 
+        [SerializeField]
+        private BoolValueSO _isDeadValueSO;
+
         private void Start()
         {
             _isGroundedValueSO.AddListener(this, HandleGroundedChange, true);
             _fanOpenValueSO.AddListener(this, HandleFanOpenChange, true);
             _isUpdraftingValueSO.AddListener(this, HandleUpdraftingChange, true);
+            _isDeadValueSO.AddListener(this, HandleDeadChange, true);
+        }
+
+        private void HandleDeadChange(bool isDead)
+        {
+            _animator.speed = isDead ? 0f : 1f;
         }
 
         private void OnDestroy()
@@ -35,6 +44,7 @@ namespace Protag.Presentation
             _isGroundedValueSO.RemoveListener(this);
             _fanOpenValueSO.RemoveListener(this);
             _isUpdraftingValueSO.RemoveListener(this);
+            _isDeadValueSO.RemoveListener(this);
         }
 
         private void HandleGroundedChange(bool isGrounded)

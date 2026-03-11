@@ -5,6 +5,9 @@ namespace Protag.States
 {
     public class ProtagDeadState : ProtagState
     {
+        [SerializeField]
+        private Rigidbody _rb;
+
         [Header("ValueSO (Write)")]
 
         [SerializeField]
@@ -20,6 +23,7 @@ namespace Protag.States
         {
             base.OnEnter();
             _isDeadValueSO.SetValue(true);
+            _rb.isKinematic = true;
         }
 
         public override void OnExit()

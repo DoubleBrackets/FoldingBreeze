@@ -1,6 +1,5 @@
 using System;
 using DevTools;
-using Events;
 using Framework.Timescaling;
 using Input;
 using Input.DataTypes;
@@ -47,11 +46,6 @@ namespace Protag
         [SerializeField]
         private TimeScaleEntryConfig _untrackedInputTimeScale;
 
-        [Header("Events (Out)")]
-
-        [SerializeField]
-        private VoidEvent _onHurt;
-
         [Header("ValueSO (Write)")]
 
         [SerializeField]
@@ -68,6 +62,9 @@ namespace Protag
 
         [SerializeField]
         private IntValueSO _healthValue;
+
+        [SerializeField]
+        private BoolValueSO _isWoundedValueSO;
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
@@ -102,6 +99,8 @@ namespace Protag
             _isGrounded.SetValue(false);
             _processedHorizontalInput.SetValue(0f);
             _healthValue.SetValue(MaxHealth);
+            _isWoundedValueSO.SetValue(false);
+
             _health = MaxHealth;
 
             _protagStateMachine.Initialize();
@@ -232,6 +231,7 @@ namespace Protag
 
             _health--;
             _healthValue.SetValue(_health);
+            _isWoundedValueSO.SetValue(true);
 
             if (_health == 0)
             {
@@ -243,6 +243,7 @@ namespace Protag
         {
             _health = MaxHealth;
             _healthValue.SetValue(_health);
+            _isWoundedValueSO.SetValue(false);
         }
 
         public void Kill()
