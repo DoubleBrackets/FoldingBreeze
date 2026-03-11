@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DevTools;
 using NaughtyAttributes;
 using UnityEditor;
@@ -107,6 +108,12 @@ namespace LevelGen.Stages
             transform.rotation = targetRotation;
 
             _placementAnglePos = placementAngle;
+        }
+
+        public async UniTaskVoid Hide()
+        {
+            await UniTask.WaitForSeconds(1f);
+            _targetPos = transform.position + Vector3.down * 100f;
         }
 
         [Button("Fix Layers")]

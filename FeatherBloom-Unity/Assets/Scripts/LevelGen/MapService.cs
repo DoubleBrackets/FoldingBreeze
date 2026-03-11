@@ -81,6 +81,11 @@ namespace LevelGen
 
             _previousMapStage = _currentMapStage;
 
+            if (_previousMapStage)
+            {
+                _previousMapStage.Hide().Forget();
+            }
+
             if (_currentMapStage)
             {
                 _currentStagePlacementPositionY += _currentMapStage.Height;

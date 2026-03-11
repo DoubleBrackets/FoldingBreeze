@@ -38,8 +38,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   <SteeringMaxAngularVelocity>k__BackingField: 110
   <MoveAcceleration>k__BackingField: 45
-  <MaxMoveSpeed>k__BackingField: 25
-  <MoveSpeedCap>k__BackingField: 25
+  <MaxMoveSpeed>k__BackingField: 23
+  <MoveSpeedCap>k__BackingField: 23
   <MinMoveSpeed>k__BackingField: 18
   <GravityAccelGround>k__BackingField: 16
   <GravityAccelAir>k__BackingField: 16
