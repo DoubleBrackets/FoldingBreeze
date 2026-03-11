@@ -69,9 +69,10 @@ namespace Protag.LevelGen
                 outerRadius,
                 HandleUtils.TransparentWhite);
 
-            HandleUtils.DrawWireRectSlice(_placementAnglePos, innerRadius, outerRadius, startY, height,
+            float wallHeight = Mathf.Max(height, 10f);
+            HandleUtils.DrawWireRectSlice(_placementAnglePos, innerRadius, outerRadius, startY, wallHeight,
                 HandleUtils.TransparentGreen);
-            HandleUtils.DrawWireRectSlice(EndingAngularPos, innerRadius, outerRadius, startY, height,
+            HandleUtils.DrawWireRectSlice(EndingAngularPos, innerRadius, outerRadius, startY, wallHeight,
                 HandleUtils.TransparentWhite);
 
             // Kill zone
