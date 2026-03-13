@@ -17,7 +17,7 @@ namespace Interactables
             var interactableDetector = other.GetComponentInParent<InteractableDetector>();
             if (interactableDetector != null)
             {
-                interactableDetector.PickupBoost(_boostAmount);
+                interactableDetector.PickupBoost(transform.forward * _boostAmount);
                 _onBoost?.Invoke();
             }
         }

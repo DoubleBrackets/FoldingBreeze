@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e042eac2514d238d4e258dfcf455e6, type: 3}
+  m_Name: UpdraftConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Protag.Updraft.UpdraftConfigSO
+  <FeathersConsumed>k__BackingField: 0.4
+  <UpdraftVelocity>k__BackingField: 47
+  <UpdraftVelocityCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.007858546
+      value: 0.99999994
+      inSlope: 0.03728776
+      outSlope: 0.03728776
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1627385
+    - serializedVersion: 3
+      time: 0.99609375
+      value: 0.0052757263
+      inSlope: -2.8246982
+      outSlope: -2.8246982
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.043771062
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <Duration>k__BackingField: 0.7
+  <HorizontalVelocityKeepRatio>k__BackingField: 1.2
+  <TimeSlowdownBlockDuration>k__BackingField: 0.8

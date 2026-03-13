@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0811642d3d61d5468c1ea6751daa39d, type: 3}
+  m_Name: ProtagHealth
+  m_EditorClassIdentifier: Assembly-CSharp::ValueSO.Core.IntValueSO
+  _description: 
+  _value: 0
+  <Log>k__BackingField: 0

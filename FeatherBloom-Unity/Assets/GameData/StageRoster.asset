@@ -12,20 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42049d1150726c8409950b4c446da10b, type: 3}
   m_Name: StageRoster
   m_EditorClassIdentifier: 
-  <RosterEntries>k__BackingField:
-  - Stage: {fileID: 11400000, guid: 61628b2a032f0ad4297a5b5e28364d2b, type: 2}
-    Weight: 1
-    Enabled: 0
-  - Stage: {fileID: 11400000, guid: 8776ee4a869db1d4a94393c91d08622e, type: 2}
+  <TowerHeight>k__BackingField: 160
+  <RandomSelectionPool>k__BackingField:
+  - Stage: {fileID: 11400000, guid: 8be5e837ee10bdf49ab993db5231da09, type: 2}
     Weight: 1
     Enabled: 1
-  - Stage: {fileID: 11400000, guid: 0fa8cbb0ff722924cbda15ed9f2a68d6, type: 2}
+  - Stage: {fileID: 11400000, guid: 24e701b55e75fa94a8581674e842017a, type: 2}
     Weight: 1
     Enabled: 1
-  - Stage: {fileID: 11400000, guid: f35b4ae9a269f9f4083af6392cf0b6ec, type: 2}
-    Weight: 25
-    Enabled: 1
-  - Stage: {fileID: 11400000, guid: 71f800d6db7e7d94eb6d1401964dd6ab, type: 2}
+  - Stage: {fileID: 11400000, guid: f6cfccdddede57c4e8ff3deb0992a4f5, type: 2}
     Weight: 1
     Enabled: 1
-  _startingStageIndex: 0
+  - Stage: {fileID: 11400000, guid: c003c294038b23c4398840c1db5214f3, type: 2}
+    Weight: 2
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 9755b38b9f52cd74ba1553bfbb86e129, type: 2}
+    Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 921df2d61604e1346857b08e18311393, type: 2}
+    Weight: 2
+    Enabled: 1
+  <FixedOrderStartStages>k__BackingField:
+  - {fileID: 11400000, guid: 98e771afa3271b349b0361f3e090a81d, type: 2}
+  - {fileID: 11400000, guid: 8be5e837ee10bdf49ab993db5231da09, type: 2}
+  - {fileID: 11400000, guid: 24e701b55e75fa94a8581674e842017a, type: 2}
+  - {fileID: 11400000, guid: f6cfccdddede57c4e8ff3deb0992a4f5, type: 2}
+  - {fileID: 11400000, guid: 9755b38b9f52cd74ba1553bfbb86e129, type: 2}

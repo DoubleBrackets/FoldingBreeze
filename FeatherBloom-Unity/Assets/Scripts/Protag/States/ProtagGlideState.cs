@@ -1,19 +1,17 @@
-using Protag.Abilities;
+using Framework;
+using Input.SerialComms;
+using Protag.FeatherSystem;
 using Protag.Gliding;
-using SerialComms;
-using StateMachine;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag.States
 {
     /// <summary>
-    ///     State if protag is both airborn and fan is open
+    ///     Gliding state
     /// </summary>
     public class ProtagGlideState : ProtagState
     {
-        [SerializeField]
-        private GroundChecker _groundChecker;
-
         [SerializeField]
         private GlideMovement _glideMovement;
 
@@ -21,78 +19,72 @@ namespace Protag.States
         private GlideVisuals _glideVisuals;
 
         [SerializeField]
-        private AbstractState _surfState;
-
-        [SerializeField]
-        private ProtagCamera _camera;
-
-        [SerializeField]
         private InteractableDetector _interactableDetector;
 
         [SerializeField]
-        private FeatherResources _featherResources;
+        private FeatherManager _featherManager;
+
+        [Header("ValueSO (Write)")]
 
         [SerializeField]
-        private ProtagState _updraftState;
+        private BoolValueSO _isGlidingValueSO;
+
+        [Header("Config")]
 
         [SerializeField]
-        private Animator _animator;
+        private GlideConfigSO _glideConfig;
 
-        public override bool CanReenter { get; protected set; } = false;
-        public override bool CanEnter { get; protected set; } = true;
+        private BoxFanArduinoComm _boxFanArduinoComm;
+
+        public override bool CanReenter => false;
+
+        public override bool CanEnter => _featherManager.FeatherValue > FeatherConsumedPerFixedUpdate;
+
+        private float FeatherConsumedPerFixedUpdate => _glideConfig.FeatherConsumptionPerSecond * Time.fixedDeltaTime;
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+
+            _isGlidingValueSO.SetValue(false);
+        }
 
         public override void OnEnter()
         {
             base.OnEnter();
             _interactableDetector.OnBoostPickup.AddListener(HandleBoost);
-            BoxFanArduinoComm.Instance?.WriteFanOn(true);
-            Protaganist.OnTryUpdraft += HandleUpdraft;
-        }
+            _boxFanArduinoComm?.WriteFanOn(true);
 
-        private void HandleUpdraft()
-        {
-            if (Protaganist.IsFanOpen && _featherResources.TryConsumeFeathers(1))
-            {
-                StateManager.SwitchState(_updraftState);
-            }
+            _isGlidingValueSO.SetValue(true);
         }
 
         public override void OnExit()
         {
             base.OnExit();
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoost);
-            Protaganist.OnTryUpdraft -= HandleUpdraft;
+            _boxFanArduinoComm?.WriteFanOn(false);
 
-            BoxFanArduinoComm.Instance?.WriteFanOn(false);
+            _isGlidingValueSO.SetValue(false);
         }
 
-        private void HandleBoost(float amount)
+        private void HandleBoost(Vector3 boost)
         {
-            _glideMovement.Boost(amount);
+            _glideMovement.Boost(boost);
+            _featherManager.RefillFeathers();
         }
 
         public override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
 
-            GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
+            _featherManager.TryConsumeFeathers(_glideConfig.FeatherConsumptionPerSecond * Time.fixedDeltaTime);
 
-            float horizontalInput = Protaganist.Instance.AimInput.x;
-            float verticalInput = Protaganist.Instance.AimInput.y;
+            Vector2 aim = Protaganist.AimInput;
             float deltaTime = Time.fixedDeltaTime;
 
-            _glideMovement.Tick(horizontalInput, verticalInput, deltaTime);
-            _glideVisuals.UpdateVisuals(horizontalInput, verticalInput, _glideMovement.CurrentVelocity, deltaTime);
-
-            _camera.UpdateProtagCamera(horizontalInput, deltaTime, _glideMovement.CurrentVelocity);
-
-            _animator.SetBool("IsGrounded", groundInfo.IsGrounded);
-            _animator.SetBool("FanOpen", Protaganist.IsFanOpen);
-
-            if (groundInfo.IsGrounded || !Protaganist.Instance.IsFanOpen)
-            {
-                StateManager.SwitchState(_surfState);
-            }
+            _glideMovement.Tick(aim, _glideConfig, deltaTime);
+            _glideVisuals.UpdateVisuals(aim, _glideMovement.CurrentVelocity, deltaTime);
         }
     }
 }

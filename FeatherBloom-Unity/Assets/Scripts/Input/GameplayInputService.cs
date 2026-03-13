@@ -1,32 +1,20 @@
+using Input.DataTypes;
+using Input.ValueSOs;
 using UnityEngine;
 using UnityEngine.Events;
+using ValueSO;
 
 namespace Input
 {
     /// <summary>
     ///     Interface for input
     /// </summary>
-    public class GameplayInputService : MonoBehaviour
+    public class GameplayInputService : MonoBehaviour, IValueSOObserver
     {
-        public enum FanState
-        {
-            Closed,
-            Open
-        }
+        [Header("ValueSO (Read/Write)")]
 
-        public enum GameplayInputType
-        {
-            None,
-            Conventional,
-            CustomHardware
-        }
-
-        public struct AimInput
-        {
-            public Vector2 FinalAimInput;
-            public Quaternion ProcessedFanOrientation;
-            public Quaternion RawFanOrientation;
-        }
+        [SerializeField]
+        private GameplayInputTypeValueSO _gameplayInputTypeValueSO;
 
         [Header("Input Providers")]
 
@@ -47,25 +35,22 @@ namespace Input
         public UnityEvent OnSliceInput;
         public UnityEvent OnFanSelfInput;
 
-        public static GameplayInputService Instance { get; private set; }
         public FanState CurrentFanState => _currentFanState;
+        public GameplayInputType CurrentInputType => _currentGameplayInputType;
 
         private FanState _currentFanState = FanState.Closed;
-        private GameplayInputType currentGameplayInputType = GameplayInputType.None;
+        private GameplayInputType _currentGameplayInputType = GameplayInputType.None;
+
         private InputProvider _currentInputProvider;
 
-        private void Awake()
+        public void Initialize()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            _gameplayInputTypeValueSO.AddListener(this, OnGameplayInputTypeChanged, true);
+        }
 
-            SwitchInputType(GameplayInputType.Conventional);
+        private void OnGameplayInputTypeChanged(GameplayInputType type)
+        {
+            SwitchInputType(type);
         }
 
         private void OnDestroy()
@@ -74,27 +59,31 @@ namespace Input
             {
                 UnsubscribeInputProvider(_currentInputProvider);
             }
+
+            _gameplayInputTypeValueSO.RemoveListener(this);
         }
 
         public void SwitchInputType(GameplayInputType newGameplayInputType)
         {
-            if (newGameplayInputType == currentGameplayInputType)
+            if (newGameplayInputType == _currentGameplayInputType)
             {
                 return;
             }
 
-            Debug.Log($"Switching input type to {newGameplayInputType}");
+            Debug.Log($"Switching input type to {newGameplayInputType}", gameObject);
 
             if (newGameplayInputType == GameplayInputType.Conventional)
             {
-                currentGameplayInputType = GameplayInputType.Conventional;
+                _currentGameplayInputType = GameplayInputType.Conventional;
                 SwitchInputProvidersHandlers(_conventionalInputProvider);
             }
             else if (newGameplayInputType == GameplayInputType.CustomHardware)
             {
-                currentGameplayInputType = GameplayInputType.CustomHardware;
+                _currentGameplayInputType = GameplayInputType.CustomHardware;
                 SwitchInputProvidersHandlers(_customHardwareInputProvider);
             }
+
+            _gameplayInputTypeValueSO.SetValue(newGameplayInputType, this);
         }
 
         private void SwitchInputProvidersHandlers(InputProvider newInputProvider)
@@ -111,6 +100,7 @@ namespace Input
 
         private void SubscribeInputProvider(InputProvider inputProvider)
         {
+            Debug.Log($"Subscribing to {inputProvider.name}", inputProvider);
             inputProvider.AimInputChanged += HandleAimInputChanged;
             inputProvider.DesiredFanStateChanged += HandleDesiredFanStateChanged;
             inputProvider.ToggleFanState += HandleToggleFanState;
@@ -122,6 +112,7 @@ namespace Input
 
         private void UnsubscribeInputProvider(InputProvider inputProvider)
         {
+            Debug.Log($"Unsubscribing from {inputProvider.name}", inputProvider.gameObject);
             inputProvider.AimInputChanged -= HandleAimInputChanged;
             inputProvider.DesiredFanStateChanged -= HandleDesiredFanStateChanged;
             inputProvider.ToggleFanState -= HandleToggleFanState;
@@ -173,6 +164,12 @@ namespace Input
         private void HandleAimInputChanged(AimInput aimInput)
         {
             OnAimInputChange?.Invoke(aimInput);
+        }
+
+        public void SetZeroedOrientationToCurrent()
+        {
+            _conventionalInputProvider.SetDefaultToCurrent();
+            _customHardwareInputProvider.SetDefaultToCurrent();
         }
     }
 }

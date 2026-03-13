@@ -73,6 +73,11 @@ namespace Input.FanInput
 
             angleDifference.ToAngleAxis(out float totalAngularDistance, out Vector3 axis);
 
+            if (totalAngularDistance < _gestureRecognizeConfig.MinAngularDistance)
+            {
+                return;
+            }
+
             float angularVelocity = totalAngularDistance / timeDelta;
             if (angularVelocity > _gestureRecognizeConfig.ThresholdAngularVelocity)
             {
@@ -91,6 +96,12 @@ namespace Input.FanInput
             }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="a">Orientation of gesture start</param>
+        /// <param name="b">Orientation of gesture end</param>
+        /// <param name="averageOrientation">Average orientation of gesture</param>
+        /// <returns></returns>
         private bool RecognizeGesture(Quaternion a, Quaternion b, Quaternion averageOrientation)
         {
             // Axis axis is the one the fan unfolds around
@@ -109,9 +120,9 @@ namespace Input.FanInput
                 return true;
             }
 
-            // Fanning self is any fanning motion facing backwards
-            Vector3 leftAxis = averageOrientation * Vector3.left;
-            if (leftAxis.z < 0)
+            // Fanning self is any fanning motion facing somewhat backwards
+            Vector3 leftAxis = b * Vector3.left;
+            if (leftAxis.z < 0f)
             {
                 OnGestureTriggered?.Invoke(GestureTypes.FanSelf);
                 return true;
@@ -151,6 +162,7 @@ namespace Input.FanInput
         [Serializable]
         public struct GestureRecognizeConfig
         {
+            public float MinAngularDistance;
             public float ThresholdAngularVelocity;
             public float BufferTime;
             public float DebounceInterval;

@@ -1,3 +1,4 @@
+using Input.DataTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,10 +8,7 @@ namespace Input
     {
         public void HandleAiming(InputAction.CallbackContext context)
         {
-            AimInputChanged?.Invoke(new GameplayInputService.AimInput
-            {
-                FinalAimInput = context.ReadValue<Vector2>()
-            });
+            AimInputChanged?.Invoke(new AimInput(context.ReadValue<Vector2>()));
         }
 
         public void HandleToggleFanState(InputAction.CallbackContext context)
@@ -61,11 +59,12 @@ namespace Input
                 float normalizedY = (Screen.height - mousePosition.y) / Screen.height;
                 float normalizedX = (Screen.width - mousePosition.x) / Screen.width;
 
-                AimInputChanged?.Invoke(new GameplayInputService.AimInput
-                {
-                    FinalAimInput = new Vector2(normalizedX, normalizedY)
-                });
+                AimInputChanged?.Invoke(new AimInput(new Vector2(normalizedX, normalizedY)));
             }
+        }
+
+        public override void SetDefaultToCurrent()
+        {
         }
     }
 }

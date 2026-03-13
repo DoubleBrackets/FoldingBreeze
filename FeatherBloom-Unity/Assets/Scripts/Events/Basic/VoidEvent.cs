@@ -7,6 +7,11 @@ namespace Events
     {
         public void Raise()
         {
+            if (_debug)
+            {
+                Debug.Log($"Event {name} raised");
+            }
+
             _internalVoidEvent?.Invoke();
         }
     }

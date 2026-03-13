@@ -21,13 +21,11 @@ namespace Protag
 
         public override void OnEnter()
         {
-            base.OnEnter();
             _onEnterState?.Invoke();
         }
 
         public override void OnExit()
         {
-            base.OnExit();
             _onExitState?.Invoke();
         }
     }

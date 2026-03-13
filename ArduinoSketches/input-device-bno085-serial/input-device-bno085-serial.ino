@@ -1,5 +1,9 @@
 /*
-v. 0.0.1
+v. 0.1.1
+
+Changelog
+- 0.0.1 Initial version
+- 0.1.1 Removed println when gyro is reset, reduced rate
 
 Intended to be used with Arduino Nano Every
 
@@ -72,7 +76,7 @@ void setup(void) {
 
 // Here is where you define the sensor outputs you want to receive
 void setReports(void) {
-  Serial.println("Setting desired reports");
+  // Serial.println("Setting desired reports");
   if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR, 10000)) {
     Serial.println("Could not enable game vector");
   }
@@ -114,7 +118,7 @@ void sendState() {
 
 void readGyro() {
   if (bno08x.wasReset()) {
-    Serial.print("sensor was reset ");
+    // Serial.print("sensor was reset ");
     setReports();
   }
 
@@ -155,7 +159,7 @@ void readGyro() {
 }
 
 void loop() {
-  delay(10);
+  delay(20);
 
   readGyro();
 

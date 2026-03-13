@@ -12,55 +12,40 @@ namespace Protag.Gliding
         [SerializeField]
         private Transform _body;
 
-        [Header("Config")]
-
-        [SerializeField]
-        private AnimationCurve _tiltSteerCurve;
-
-        [SerializeField]
-        private AnimationCurve _rollSteerCurve;
-
-        [SerializeField]
-        private float _tiltMaxAngularVelocity;
-
-        [SerializeField]
-        private float _rollMaxAngularVelocity;
-
-        [SerializeField]
-        private float _gravityAccel;
-
-        [SerializeField]
-        private float _fixedGravityAccel;
-
-        [SerializeField]
-        private float _drag;
-
-        [SerializeField]
-        private float _minFlightSpeed;
-
         public Vector3 CurrentVelocity => _rb.linearVelocity;
 
-        public void Tick(float horizontalAim, float verticalAim, float deltaTime)
+        public void Tick(Vector2 aim, GlideConfigSO config, float deltaTime)
         {
-            float tiltSteer = _tiltSteerCurve.Evaluate(Mathf.Abs(verticalAim)) * Mathf.Sign(verticalAim);
-            float rollSteer = _rollSteerCurve.Evaluate(Mathf.Abs(horizontalAim)) * Mathf.Sign(horizontalAim);
+            float tiltSteer = config.TiltSteerCurve.Evaluate(Mathf.Abs(aim.y)) * Mathf.Sign(aim.y);
+            float rollSteer = config.RollSteerCurve.Evaluate(Mathf.Abs(aim.x)) * Mathf.Sign(aim.x);
 
             Vector3 currentVel = _rb.linearVelocity;
             float currentSpeed = currentVel.magnitude;
 
-            Vector3 currentAimDirection = currentVel.normalized;
-            // Roll
-            Vector3 targetAimDirection =
-                Quaternion.AngleAxis(rollSteer * _rollMaxAngularVelocity * deltaTime, Vector3.up) * currentAimDirection;
+            Vector3 currentTrajectoryDirection = currentVel.normalized;
 
-            Vector3 right = Vector3.Cross(currentAimDirection, Vector3.up).normalized;
-            // Tilt
-            targetAimDirection = Quaternion.AngleAxis(tiltSteer * _tiltMaxAngularVelocity * deltaTime, right) *
-                                 targetAimDirection;
+            // ROLL
+            Vector3 currentHorizontalTrajectory = currentTrajectoryDirection;
+            currentHorizontalTrajectory.y = 0;
 
-            Vector3 targetVelocity = targetAimDirection * currentSpeed;
+            Vector3 targetHorizontalTrajectory =
+                Quaternion.AngleAxis(rollSteer * config.RollMaxAngularVelocity * deltaTime, Vector3.up) *
+                currentHorizontalTrajectory.normalized;
 
-            float dragT = Mathf.Pow(_drag, deltaTime);
+            Vector3 right = Vector3.Cross(currentTrajectoryDirection, Vector3.up).normalized;
+
+            // TILT
+
+            // -90 to 90
+            float currentTilt = -Vector3.Angle(currentTrajectoryDirection, Vector3.up) + 90f;
+            float newTilt = currentTilt + tiltSteer * config.TiltMaxAngularVelocity * deltaTime;
+            newTilt = Mathf.Clamp(newTilt, config.TiltBoundLower, config.TiltBoundUpper);
+            Vector3 newTargetTrajectory = Quaternion.AngleAxis(newTilt, right) *
+                                          targetHorizontalTrajectory;
+
+            Vector3 targetVelocity = newTargetTrajectory * currentSpeed;
+
+            float dragT = Mathf.Pow(config.Drag, deltaTime);
             // Drag linear deaccel
             targetVelocity = targetVelocity.normalized * Mathf.Max(0,
                 targetVelocity.magnitude * dragT);
@@ -68,26 +53,25 @@ namespace Protag.Gliding
             // Apply gravity
             float gravityRatio = Vector3.Dot(targetVelocity.normalized, Vector3.down);
 
-            if (currentVel.magnitude > _minFlightSpeed)
+            if (currentVel.magnitude > config.MinFlightSpeed)
             {
                 targetVelocity = targetVelocity.normalized *
-                                 (targetVelocity.magnitude + gravityRatio * _gravityAccel * deltaTime);
+                                 (targetVelocity.magnitude + gravityRatio * config.GravityAccel * deltaTime);
             }
             else
             {
-                targetVelocity += Vector3.down * _gravityAccel * deltaTime;
+                targetVelocity += Vector3.down * config.GravityAccel * deltaTime;
             }
 
-            targetVelocity += Vector3.down * _fixedGravityAccel * deltaTime;
+            targetVelocity += Vector3.down * config.FixedGravityAccel * deltaTime;
 
             _rb.linearVelocity = targetVelocity;
         }
 
-        public void Boost(float amount)
+        public void Boost(Vector3 boost)
         {
             Vector3 currentVel = _rb.linearVelocity;
-            Vector3 boostedVel = currentVel.normalized * (currentVel.magnitude + amount);
-            _rb.linearVelocity = boostedVel;
+            _rb.linearVelocity = currentVel + boost;
         }
     }
 }

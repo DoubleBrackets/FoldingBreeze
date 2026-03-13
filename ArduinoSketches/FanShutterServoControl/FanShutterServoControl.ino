@@ -15,11 +15,11 @@ Servo fanServoRight;
 #define SERVO_L_PIN 3
 #define SERVO_R_PIN 5
 
-#define SERVO_L_POS_CLOSE 140
-#define SERVO_L_POS_OPEN 80
+#define SERVO_L_POS_CLOSE 130
+#define SERVO_L_POS_OPEN 30
 
-#define SERVO_R_POS_CLOSE 40
-#define SERVO_R_POS_OPEN 100
+#define SERVO_R_POS_CLOSE 36
+#define SERVO_R_POS_OPEN 135
 
 bool isOpen = false;
 

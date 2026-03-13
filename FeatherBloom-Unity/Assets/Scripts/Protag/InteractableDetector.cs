@@ -5,18 +5,25 @@ namespace Protag
 {
     public class InteractableDetector : MonoBehaviour
     {
-        public UnityEvent<float> OnBoostPickup;
+        public UnityEvent<Vector3> OnBoostPickup;
         public UnityEvent OnTouchHazard;
+        public UnityEvent OnTouchEnding;
 
-        public void PickupBoost(float boostAmount)
+        public void PickupBoost(Vector3 boost)
         {
-            OnBoostPickup?.Invoke(boostAmount);
+            OnBoostPickup?.Invoke(boost);
         }
 
         public void TouchHazard()
         {
             Debug.Log("Hazard Touched");
             OnTouchHazard?.Invoke();
+        }
+
+        public void TouchEnding()
+        {
+            Debug.Log("Ending Touched");
+            OnTouchEnding?.Invoke();
         }
     }
 }

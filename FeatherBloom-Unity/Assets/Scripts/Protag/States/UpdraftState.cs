@@ -1,128 +1,105 @@
-using Events;
-using Protag.Surfing;
-using SerialComms;
-using Services;
+using Framework;
+using Input.SerialComms;
+using Protag.FeatherSystem;
+using Protag.Movement;
+using Protag.Updraft;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag.States
 {
     public class UpdraftState : ProtagState
     {
+        [Header("Depends")]
+
         [SerializeField]
-        private SurfMovement _surfMovement;
+        private InteractableDetector _interactableDetector;
+
+        [SerializeField]
+        private FeatherManager _featherManager;
 
         [SerializeField]
         private GroundChecker _groundChecker;
 
         [SerializeField]
-        private Animator _animator;
-
-        [SerializeField]
-        private InteractableDetector _interactableDetector;
-
-        [Header("Stateout")]
-
-        [SerializeField]
-        private ProtagState _airState;
-
-        [SerializeField]
-        private ProtagState _groundState;
+        private Rigidbody _rb;
 
         [Header("Config")]
 
         [SerializeField]
-        private float _updraftVelocity;
+        private UpdraftConfigSO _updraftConfig;
+
+        [Header("ValueSO (Write)")]
 
         [SerializeField]
-        private AnimationCurve _updraftVelocityCurve;
+        private BoolValueSO _isUpdraftingValueSO;
 
-        [SerializeField]
-        private float _duration;
-
-        [SerializeField]
-        private float _horizontalVelocityKeepRatio;
-
-        [SerializeField]
-        private TimeScaleService.TimeScaleEntryConfig _onEnterTimeScale;
-
-        [Header("Event Out")]
-
-        [SerializeField]
-        private VoidEvent _onUpdraft;
-
-        public override bool CanReenter { get; protected set; } = false;
-        public override bool CanEnter { get; protected set; } = true;
+        public override bool CanReenter => false;
+        public override bool CanEnter => _featherManager.FeatherValue > _updraftConfig.FeathersConsumed;
 
         private float _stateTimer;
 
-        private Vector3 _horizontalVelocity;
+        public bool IsFinished => _stateTimer <= 0f;
+
+        private Vector3 _entryHorizontalVelocity;
         private Vector3 _launchNormal;
+
+        private BoxFanArduinoComm _boxFanArduinoComm;
+
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            _boxFanArduinoComm = ServiceLocator.GetService<BoxFanArduinoComm>();
+
+            _isUpdraftingValueSO.SetValue(false);
+        }
 
         public override void OnEnter()
         {
             base.OnEnter();
+            _featherManager.TryConsumeFeathers(_updraftConfig.FeathersConsumed);
+
             _groundChecker.ForceUnground(0.1f);
-            _onUpdraft.Raise();
-            _stateTimer = _duration;
-            _animator.SetBool("Updraft", true);
 
-            GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
-            _launchNormal = groundInfo.GroundNormal;
-
-            _horizontalVelocity = Vector3.ProjectOnPlane(_surfMovement.CurrentVelocity, _launchNormal)
-                                  * _horizontalVelocityKeepRatio;
+            _launchNormal = Vector3.up;
+            _entryHorizontalVelocity = Vector3.ProjectOnPlane(_rb.linearVelocity, _launchNormal)
+                                       * _updraftConfig.HorizontalVelocityKeepRatio;
 
             UpdateVelocity(_launchNormal);
 
             _interactableDetector.OnBoostPickup.AddListener(HandleBoostPickup);
-
-            TimeScaleService.Instance.NewTimeScaling(_onEnterTimeScale);
-
-            BoxFanArduinoComm.Instance.WriteFanOn(true);
+            _boxFanArduinoComm?.WriteFanOn(true);
+            _isUpdraftingValueSO.SetValue(true);
+            _stateTimer = _updraftConfig.Duration;
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            _animator.SetBool("Updraft", false);
 
             _interactableDetector.OnBoostPickup.RemoveListener(HandleBoostPickup);
-            BoxFanArduinoComm.Instance.WriteFanOn(false);
+            _boxFanArduinoComm?.WriteFanOn(false);
+
+            _isUpdraftingValueSO.SetValue(false);
         }
 
-        private void HandleBoostPickup(float boost)
+        private void HandleBoostPickup(Vector3 boost)
         {
-            _horizontalVelocity = _horizontalVelocity.normalized * (_horizontalVelocity.magnitude + boost);
+            _entryHorizontalVelocity += boost;
         }
 
         public override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
             _stateTimer -= Time.fixedDeltaTime;
-
-            if (_stateTimer < 0f)
-            {
-                GroundChecker.GroundedInfo groundInfo = _groundChecker.CheckGrounded();
-                if (groundInfo.IsGrounded)
-                {
-                    StateManager.SwitchState(_groundState);
-                }
-                else
-                {
-                    StateManager.SwitchState(_airState);
-                }
-            }
-            else
-            {
-                UpdateVelocity(_launchNormal);
-            }
+            UpdateVelocity(_launchNormal);
         }
 
         private void UpdateVelocity(Vector3 normal)
         {
-            float t = 1 - _stateTimer / _duration;
-            float ratio = Mathf.Clamp01(_updraftVelocityCurve.Evaluate(t));
-            _surfMovement.SetVelocity(normal * _updraftVelocity * ratio + _horizontalVelocity);
+            float t = 1 - _stateTimer / _updraftConfig.Duration;
+            float ratio = Mathf.Clamp01(_updraftConfig.UpdraftVelocityCurve.Evaluate(t));
+            _rb.linearVelocity = normal * _updraftConfig.UpdraftVelocity * ratio + _entryHorizontalVelocity;
         }
     }
 }

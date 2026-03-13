@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04b5258d923749c6a71f3127910ebb58, type: 3}
+  m_Name: SaveDataValueSOLoader
+  m_EditorClassIdentifier: Assembly-CSharp::Saving.SaveDataValueSOLoader
+  _lastHandFanConnectedSerialPortNameValueSO: {fileID: 11400000, guid: 576a122a4d2161441993313ddbd5bbd8, type: 2}
+  _lastBoxFanConnectedSerialPortNameValueSO: {fileID: 11400000, guid: da2fcb5f27b52d04cab203725112c9fd, type: 2}
+  _defaultZeroedOrientationValueSO: {fileID: 11400000, guid: 07043364282de5c4285ef051d58e466d, type: 2}
+  _highScoreValueSO: {fileID: 11400000, guid: 954c11f34dcb84546980b0a3602f7cc6, type: 2}

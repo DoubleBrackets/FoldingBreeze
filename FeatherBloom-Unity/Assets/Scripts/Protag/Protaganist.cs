@@ -1,14 +1,24 @@
 using System;
-using DebugTools;
-using Events;
+using DevTools;
+using Framework.Timescaling;
 using Input;
+using Input.DataTypes;
+using Input.Processor;
+using Protag.Movement;
 using StateMachine;
+using UI;
 using UnityEngine;
+using ValueSO.Core;
 
 namespace Protag
 {
     public class Protaganist : MonoBehaviour
     {
+        public const int MaxHealth = 2;
+
+        [SerializeField]
+        private ProtagStateDecisionTree _protagStateDecisionTree;
+
         [SerializeField]
         private StateManager _protagStateMachine;
 
@@ -18,58 +28,146 @@ namespace Protag
         [SerializeField]
         private Rigidbody _protagRigidbody;
 
-        [Header("Event Out")]
+        [Header("Depends")]
 
         [SerializeField]
-        private VoidEvent _onFanOpen;
+        private GroundChecker _protagGroundChecker;
+
+        [Header("Config")]
 
         [SerializeField]
-        private VoidEvent _onFanClose;
+        private CustomFanInputConfigSO _fanInputConfig;
 
         [SerializeField]
-        private VoidEvent _onDeath;
+        private float _resetTimeAfterDeath;
 
         [SerializeField]
-        private VoidEvent _onReset;
+        private float _resetTimeAfterAscend;
 
-        public static Protaganist Instance { get; private set; }
+        [Header("Effects")]
+
+        [SerializeField]
+        private TimeScaleEntryConfig _untrackedInputTimeScale;
+
+        [Header("ValueSO (Write)")]
+
+        [SerializeField]
+        private BoolValueSO _isFanOpen;
+
+        [SerializeField]
+        private BoolValueSO _isGrounded;
+
+        [SerializeField]
+        private Vector3Value _protagVelocity;
+
+        [SerializeField]
+        private FloatValueSO _processedHorizontalInput;
+
+        [SerializeField]
+        private IntValueSO _healthValue;
+
+        [SerializeField]
+        private BoolValueSO _isWoundedValueSO;
+
+        [SerializeField]
+        private BoolValueSO _didBeatGameValueSO;
 
         public Vector3 Position => _protagBody.position;
         public Vector2 AimInput { get; private set; }
+        public event Action OnLoadResultScreen;
 
-        public bool IsFanOpen { get; private set; }
-        public event Action OnFanOpen;
-
-        public event Action OnTryUpdraft;
-        public event Action OnTryGust;
-        public event Action OnTryFanSelf;
-
-        private void Awake()
+        private bool IsFanOpen
         {
-            Instance = this;
+            get => _isFanOpen.Value;
+            set => _isFanOpen.SetValue(value);
+        }
+
+        private GameplayInputService _inputService;
+        private TimeScaleService _timeScaleService;
+
+        private CustomControllerInputProcessor _inputProcessor;
+        private ProtagState CurrentState => _protagStateMachine.CurrentState as ProtagState;
+        public int Health => _health;
+
+        private float _resetTimer;
+
+        private int _health;
+
+        public void Initialize(TimeScaleService timeScaleService, GameplayInputService inputService)
+        {
+            _inputProcessor = new CustomControllerInputProcessor(_fanInputConfig);
+
+            _inputService = inputService;
+            _timeScaleService = timeScaleService;
+
+            _isFanOpen.SetValue(IsFanOpen);
+            _protagVelocity.SetValue(Vector3.zero);
+            _isGrounded.SetValue(false);
+            _processedHorizontalInput.SetValue(0f);
+            _healthValue.SetValue(MaxHealth);
+            _isWoundedValueSO.SetValue(false);
+            _didBeatGameValueSO.SetValue(false);
+
+            _health = MaxHealth;
+
             _protagStateMachine.Initialize();
         }
 
         private void Start()
         {
-            GameplayInputService.Instance.OnAimInputChange.AddListener(HandleAimInputChange);
-            GameplayInputService.Instance.OnFanStateChange.AddListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnUpdraftInput.AddListener(HandleTryUpdraft);
-            GameplayInputService.Instance.OnGustInput.AddListener(HandleTryGust);
-            GameplayInputService.Instance.OnFanSelfInput.AddListener(HandleFanSelf);
+            _inputService.OnAimInputChange.AddListener(HandleAimInputChange);
+            _inputService.OnFanStateChange.AddListener(HandleFanStateChange);
+            _inputService.OnUpdraftInput.AddListener(HandleTryUpdraft);
+            _inputService.OnFanSelfInput.AddListener(HandleFanSelf);
 
-            HandleFanStateChange(GameplayInputService.Instance.CurrentFanState);
+            HandleFanStateChange(_inputService.CurrentFanState);
         }
 
         private void OnDestroy()
         {
-            GameplayInputService.Instance.OnAimInputChange.RemoveListener(HandleAimInputChange);
-            GameplayInputService.Instance.OnFanStateChange.RemoveListener(HandleFanStateChange);
-            GameplayInputService.Instance.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
-            GameplayInputService.Instance.OnGustInput.RemoveListener(HandleTryGust);
-            GameplayInputService.Instance.OnFanSelfInput.RemoveListener(HandleFanSelf);
+            _inputService.OnAimInputChange.RemoveListener(HandleAimInputChange);
+            _inputService.OnFanStateChange.RemoveListener(HandleFanStateChange);
+            _inputService.OnUpdraftInput.RemoveListener(HandleTryUpdraft);
+            _inputService.OnFanSelfInput.RemoveListener(HandleFanSelf);
 
             _protagStateMachine.Deinitialize();
+        }
+
+        private void Update()
+        {
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen);
+            _protagStateMachine.SwitchState(newState);
+
+            _protagStateMachine.UpdateStateMachine();
+
+            if (_resetTimer > 0)
+            {
+                _resetTimer -= Time.deltaTime;
+                if (_resetTimer <= 0)
+                {
+                    OnLoadResultScreen?.Invoke();
+                }
+            }
+
+            OnGUIHook.SetElement("Protag State", CurrentState?.name ?? "None");
+        }
+
+        private void FixedUpdate()
+        {
+            _protagGroundChecker.CheckGrounded();
+            _isGrounded.SetValue(_protagGroundChecker.LastGroundedInfo.IsGrounded);
+
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen);
+            _protagStateMachine.SwitchState(newState);
+
+            _protagStateMachine.FixedUpdateStateMachine();
+            _protagVelocity.SetValue(_protagRigidbody.linearVelocity);
         }
 
         private void OnDrawGizmos()
@@ -82,36 +180,47 @@ namespace Protag
 
         private void HandleFanSelf()
         {
-            OnTryFanSelf?.Invoke();
-        }
-
-        private void HandleTryGust()
-        {
-            OnTryGust?.Invoke();
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                tryHealing: true);
+            _protagStateMachine.SwitchState(newState);
         }
 
         private void HandleTryUpdraft()
         {
-            OnTryUpdraft?.Invoke();
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                true);
+            _protagStateMachine.SwitchState(newState);
         }
 
-        private void HandleAimInputChange(GameplayInputService.AimInput aimInput)
+        private void HandleAimInputChange(AimInput aimInput)
         {
-            AimInput = aimInput.FinalAimInput;
+            ProcessResult processResult = _inputProcessor.ProcessInput(_inputService.CurrentInputType, aimInput);
+            AimInput = processResult.ProcessedAimInput;
+
+            // If untracked, slow down to give the player time to move between gestures and aiming
+            if (processResult.CurrentState == InputProcessorState.Untracked)
+            {
+                _timeScaleService.NewTimeScaling(_untrackedInputTimeScale);
+            }
+
+            // Except for right after a gesture, since we want gestures to play at normal speed
+            if (_protagStateDecisionTree.IsInOneshotState(CurrentState) ||
+                processResult.CurrentState == InputProcessorState.Tracking)
+            {
+                _timeScaleService.RemoveTimeScale(_untrackedInputTimeScale.Identifier);
+            }
         }
 
-        private void HandleFanStateChange(GameplayInputService.FanState state)
+        private void HandleFanStateChange(FanState state)
         {
-            IsFanOpen = state == GameplayInputService.FanState.Open;
-            if (IsFanOpen)
-            {
-                OnFanOpen?.Invoke();
-                _onFanOpen?.Raise();
-            }
-            else
-            {
-                _onFanClose?.Raise();
-            }
+            IsFanOpen = state == FanState.Open;
+            _isFanOpen.SetValue(IsFanOpen);
         }
 
         public void SetPositionAndDirection(Vector3 position, Vector3 direction)
@@ -120,16 +229,63 @@ namespace Protag
             _protagRigidbody.linearVelocity = direction;
         }
 
+        public void Damage()
+        {
+            if (_health <= 0)
+            {
+                return;
+            }
+
+            _health--;
+            _healthValue.SetValue(_health);
+            _isWoundedValueSO.SetValue(true);
+
+            if (_health == 0)
+            {
+                Kill();
+            }
+        }
+
+        public void Heal()
+        {
+            _health = MaxHealth;
+            _healthValue.SetValue(_health);
+            _isWoundedValueSO.SetValue(false);
+        }
+
         public void Kill()
         {
-            if (DebugState.AutoRestartOnDeath)
+            if (_resetTimer > 0)
             {
-                _onReset?.Raise();
+                return;
             }
-            else
+
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                shouldDie: true);
+            _protagStateMachine.SwitchState(newState);
+
+            _resetTimer = _resetTimeAfterDeath;
+        }
+
+        public void BeatGame()
+        {
+            if (_resetTimer > 0)
             {
-                _onDeath?.Raise();
+                return;
             }
+
+            ProtagState newState = _protagStateDecisionTree.EvaluateNewState(
+                CurrentState,
+                _protagGroundChecker.LastGroundedInfo,
+                IsFanOpen,
+                shouldBeatGame: true);
+            _protagStateMachine.SwitchState(newState);
+
+            _didBeatGameValueSO.SetValue(true);
+            _resetTimer = _resetTimeAfterAscend;
         }
     }
 }

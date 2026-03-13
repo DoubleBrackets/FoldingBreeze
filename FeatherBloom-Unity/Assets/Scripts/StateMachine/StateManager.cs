@@ -19,7 +19,7 @@ namespace StateMachine
 
         private bool _isInitialized;
 
-        private void Update()
+        public void UpdateStateMachine()
         {
             if (!_isInitialized)
             {
@@ -29,7 +29,7 @@ namespace StateMachine
             _currentState.OnUpdate();
         }
 
-        private void FixedUpdate()
+        public void FixedUpdateStateMachine()
         {
             if (!_isInitialized)
             {
@@ -77,14 +77,12 @@ namespace StateMachine
             {
                 if (!state.CanReenter)
                 {
-                    Debug.LogWarning($"StateMachine: Cannot re-enter state {state.name}");
                     return;
                 }
             }
 
             if (!state.CanEnter)
             {
-                Debug.LogWarning($"StateMachine: Cannot enter state {state.name}");
                 return;
             }
 
@@ -95,6 +93,12 @@ namespace StateMachine
 
             _currentState = state;
             _currentState.OnEnter();
+        }
+
+        [ContextMenu("Autodetect children")]
+        private void AutoDetectChildren()
+        {
+            _states = new List<AbstractState>(GetComponentsInChildren<AbstractState>());
         }
     }
 }
