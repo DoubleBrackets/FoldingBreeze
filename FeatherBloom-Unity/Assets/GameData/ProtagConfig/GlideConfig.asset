@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288f230023cc4050bc00dd2e50da326b, type: 3}
   m_Name: GlideConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Gliding.GlideConfigSO
-  <FeatherConsumptionPerSecond>k__BackingField: 0.15
+  <FeatherConsumptionPerSecond>k__BackingField: 0.12
   <TiltSteerCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -63,9 +63,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   <TiltMaxAngularVelocity>k__BackingField: 70
   <RollMaxAngularVelocity>k__BackingField: 60
-  <GravityAccel>k__BackingField: 6
-  <FixedGravityAccel>k__BackingField: 4
-  <Drag>k__BackingField: 0.97
+  <GravityAccel>k__BackingField: 0
+  <FixedGravityAccel>k__BackingField: 0
+  <Drag>k__BackingField: 0.98
   <MinFlightSpeed>k__BackingField: 10
-  <TiltBoundUpper>k__BackingField: 45
-  <TiltBoundLower>k__BackingField: -45
+  <TiltBoundUpper>k__BackingField: 30
+  <TiltBoundLower>k__BackingField: -30

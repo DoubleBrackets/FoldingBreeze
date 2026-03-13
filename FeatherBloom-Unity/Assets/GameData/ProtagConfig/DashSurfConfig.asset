@@ -36,7 +36,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <SteeringMaxAngularVelocity>k__BackingField: 110
+  <SteeringMaxAngularVelocity>k__BackingField: 90
   <MoveAcceleration>k__BackingField: 45
   <MaxMoveSpeed>k__BackingField: 23
   <MoveSpeedCap>k__BackingField: 23

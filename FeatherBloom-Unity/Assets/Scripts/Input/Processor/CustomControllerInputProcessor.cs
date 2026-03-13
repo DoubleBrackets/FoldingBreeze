@@ -58,12 +58,12 @@ namespace Input.Processor
             {
                 if (angleFromForward > _config.FanLoseTrackingAngle)
                 {
-                    _state = InputProcessorState.Untracked;
+                    // _state = InputProcessorState.Untracked;
                     result.ProcessedAimInput = Vector2.zero;
                 }
                 else if (angleFromForward < _config.FanDeadZoneAngle)
                 {
-                    result.ProcessedAimInput = Vector2.zero;
+                    // result.ProcessedAimInput = Vector2.zero;
                 }
                 else
                 {

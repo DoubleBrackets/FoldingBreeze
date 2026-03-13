@@ -163,6 +163,113 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &225153192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 225153195}
+  - component: {fileID: 225153194}
+  - component: {fileID: 225153193}
+  m_Layer: 0
+  m_Name: DevReset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &225153193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225153192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1ce442bc201ab4eb6b41d5f5a169f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Utils.SceneChangeMono
+  _gameLevel: {fileID: 11400000, guid: 036ae1ad70c56d945bb8c17eb7e5a73e, type: 2}
+--- !u!114 &225153194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225153192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a516769faf9b4f3f9809b555833af344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DevTools.QuickReset
+  _onReset:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 225153193}
+        m_TargetAssemblyTypeName: Utils.SceneChangeMono, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _resetAction:
+    m_Name: Reset
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: aa1bbeb8-4f4d-450b-a946-abb8afb65a69
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 8b7ede3f-74fd-4a07-bde7-3e435b22cf02
+      m_Path: <Keyboard>/1
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Reset
+      m_Flags: 0
+    m_Flags: 0
+  _toggleFullscreen:
+    m_Name: Toggle Fullscreen
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b1d7f27a-d889-46a7-ab87-48210b731ab8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 50b15181-44d2-424a-8ef4-d1f2eeb34362
+      m_Path: <Keyboard>/2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Toggle Fullscreen
+      m_Flags: 0
+    m_Flags: 0
+--- !u!4 &225153195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225153192}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1347167320
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,14 +763,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultOrientation: {fileID: 11400000, guid: 07043364282de5c4285ef051d58e466d, type: 2}
-  _closeSensitivity: 2
-  _openTiltSensitivity: 2
+  _closeSensitivity: 1.4
+  _openTiltSensitivity: 1.8
   _openRollSensitivity: 2
   _fanOpenRollForwardAxis: {x: 0, y: 0, z: 1}
   _fanOpenPhysicalForwardAxis: {x: -1, y: 0, z: 0}
   _fanOpenTiltForwardAxis: {x: -1, y: 0, z: 0}
   _gestureConfig:
-    ThresholdAngularVelocity: 330
+    MinAngularDistance: 45
+    ThresholdAngularVelocity: 280
     BufferTime: 0.2
     DebounceInterval: 0.5
 --- !u!1660057539 &9223372036854775807
@@ -673,3 +781,4 @@ SceneRoots:
   - {fileID: 1347167321}
   - {fileID: 7175302866656037867}
   - {fileID: 131173638}
+  - {fileID: 225153195}

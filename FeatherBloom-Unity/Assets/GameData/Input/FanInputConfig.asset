@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FanInputConfig
   m_EditorClassIdentifier: Assembly-CSharp::UI.CustomFanInputConfigSO
   <FanLoseTrackingAngle>k__BackingField: 60
-  <FanRestartTrackingAngle>k__BackingField: 25
+  <FanRestartTrackingAngle>k__BackingField: 50
   <FanDeadZoneAngle>k__BackingField: 2

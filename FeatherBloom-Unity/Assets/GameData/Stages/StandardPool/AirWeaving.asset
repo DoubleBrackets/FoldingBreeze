@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 334efece15c334c4ba93e63a3c1cd296, type: 3}
-  m_Name: Test Stage 1
-  m_EditorClassIdentifier: 
-  <StageName>k__BackingField: BasicStage1
-  <StagePrefab>k__BackingField: {fileID: 4738420894384088601, guid: 9821d3f272291a246a3e5570c1c43107, type: 3}
+  m_Name: AirWeaving
+  m_EditorClassIdentifier: Assembly-CSharp::LevelGen.Stages.StageSO
+  <StageName>k__BackingField: AirWeaving
+  <StagePrefab>k__BackingField: {fileID: 217724677258428262, guid: 0bbf562411883ae458ab93b8c0aa9ef7, type: 3}

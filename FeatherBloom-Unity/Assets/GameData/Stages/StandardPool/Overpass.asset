@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 334efece15c334c4ba93e63a3c1cd296, type: 3}
-  m_Name: EntranceStage
-  m_EditorClassIdentifier: 
-  <StageName>k__BackingField: Entrance
-  <StagePrefab>k__BackingField: {fileID: 245641966418943071, guid: 80f46aa6bcf43c34c9a8d517a0d07b0e, type: 3}
+  m_Name: Overpass
+  m_EditorClassIdentifier: Assembly-CSharp::LevelGen.Stages.StageSO
+  <StageName>k__BackingField: Overpass
+  <StagePrefab>k__BackingField: {fileID: 1120405698964446700, guid: 26b5c567053d8ba47ab95e082d826488, type: 3}

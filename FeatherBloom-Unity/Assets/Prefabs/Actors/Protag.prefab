@@ -71228,7 +71228,7 @@ MonoBehaviour:
   _glideMovement: {fileID: 9178911053336663905}
   _glideVisuals: {fileID: 691692595262682336}
   _isTumblingValueSO: {fileID: 11400000, guid: 456ef505d05494349aee50504bb88173, type: 2}
-  _tumbleConfig: {fileID: 11400000, guid: 5a405e5ee4573fb479fd35144b18bca7, type: 2}
+  _tumbleConfig: {fileID: 11400000, guid: f5941ac635ec2eb438bb08a2a499ec24, type: 2}
 --- !u!1 &7826008082615268312
 GameObject:
   m_ObjectHideFlags: 0

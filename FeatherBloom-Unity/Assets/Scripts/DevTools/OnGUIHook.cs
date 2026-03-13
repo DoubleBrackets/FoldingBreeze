@@ -22,6 +22,11 @@ namespace DevTools
 
         public void OnGUI()
         {
+            if (!Application.isEditor)
+            {
+                return;
+            }
+
             foreach (KeyValuePair<string, string> element in _guiElements)
             {
                 GUILayout.Label($"{element.Key}: {element.Value}");

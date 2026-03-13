@@ -4,7 +4,7 @@ using Input.DataTypes;
 using Input.Processor;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
+using ValueSO.Core;
 
 namespace UI
 {
@@ -13,19 +13,22 @@ namespace UI
         [SerializeField]
         private CustomFanInputConfigSO _fanInputConfig;
 
+        [SerializeField]
+        private BoolValueSO _fanOpen;
+
         [Header("Tracking UI")]
 
         [SerializeField]
         private CanvasGroup _trackingCanvasGroup;
 
         [SerializeField]
-        private Transform _horizonLine;
+        private RectTransform _horizontalMarker;
 
         [SerializeField]
         private Slider _verticalIndicator;
 
         [SerializeField]
-        private float _horizonTiltRange;
+        private float _horizontalMoveRange;
 
         [Header("Untracked UI")]
 
@@ -64,8 +67,8 @@ namespace UI
         {
             ProcessResult processResult = _inputProcessor.ProcessInput(_inputService.CurrentInputType, aim);
 
-            _trackingCanvasGroup.alpha = processResult.CurrentState == InputProcessorState.Tracking ? 1 : 0;
-            _untrackedCanvasGroup.alpha = processResult.CurrentState == InputProcessorState.Untracked ? 1 : 0;
+            // _trackingCanvasGroup.alpha = processResult.CurrentState == InputProcessorState.Tracking ? 1 : 0;
+            _untrackedCanvasGroup.alpha = 1; // processResult.CurrentState == InputProcessorState.Untracked ? 1 : 0;
 
             if (processResult.CurrentState == InputProcessorState.Tracking)
             {
@@ -79,8 +82,7 @@ namespace UI
 
         private void HandleTrackingUI(ProcessResult result)
         {
-            _horizonLine.rotation = Quaternion.Euler(0, 0, -result.ProcessedAimInput.x * _horizonTiltRange);
-            _verticalIndicator.value = result.ProcessedAimInput.y.RemapOnesTo01();
+            _cursor.anchoredPosition = result.ProcessedAimInput * _maxAngleCursorUIDistance;
         }
 
         private void HandleUntrackedUI(ProcessResult result)

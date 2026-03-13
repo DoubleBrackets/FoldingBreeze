@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,6 +18,8 @@ namespace DevTools
             Color color)
         {
 #if UNITY_EDITOR
+            Handles.zTest = CompareFunction.LessEqual;
+
             var from = new Vector3(Mathf.Cos(startAngularPos * Mathf.Deg2Rad), 0f,
                 Mathf.Sin(startAngularPos * Mathf.Deg2Rad));
             Handles.color = color;

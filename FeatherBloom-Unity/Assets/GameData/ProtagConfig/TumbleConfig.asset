@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 288f230023cc4050bc00dd2e50da326b, type: 3}
-  m_Name: DiveConfig
+  m_Name: TumbleConfig
   m_EditorClassIdentifier: Assembly-CSharp::Protag.Gliding.GlideConfigSO
-  <FeatherConsumptionPerSecond>k__BackingField: 0.15
+  <FeatherConsumptionPerSecond>k__BackingField: 0.12
   <TiltSteerCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -65,7 +65,7 @@ MonoBehaviour:
   <RollMaxAngularVelocity>k__BackingField: 60
   <GravityAccel>k__BackingField: 6
   <FixedGravityAccel>k__BackingField: 4
-  <Drag>k__BackingField: 1
-  <MinFlightSpeed>k__BackingField: 5
-  <TiltBoundUpper>k__BackingField: 40
-  <TiltBoundLower>k__BackingField: -40
+  <Drag>k__BackingField: 0.98
+  <MinFlightSpeed>k__BackingField: 10
+  <TiltBoundUpper>k__BackingField: 30
+  <TiltBoundLower>k__BackingField: -30

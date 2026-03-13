@@ -198,7 +198,7 @@
 	</object>
 	<object class="SingleSound" id="{c5743a1c-f382-4975-95d0-4c7a3821b05b}">
 		<property name="length">
-			<value>0.1875</value>
+			<value>0.375</value>
 		</property>
 		<property name="startOffset">
 			<value>18</value>
@@ -335,12 +335,12 @@
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>0.0429228581</value>
+			<value>-0.43201223</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{545d449c-85ed-4af1-848f-58fd186893d4}">
 		<property name="position">
-			<value>0.1875</value>
+			<value>0.375</value>
 		</property>
 		<property name="value">
 			<value>0</value>

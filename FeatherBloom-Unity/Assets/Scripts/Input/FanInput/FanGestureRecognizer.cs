@@ -73,6 +73,11 @@ namespace Input.FanInput
 
             angleDifference.ToAngleAxis(out float totalAngularDistance, out Vector3 axis);
 
+            if (totalAngularDistance < _gestureRecognizeConfig.MinAngularDistance)
+            {
+                return;
+            }
+
             float angularVelocity = totalAngularDistance / timeDelta;
             if (angularVelocity > _gestureRecognizeConfig.ThresholdAngularVelocity)
             {
@@ -157,6 +162,7 @@ namespace Input.FanInput
         [Serializable]
         public struct GestureRecognizeConfig
         {
+            public float MinAngularDistance;
             public float ThresholdAngularVelocity;
             public float BufferTime;
             public float DebounceInterval;

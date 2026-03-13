@@ -14,15 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TowerHeight>k__BackingField: 160
   <RandomSelectionPool>k__BackingField:
-  - Stage: {fileID: 11400000, guid: f4fcc680642686c4e818d23f9e1f651f, type: 2}
+  - Stage: {fileID: 11400000, guid: 8be5e837ee10bdf49ab993db5231da09, type: 2}
     Weight: 1
     Enabled: 1
-  - Stage: {fileID: 11400000, guid: 04c1e1e334891e741bae757a10332926, type: 2}
+  - Stage: {fileID: 11400000, guid: 24e701b55e75fa94a8581674e842017a, type: 2}
     Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: f6cfccdddede57c4e8ff3deb0992a4f5, type: 2}
+    Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: c003c294038b23c4398840c1db5214f3, type: 2}
+    Weight: 2
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 9755b38b9f52cd74ba1553bfbb86e129, type: 2}
+    Weight: 1
+    Enabled: 1
+  - Stage: {fileID: 11400000, guid: 921df2d61604e1346857b08e18311393, type: 2}
+    Weight: 2
     Enabled: 1
   <FixedOrderStartStages>k__BackingField:
-  - {fileID: 11400000, guid: f4fcc680642686c4e818d23f9e1f651f, type: 2}
-  - {fileID: 11400000, guid: 04e330d4b22a0104aa1c9781e9e41fcd, type: 2}
   - {fileID: 11400000, guid: 98e771afa3271b349b0361f3e090a81d, type: 2}
   - {fileID: 11400000, guid: 8be5e837ee10bdf49ab993db5231da09, type: 2}
   - {fileID: 11400000, guid: 24e701b55e75fa94a8581674e842017a, type: 2}

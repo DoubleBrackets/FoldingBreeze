@@ -1,9 +1,7 @@
 using Cysharp.Threading.Tasks;
 using DevTools;
 using NaughtyAttributes;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 using ValueSO.Core;
 
 namespace LevelGen.Stages
@@ -63,7 +61,6 @@ namespace LevelGen.Stages
 
             Vector3 startCenter = Vector3.up * startY;
 
-            Handles.zTest = CompareFunction.LessEqual;
             HandleUtils.DrawArc(startCenter, _placementAnglePos, -_stageAngularWidthInDegrees, outerRadius,
                 HandleUtils.TransparentGreen);
             HandleUtils.DrawArc(startCenter + Vector3.up * height, _placementAnglePos, -_stageAngularWidthInDegrees,
@@ -99,7 +96,7 @@ namespace LevelGen.Stages
 
             if (riseAnimation)
             {
-                transform.position += Vector3.down * 100f;
+                transform.position += Vector3.up * 250f;
             }
 
             // Rotate to match forward direction
